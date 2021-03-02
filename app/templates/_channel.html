@@ -1,0 +1,21 @@
+<table class="table table-hover">
+    <tr>
+        <td>{{ Item Number }}</td>
+        <td>{{ Channel Name }}</td>
+        <td>{{ Input Value (channel.test_eu) }}</td>
+        <td>{{ Low Limit (channel.range_eu) }}</td>
+        <td>{{ Measured (channel.range_eu) }}</td>
+        <td>{{ High Limit (channel.range_eu) }}</td>
+        <td>{{ Error (channel.tolerance_eu) }}</td>
+        <td>{{ Pass/Fail }}</td>
+        <td>{{ Date Performed }}</td>
+        <td>{{ Notes }}</td>
+    </tr>
+    <tr>
+        <td>{{ channel.id }}</td>
+        <td>{{ channel.name }}</td>
+        {% for testpoint in testpoints %}
+            {% include '_testpoint.html' %}
+        {% endfor %}
+    </tr>
+</table>
