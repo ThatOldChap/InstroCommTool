@@ -1,0 +1,101 @@
+2021-03-02 20:25:10,656 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:25:43,421 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:30:20,062 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:30:56,488 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:35:55,422 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:38:18,680 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:39:29,246 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:39:43,273 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:42:14,001 ERROR: Exception on / [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 14, in index
+    c1 = Channel(
+  File "<string>", line 4, in __init__
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/state.py", line 433, in _initialize_instance
+    manager.dispatch.init_failure(self, args, kwargs)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/langhelpers.py", line 68, in __exit__
+    compat.raise_(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 182, in raise_
+    raise exception
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/state.py", line 430, in _initialize_instance
+    return manager.original_init(*mixed[1:], **kwargs)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/ext/declarative/base.py", line 839, in _declarative_constructor
+    raise TypeError(
+TypeError: 'range_eu' is an invalid keyword argument for Channel
+2021-03-02 20:43:18,794 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:43:19,219 ERROR: Exception on / [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 48, in index
+    channels = [c1, c2]
+NameError: name 'c2' is not defined
+2021-03-02 20:43:52,210 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:43:54,893 ERROR: Exception on / [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 54, in index
+    return render_template('index.html', title='Home', channels=channel,
+NameError: name 'channel' is not defined
+2021-03-02 20:44:24,706 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82
+2021-03-02 20:44:26,554 ERROR: Exception on / [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 54, in index
+    return render_template('index.html', title='Home', channels=channels,
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 136, in render_template
+    ctx.app.update_template_context(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 838, in update_template_context
+    context.update(func())
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_login/utils.py", line 379, in _user_context_processor
+    return dict(current_user=_get_user())
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_login/utils.py", line 346, in _get_user
+    current_app.login_manager._load_user()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_login/login_manager.py", line 302, in _load_user
+    raise Exception(
+Exception: Missing user_loader or request_loader. Refer to http://flask-login.readthedocs.io/#how-it-works for more info.
+2021-03-02 20:45:51,123 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:82

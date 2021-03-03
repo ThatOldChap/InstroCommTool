@@ -13,9 +13,9 @@ from config import Config
 # Defining the main app components
 db = SQLAlchemy()
 migrate = Migrate()
-login = LoginManager()
+""" login = LoginManager()
 login.login_view = 'auth.login'
-login.login_message = 'Please log in to access this page'
+login.login_message = 'Please log in to access this page' """
 mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
@@ -26,18 +26,18 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
-    migrate.init_app(app)
-    login.init_app(app)
+    migrate.init_app(app, db)
+    # login.init_app(app)
     mail.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
 
-    Registering the blueprints for the app
+    # Registering the blueprints for the app
     from app.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
 
-    from app.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+    # from app.auth import bp as auth_bp
+    # app.register_blueprint(auth_bp, url_prefix='/auth')
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
@@ -50,7 +50,7 @@ def create_app(config_class=Config):
             # Sets the credentials for the mail server
             if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
                 auth = (app.config['MAIL_USERNAME'],
-                        app.config['MAIL_PASSWORD])
+                        app.config['MAIL_PASSWORD'])
 
             # Sets the up the security protocol
             if app.config['MAIL_USER_TLS']:
