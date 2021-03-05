@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, current_app, g
 from flask_login import current_user, login_required
 from app import db
-from app.main.forms import ChannelForm, TestPointForm
+from app.main.forms import ChannelForm, TestPointForm, EmptyForm, NewChannelForm
 from app.models import Channel, TestPoint
 from app.main import bp
 
@@ -59,6 +59,11 @@ def index():
 @bp.route('/channel_view', methods=['GET', 'POST'])
 def channel_view():
 
+    newChannelForm = NewChannelForm()
+    if newChannelForm.validate_on_submit():
+        return render_template('new_channel.html', form=newChannelForm,
+            title='Add New Channel')
+
     # Create the lists for populating the fixed fields for each channel
     testPointLists = []
 
@@ -86,7 +91,13 @@ def channel_view():
             # Add the TestPointForm to the ChannelForm
             channelForm.testPoints.append_entry(testPointForm)
             
-    return render_template('channel_view.html', channelForm=channelForm,
+    return render_template('channel_view.html', channelForm=channelForm, newChannelForm=newChannelForm,
                             testPointLists=testPointLists, channelList=channelList)
         
+@bp.route('/new_channel', methods=['GET', 'POST'])
+def new_channel():
 
+    # Create the form for the new channel
+    form = NewChannelForm()
+
+    
