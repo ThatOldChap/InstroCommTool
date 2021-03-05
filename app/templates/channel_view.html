@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Test Channel List:</h1>
+    <div>
+        <form action="" method="post" name="channelForm">
+            {{ channelForm.hidden_tag() }}            
+            <table class="table table-hover table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Item Number</th>
+                        <th scope="col">Channel Name</th>
+                        <th scope="col">Input Value</th>
+                        <th scope="col">Low Limit</th>
+                        <th scope="col">Measured</th>
+                        <th scope="col">High Limit</th>
+                        <th scope="col">Error</th>
+                        <th scope="col">Pass/Fail</th>
+                        <th scope="col">Date Performed</th>
+                        <th scope="col">Notes</th>
+                    </tr>      
+                </thead>
+                {% for channel, testPointList in zip(channelList, testPointLists) %}
+                    {% for testPointForm, testPointFixedField in zip(channelForm.testPoints, testPointList) %}
+                        <tr>                    
+                            <td>{{ testPointFixedField.get_channel().id }}</th>
+                            <td>{{ testPointFixedField.get_channel().name }}</td>  
+                            <td>{{ testPointFixedField.input_val }}</td>
+                            <td>{{ testPointFixedField.low_limit() }}</td>
+                            <td>{{ testPointForm.measured_val }}</td>
+                            <td>{{ testPointFixedField.high_limit() }}</td>    
+                            <td>{{ testPointFixedField.calc_error() }}</td>
+                            {% if testPointFixedField.calc_pf() == 'Pass' %}
+                                <td class="table-success">{{ testPointFixedField.calc_pf() }}</td>
+                            {% else %}
+                                <td class="table-danger">{{ testPointFixedField.calc_pf() }}</td>
+                            {% endif %}
+                            <td>{{ testPointForm.date_performed }}</td>
+                            <td>{{ testPointForm.notes }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+        </form>
+    </div>
+{% endblock %}

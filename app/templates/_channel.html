@@ -1,27 +1,21 @@
-<div class="container-fluid">    
-    <div class="row">   
-        <div class="col">
-            <table class="table table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Item Number</th>
-                        <th scope="col">Channel Name</th>
-                        <th scope="col">Input Value ({{ channel.decode_eu(channel.test_eu) }})</th>
-                        <th scope="col">Low Limit ({{ channel.decode_eu(channel.eu) }})</th>
-                        <th scope="col">Measured ({{ channel.decode_eu(channel.eu) }})</th>
-                        <th scope="col">High Limit ({{ channel.decode_eu(channel.eu) }})</th>
-                        <th scope="col">Error ({{ channel.get_tolerance_type() }})</th>
-                        <th scope="col">Pass/Fail</th>
-                        <th scope="col">Date Performed</th>
-                        <th scope="col">Notes</th>
-                    </tr>      
-                </thead>
-                <tbody>
-                    {% for testpoint in testpoints %}
-                    {% include '_testpoint.html' %}
-                    {% endfor %}          
-                </tbody>
-            </table>
-        </div>   
-    </div>
-</div>
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Item Number</th>
+            <th scope="col">Channel Name</th>
+            <th scope="col">Input Value ({{ channel.decode_eu(channel.test_eu) }})</th>
+            <th scope="col">Low Limit ({{ channel.decode_eu(channel.eu) }})</th>
+            <th scope="col">Measured ({{ channel.decode_eu(channel.eu) }})</th>
+            <th scope="col">High Limit ({{ channel.decode_eu(channel.eu) }})</th>
+            <th scope="col">Error ({{ channel.get_tolerance_type() }})</th>
+            <th scope="col">Pass/Fail</th>
+            <th scope="col">Date Performed</th>
+            <th scope="col">Notes</th>
+        </tr>      
+    </thead>
+    <tbody>
+        {% for testpoint in testpoints %}
+            {% include '_testpoint.html' %}
+        {% endfor %}          
+    </tbody>
+</table>

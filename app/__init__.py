@@ -24,6 +24,7 @@ def create_app(config_class=Config):
     # Initializing the modules within the app
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.jinja_env.globals.update(zip=zip)
 
     db.init_app(app)
     migrate.init_app(app, db)
