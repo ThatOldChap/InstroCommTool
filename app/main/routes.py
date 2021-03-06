@@ -59,9 +59,10 @@ def index():
 @bp.route('/channel_view', methods=['GET', 'POST'])
 def channel_view():
 
+    addChannelForm = EmptyForm()
     newChannelForm = NewChannelForm()
-    if newChannelForm.validate_on_submit():
-        return render_template('new_channel.html', form=newChannelForm,
+    if addChannelForm.validate_on_submit():
+        return render_template('add_channel.html', newChannelForm=newChannelForm,
             title='Add New Channel')
 
     # Create the lists for populating the fixed fields for each channel
@@ -91,7 +92,7 @@ def channel_view():
             # Add the TestPointForm to the ChannelForm
             channelForm.testPoints.append_entry(testPointForm)
             
-    return render_template('channel_view.html', channelForm=channelForm, newChannelForm=newChannelForm,
+    return render_template('channel_view.html', channelForm=channelForm, addChannelForm=addChannelForm,
                             testPointLists=testPointLists, channelList=channelList)
         
 @bp.route('/new_channel', methods=['GET', 'POST'])
