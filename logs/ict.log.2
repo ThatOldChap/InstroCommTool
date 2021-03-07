@@ -1,4 +1,4 @@
-2021-03-04 23:40:08,997 ERROR: Exception on /channel_view [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-03-05 23:03:11,962 ERROR: Exception on /channel_view [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -12,41 +12,12 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 85, in channel_view
-    return render_template('channel_view.html', channelForm=channelForm,
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
-    return _render(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
-    rv = template.render(context)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
-    self.environment.handle_exception()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
-    reraise(*rewrite_traceback_stack(source=source))
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
-    raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/channel_view.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 1, in top-level template code
-    {% extends 'bootstrap/base.html' %}
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 1, in top-level template code
-    {% block doc -%}
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 4, in block "doc"
-    {%- block html %}
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 20, in block "html"
-    {% block body -%}
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 23, in block "body"
-    {% block content -%}
-  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 39, in block "content"
-    {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/channel_view.html", line 13, in block "app_content"
-    <th scope="col">Input Value ({{ channel.decode_eu(channel.test_eu) }})</th>
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 471, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'channel' is undefined
-2021-03-04 23:41:19,208 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-03-04 23:42:41,472 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-03-04 23:46:58,556 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-03-04 23:47:00,016 ERROR: Exception on /channel_view [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 94, in channel_view
+    return render_template('channel_view.html', channelForm=channelForm, newChannelForm=newChannelForm,
+NameError: name 'newChannelForm' is not defined
+2021-03-05 23:05:29,497 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-03-05 23:07:19,847 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-03-05 23:07:25,296 ERROR: Exception on /channel_view [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -60,8 +31,8 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 85, in channel_view
-    return render_template('channel_view.html', channelForm=channelForm,
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 65, in channel_view
+    return render_template('add_channel.html', form=newChannelForm,
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
@@ -72,8 +43,8 @@ Traceback (most recent call last):
     reraise(*rewrite_traceback_stack(source=source))
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/channel_view.html", line 1, in top-level template code
-    {% extends "base.html" %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/add_channel.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 1, in top-level template code
     {% extends 'bootstrap/base.html' %}
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 1, in top-level template code
@@ -86,10 +57,62 @@ Traceback (most recent call last):
     {% block content -%}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 39, in block "content"
     {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/channel_view.html", line 13, in block "app_content"
-    <th scope="col">Input Value ({{ channel.decode_eu(channel.test_eu) }})</th>
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 471, in getattr
-    return getattr(obj, attribute)
-jinja2.exceptions.UndefinedError: 'channel' is undefined
-2021-03-04 23:47:35,883 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-03-04 23:50:28,224 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+  File "/home/michael/Projects/InstroCommTool/app/templates/add_channel.html", line 7, in block "app_content"
+    {{ wtf.quick_form(form) }}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/runtime.py", line 679, in _invoke
+    rv = self._func(*arguments)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/wtf.html", line 176, in template
+    {%- for field in form %}
+TypeError: 'FormMeta' object is not iterable
+2021-03-05 23:09:24,835 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-03-05 23:09:29,519 ERROR: Exception on /channel_view [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 65, in channel_view
+    return render_template('add_channel.html', newChannelForm=newChannelForm,
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
+    return _render(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/add_channel.html", line 2, in top-level template code
+    {% import 'bootstrap/wtf.html' as wtf %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 1, in top-level template code
+    {% extends 'bootstrap/base.html' %}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 1, in top-level template code
+    {% block doc -%}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 4, in block "doc"
+    {%- block html %}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 20, in block "html"
+    {% block body -%}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/base.html", line 23, in block "body"
+    {% block content -%}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 39, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/add_channel.html", line 7, in block "app_content"
+    {{ wtf.quick_form(newChannelForm) }}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/runtime.py", line 679, in _invoke
+    rv = self._func(*arguments)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask_bootstrap/templates/bootstrap/wtf.html", line 176, in template
+    {%- for field in form %}
+TypeError: 'FormMeta' object is not iterable
+2021-03-05 23:10:26,336 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-03-06 23:10:51,056 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-03-06 23:12:28,517 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-03-06 23:48:42,637 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83

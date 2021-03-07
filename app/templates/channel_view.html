@@ -24,7 +24,10 @@
                         <th scope="col">Notes</th>
                     </tr>      
                 </thead>
+                <tbody>
+                <!-- Loop through each Channel and its list of TestPoints -->
                 {% for channel, testPointList in zip(channelList, testPointLists) %}
+                    <!-- Loop through each TestPointForm and its editable and non-editable fields -->
                     {% for testPointForm, testPointFixedField in zip(channelForm.testPoints, testPointList) %}
                         <tr>                    
                             <td>{{ testPointFixedField.get_channel().id }}</th>
@@ -44,6 +47,7 @@
                         </tr>
                     {% endfor %}
                 {% endfor %}
+                </tbody>
             </table>
         </form>
     </div>

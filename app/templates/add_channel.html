@@ -3,8 +3,10 @@
 
 {% block app_content %}
     <h1>Add a New Channel</h1>
-    {% if newChannelForm %}
-    {{ wtf.quick_form(newChannelForm) }}
+    {% if addChannelForm %}
+    {{ wtf.quick_form(addChannelForm) }}
     <br>
     {% endif %}
+
+    <!-- TODO: Make into a custom form in the Visio sketch format -->
 {% endblock %}

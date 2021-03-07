@@ -2,9 +2,10 @@ from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, current_app, g
 from flask_login import current_user, login_required
 from app import db
-from app.main.forms import ChannelForm, TestPointForm, EmptyForm, NewChannelForm
+from app.main.forms import ChannelForm, TestPointForm, EmptyForm, AddChannelForm
 from app.models import Channel, TestPoint
 from app.main import bp
+from app.main.forms import TYPE_CHOICES
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -59,11 +60,10 @@ def index():
 @bp.route('/channel_view', methods=['GET', 'POST'])
 def channel_view():
 
-    addChannelForm = EmptyForm()
-    newChannelForm = NewChannelForm()
+    # Setup the button to add a new Channel
+    addChannelForm = EmptyForm()    
     if addChannelForm.validate_on_submit():
-        return render_template('add_channel.html', newChannelForm=newChannelForm,
-            title='Add New Channel')
+        return redirect(url_for('main.add_channel'))        
 
     # Create the lists for populating the fixed fields for each channel
     testPointLists = []
@@ -95,10 +95,32 @@ def channel_view():
     return render_template('channel_view.html', channelForm=channelForm, addChannelForm=addChannelForm,
                             testPointLists=testPointLists, channelList=channelList)
         
-@bp.route('/new_channel', methods=['GET', 'POST'])
-def new_channel():
+@bp.route('/add_channel', methods=['GET', 'POST'])
+def add_channel():
 
     # Create the form for the new channel
-    form = NewChannelForm()
+    form = AddChannelForm()
 
+    if form.validate_on_submit():
+
+        # Check fields and add to the database
+        channel = Channel(
+            name=form.name.data,
+            _type=form.ch_type.data, 
+            range_min=form.range_min.data,
+            range_max=form.range_max.data,
+            eu=form.eu.data,
+            full_scale_range=form.full_scale_range.data,
+            full_scale_eu=form.full_scale_eu.data,
+            tolerance=form.tolerance.data,
+            tolerance_type=form.tolerance_type.data,
+            test_range_min=form.test_range_min.data,
+            test_range_max=form.test_range_max.data,
+            test_eu=form.test_eu.data
+        )
+        db.session.add(channel)
+        db.session.commit()
+        flash('Channel {} has been added to the database'.format(channel.name))
+        return redirect(url_for('main.channel_view'))
     
+    return render_template('add_channel.html', title='Add Channel', addChannelForm=form)
