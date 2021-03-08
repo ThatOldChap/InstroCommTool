@@ -42,13 +42,48 @@ class Channel(db.Model):
 		elif self.tolerance_type == 2:
 			return '%RDG'
 	
+	def get_channel_range(self):
+		return self.range_max - self.range_min
+
+	def get_test_range(self):
+		return self.test_range_max - self.test_range_min
+
+	def generate_default_test_points(self, num_points):
+
+		# Generate the input values for the TestPoints
+		test_range = self.get_test_range()
+		test_range_div = test_range / num_points
+		test_range_values = [self.test_range_min]
+		for i in range(1, num_points, 1):
+			test_range_values.append(test_range_values[i-1] + test_range_div)
+
+		# Generate the input values for the TestPoints
+		channel_range = self.get_channel_range()
+		channel_range_div = channel_range / num_points
+		channel_range_values = [self.range_min]
+		for i in range(1, num_points, 1):
+			channel_range_values.append(channel_range_values[i-1] + channel_range_div)
+
+		# Create the TestPoints and add to the database
+		for i in range(num_points):
+			test_point = TestPoint(
+				channel_id=self.id,
+				input_val=test_range_values[i],
+				measured_val=channel_range_values[i] + i,
+				nominal_val=channel_range_values[i],
+				pf=2,
+				notes='None'
+			)
+			print(test_point)
+			self.test_points.append(test_point)
+	
 class TestPoint(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'))
 	input_val = db.Column(db.Float(16))
 	measured_val = db.Column(db.Float(16))
 	nominal_val = db.Column(db.Float(16))
-	pf = db.Column(db.Integer) # 0 = Fail, 1 = Pass
+	pf = db.Column(db.Integer) # 0 = Fail, 1 = Pass, 2 = TBD
 	date_performed = db.Column(db.DateTime, default=datetime.utcnow)
 	notes = db.Column(db.String(128))
 	
@@ -66,10 +101,10 @@ class TestPoint(db.Model):
 
 	def calc_pf(self):
 		if abs(self.calc_error()) > self.error_limit(self.get_tolerance_type()):
-			self.pf = 0 # Fail
+			self.pf = 0
 			return 'Fail'
 		else:
-			self.pf = 1 # Pass
+			self.pf == 1
 			return 'Pass'
 	
 	def low_limit(self):

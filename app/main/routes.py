@@ -12,7 +12,7 @@ from app.main.forms import TYPE_CHOICES
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
     
-    c1 = Channel(
+    """ c1 = Channel(
         name='ExhaustRTD01',
         eu=0,
         test_eu=1,
@@ -52,8 +52,9 @@ def index():
     )
     testpoints = [tp1, tp2, tp3]    
     db.session.add_all(testpoints)
-    db.session.commit()
-    #channels = Channel.query.all()
+    db.session.commit() """
+    channels = Channel.query.all()
+    testpoints = TestPoint.query.first()
 
     return render_template('index.html', title='Home', channels=channels, testpoints=testpoints)
 
@@ -121,6 +122,11 @@ def add_channel():
         db.session.add(channel)
         db.session.commit()
         flash('Channel {} has been added to the database'.format(channel.name))
+
+        # Generate the default test points for the new channel
+        channel.generate_default_test_points(5)
+        db.session.commit()
+
         return redirect(url_for('main.channel_view'))
     
     return render_template('add_channel.html', title='Add Channel', addChannelForm=form)
