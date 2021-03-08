@@ -2,6 +2,7 @@ from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, SelectField, \
     IntegerField, FloatField, FormField, FieldList
+from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, DataRequired, Length
 from app.models import Channel, TestPoint
 
@@ -12,7 +13,8 @@ class EmptyForm(FlaskForm):
 
 class TestPointForm(FlaskForm):
     measured_val = FloatField('Measured')
-    date_performed = StringField('Date Performed')
+    date_performed = StringField('Date Performed')    
+    # date_performed = DateField('Date', format='%Y-%m-%d' ) 
     notes = StringField('Notes')
 
 class ChannelForm(FlaskForm):

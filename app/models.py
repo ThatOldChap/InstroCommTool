@@ -76,6 +76,7 @@ class Channel(db.Model):
 			)
 			print(test_point)
 			self.test_points.append(test_point)
+			
 	
 class TestPoint(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -131,3 +132,15 @@ class TestPoint(db.Model):
 		else: # Error condition
 			return -999
 	
+
+class Project(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(32))
+	number = db.Column(db.Integer(6))
+	customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+
+
+class Customer(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(32))
+	projects = db.relationship('Project', backref='customer', lazy='dynamic')
