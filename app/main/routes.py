@@ -12,51 +12,12 @@ from app.main.forms import TYPE_CHOICES
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
     
-    """ c1 = Channel(
-        name='ExhaustRTD01',
-        eu=0,
-        test_eu=1,
-        tolerance=1.50,
-        tolerance_type=0
-    )
-    channels = [c1]
-    db.session.add(c1)
-    db.session.commit()
+    # Setup the button to add a new Channel
+    testForm = EmptyForm()
+    if testForm.validate_on_submit():
+        return redirect(url_for('main.test')) 
 
-    tp1 = TestPoint(
-        channel_id=c1.id,
-        input_val=150,
-        nominal_val=200,
-        measured_val=199.50,
-        pf=1,
-        date_performed=datetime(2021, 3, 2, 9, 31, 25),
-        notes='Hope this works!'
-    )
-    tp2 = TestPoint(
-        channel_id=c1.id,
-        input_val=80,
-        nominal_val=0,
-        measured_val=1.75,
-        pf=0,
-        date_performed=datetime(2021, 3, 2, 9, 35, 57),
-        notes='Darn thing'
-    )
-    tp3 = TestPoint(
-        channel_id=c1.id,
-        input_val=200,
-        nominal_val=700,
-        measured_val=702.50,
-        pf=0,
-        date_performed=datetime(2021, 3, 2, 10, 39, 11),
-        notes='Welp, send help'
-    )
-    testpoints = [tp1, tp2, tp3]    
-    db.session.add_all(testpoints)
-    db.session.commit() """
-    channels = Channel.query.all()
-    testpoints = TestPoint.query.first()
-
-    return render_template('index.html', title='Home', channels=channels, testpoints=testpoints)
+    return render_template('index.html', title='Home', form=testForm)
 
 @bp.route('/channel_view', methods=['GET', 'POST'])
 def channel_view():
@@ -130,3 +91,10 @@ def add_channel():
         return redirect(url_for('main.channel_view'))
     
     return render_template('add_channel.html', title='Add Channel', addChannelForm=form)
+
+@bp.route('/test', methods=['GET'])
+def test():
+
+    testForm = AddChannelForm()
+
+    return render_template('add_channel_form.html', title='Test', testForm=testForm)

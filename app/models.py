@@ -76,7 +76,7 @@ class Channel(db.Model):
 			)
 			print(test_point)
 			self.test_points.append(test_point)
-			
+
 	
 class TestPoint(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -136,7 +136,7 @@ class TestPoint(db.Model):
 class Project(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
-	number = db.Column(db.Integer(6))
+	number = db.Column(db.Integer)
 	customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
 
 
