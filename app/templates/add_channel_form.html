@@ -2,49 +2,240 @@
 {% import 'bootstrap/form.html' as wtf %}
 
 {% block app_content %}
-    <div>
-        <h1>Add a New Channel</h1>
-        <form action="" method="post" name="testForm">
-            {{ testForm.hidden_tag() }}
-            <div class="row g-2">
-                <div class="col-md-9">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingName" placeholder="Channel Name">
-                        <label for="floatingName">Channel Name</label>                        
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="mb-3">                        
-                        <select class="form-select" aria-label="Engineering Unit Selection">
-                            <option selected>Units</option>
-                            <option value="1">degC</option>
-                            <option value="2">Ohms</option>
-                            <option value="3">Hz</option>
-                            <option value="4">V</option>
-                            <option value="5">mA</option>
-                        </select>
-                    </div>
-                </div>               
-            </div>
-            <div class="row g-2">
-                <div class="col-md-2">
-                    <div class="mb-3">
-                        <label for="channelRange" class="visually-hidden">Channel Range</label>
-                        <input type="text" readonly class="form-control-plaintext" id="channelRange" value="Channel Range">
-                    </div>
-                </div>
-                <div class="col-md-10">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="channel-min-range">Minimum</span>
-                        <input type="text" class="form-control" placeholder="Channel Minimum Range" aria-label="Channel Minimum Range">                        
-                        <span class="input-group-text" id="channel-max-range">Maximum</span>
-                        <input type="text" class="form-control" placeholder="Channel Maximum Range" aria-label="Channel Maximum Range">                        
-                    </div>
-                </div>
-            </div>
-        </form>
+<h2>Add a New Channel</h2>
+<br>
+<div class="row">
+    <legend>Channel Definition: </legend>  
+    <div class="col-md-5">
+      <div class="input-group mb-3">
+          <span class="input-group-text" id="Channel-Name">Name</span>
+          <input type="text" class="form-control" placeholder="ex. AnalogInput01" aria-label="Channel Name">
+      </div>
+    </div> 
+    <div class="col-md-3">
+      <div class="input-group mb-3">  
+        <span class="input-group-text" id="Channel-Tolerance">Tolerance</span>
+        <input type="text" class="form-control" placeholder="ex. 0.05" aria-label="Channel Name">
+      </div> 
     </div>
-    
-
+    <div class="col-md-4">
+      <div class="input-group mb-3">  
+        <span class="input-group-text" id="Channel-Units">Units</span>
+        <select class="custom-select">
+          <option selected="">Choose Units...</option>
+          <option value="1">EU</option>
+          <option value="2">%FS</option>
+          <option value="3">%RDG</option>
+        </select>
+      </div> 
+    </div>
+  </div>
+      
+  <div class="row">
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="Channel-Min-Label">Min Range</span>
+        <input type="text" class="form-control" id="Channel-Range-Min" aria-describedby="Minimum">
+      </div>
+    </div> 
+    <div class="col-md-4">
+      <div class="input-group mb-3">  
+        <span class="input-group-text" id="Channel-Max-Label">Max Range</span>
+        <input type="text" class="form-control" id="Channel-Range-Max" aria-describedby="Maximum">
+      </div> 
+    </div>
+    <div class="col-md-4">
+      <div class="input-group mb-3">  
+        <span class="input-group-text" id="Channel-Range-Units">Units</span>
+        <select class="custom-select">
+          <option selected="">Choose Units...</option>
+          <option value="1">degC</option>
+          <option value="2">Ohms</option>
+          <option value="3">Hz</option>
+        </select>
+      </div> 
+    </div>
+  </div>
+      
+  <div class="row">
+    <div class="col-md-8">
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="Full-Scale-Label">Full-Scale Range</span>
+        <input type="text" class="form-control" id="Full-Scale-Range" aria-describedby="Maximum">
+      </div>
+    </div> 
+    <div class="col-md-4">
+      <div class="input-group mb-3">  
+        <span class="input-group-text" id="Full-Scale-Units">Units</span>
+        <select class="custom-select">
+          <option selected="">Choose Units...</option>
+          <option value="1">degC</option>
+          <option value="2">Ohms</option>
+          <option value="3">Hz</option>
+        </select>
+      </div> 
+    </div>
+  </div>   
+  
+  <div class="row">
+    <legend>Test Point Definition:</legend>
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="Sig-Inject-Min-Label">Min Range</span>
+        <input type="text" class="form-control" id="Sig-Inject-Min" aria-describedby="Minimum">
+      </div>
+    </div> 
+    <div class="col-md-4">
+      <div class="input-group mb-3">  
+        <span class="input-group-text" id="Sig-Inject-Max-Label">Max Range</span>
+        <input type="text" class="form-control" id="Sig-Inject-Max" aria-describedby="Maximum">
+      </div> 
+    </div>
+    <div class="col-md-4">
+      <div class="input-group mb-3">  
+        <span class="input-group-text" id="Sig-Inject-Units">Units</span>
+        <select class="custom-select">
+          <option selected="">Choose Units...</option>
+          <option value="1">degC</option>
+          <option value="2">Ohms</option>
+          <option value="3">Hz</option>
+        </select>
+      </div> 
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="Test-Point-Num-Label">Number of Test Points</span>
+        <select class="custom-select">
+          <option selected="">Choose Number...</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+    </div> 
+  </div>
+  
+  <div class="form-group">
+    <legend>Test Point Values:</legend>
+    <div class="custom-control custom-radio">
+      <input type="radio" id="Test-Point-Default-Label" name="customRadio" class="custom-control-input" checked="">
+      <label class="custom-control-label" for="Test-Point-Default-Label">Default</label>
+    </div>
+    <div class="custom-control custom-radio">
+      <input type="radio" id="Test-Point-Custom-Label" name="customRadio" class="custom-control-input">
+      <label class="custom-control-label" for="Test-Point-Custom-Label">Custom</label>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="text" class="form-control" id="TP1-Min-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP1-EU-In">Ohms</span>
+      </div>
+    </div> 
+    <div class="col-md-1">
+      <div class="input-group">  
+        <span class="input-group-text" id="TP1">=</span>
+      </div> 
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">  
+        <input type="text" class="form-control" id="TP1-Max-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP1-EU-Out">degC</span>
+      </div> 
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="text" class="form-control" id="TP2-Min-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP2-EU-In">Ohms</span>
+      </div>
+    </div> 
+    <div class="col-md-1">
+      <div class="input-group">  
+        <span class="input-group-text" id="TP2">=</span>
+      </div> 
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">  
+        <input type="text" class="form-control" id="TP2-Max-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP2-EU-Out">degC</span>
+      </div> 
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="text" class="form-control" id="TP3-Min-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP3-EU-In">Ohms</span>
+      </div>
+    </div> 
+    <div class="col-md-1">
+      <div class="input-group">  
+        <span class="input-group-text" id="TP3">=</span>
+      </div> 
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">  
+        <input type="text" class="form-control" id="TP3-Max-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP3-EU-Out">degC</span>
+      </div> 
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="text" class="form-control" id="TP4-Min-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP4-EU-In">Ohms</span>
+      </div>
+    </div> 
+    <div class="col-md-1">
+      <div class="input-group">  
+        <span class="input-group-text" id="TP4">=</span>
+      </div> 
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">  
+        <input type="text" class="form-control" id="TP4-Max-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP4-EU-Out">degC</span>
+      </div> 
+    </div>
+  </div>
+  
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="text" class="form-control" id="TP5-Min-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP5-EU-In">Ohms</span>
+      </div>
+    </div> 
+    <div class="col-md-1">
+      <div class="input-group">  
+        <span class="input-group-text" id="TP5">=</span>
+      </div> 
+    </div>
+    <div class="col-md-4">
+      <div class="input-group">  
+        <input type="text" class="form-control" id="TP5-Max-Label" aria-describedby="Minimum">
+        <span class="input-group-text" id="TP5-EU-Out">degC</span>
+      </div> 
+    </div>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Submit</button>   
 
 {% endblock %}
