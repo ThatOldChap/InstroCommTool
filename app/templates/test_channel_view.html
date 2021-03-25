@@ -4,7 +4,7 @@
   }
 </style>
 
-<table class="table table-hover align-middle">  
+<table class="table table-hover align-middle">
   <thead>
     <tr class="table-primary text-center align-middle">
       <th class="align-middle" style="width: 5%">Item Number</th>
@@ -16,34 +16,40 @@
       <th class="align-middle" style="width: 15%">Notes</th>
     </tr>
   </thead>
-  
+
+  <tbody>
+  {% for testpoint in testpoints %}
+    {% include '_testpoint.html' %}
+    {% endfor %}
+  </tbody>
+
   <!-- Version 3 - Input Groups of min/max value, Pass/Fail replaced with validation fields on error -->
-  <tbody>    
+  <tbody>
     <tr class="text-center">
       <th scope="row" class="align-middle">1</th>
       <td class="align-middle">TT100CSR</td>
       <td class="align-middle">
-        <div class="row">     
+        <div class="row">
           <div class="col-md-12">
             <div class="input-group">
-                <input type="text" class="form-control text-center" placeholder="40.00" aria-label="Channel Name">
-                <span class="input-group-text" id="Low-Limit">Ohms</span>
+              <input type="text" class="form-control text-center" placeholder="40.00" aria-label="Channel Name">
+              <span class="input-group-text" id="Low-Limit">Ohms</span>
             </div>
-          </div>            
-        </div>          
-      </td>   
+          </div>
+        </div>
+      </td>
       <td class="align-middle">
-        <div class="row">     
+        <div class="row">
           <div class="col-md-12">
             <div class="input-group">
-                <span class="input-group-text" id="Low-Limit">39.50</span>
-                <input type="text" class="form-control text-center" placeholder="40.00" aria-label="Channel Name">
-                <span class="input-group-text" id="Low-Limit">40.50</span>
-                <span class="input-group-text" id="Low-Limit">degC</span>
+              <span class="input-group-text" id="Low-Limit">39.50</span>
+              <input type="text" class="form-control text-center" placeholder="40.00" aria-label="Channel Name">
+              <span class="input-group-text" id="Low-Limit">40.50</span>
+              <span class="input-group-text" id="Low-Limit">degC</span>
             </div>
-          </div>            
-        </div>          
-      </td>       
+          </div>
+        </div>
+      </td>
       <td class="align-middle">
         <div class="row">
           <div class="col-md-12">
@@ -51,7 +57,7 @@
               <input type="text" value="0.05" class="form-control is-valid text-center" id="inputValid">
               <span class="input-group-text" id="Low-Limit">degC</span>
             </div>
-          </div> 
+          </div>
         </div>
       </td>
       <td class="align-middle">12-Dec-2020</td>
@@ -63,42 +69,40 @@
       <th scope="row" class="align-middle">1</th>
       <td class="align-middle">TT100CSR</td>
       <td class="align-middle">
-        <div class="row">     
+        <div class="row">
           <div class="col-md-12">
             <div class="input-group">
-                <input type="text" class="form-control text-center" placeholder="40.00" aria-label="Channel Name">
-                <span class="input-group-text" id="Low-Limit">Ohms</span>
+              <input type="text" class="form-control text-center" placeholder="40.00" aria-label="Channel Name">
+              <span class="input-group-text" id="Low-Limit">Ohms</span>
             </div>
-          </div>            
-        </div>          
-      </td>   
-      <td class="align-middle">
-        <div class="row">     
-          <div class="col-md-12">
-            <div class="input-group">
-                <span class="input-group-text" id="Low-Limit">39.50</span>
-                <input type="text" class="form-control text-center" placeholder="40.00" aria-label="Channel Name">
-                <span class="input-group-text" id="Low-Limit">40.50</span>
-                <span class="input-group-text" id="Low-Limit">degC</span>
-            </div>
-          </div>            
-        </div>          
-      </td>       
+          </div>
+        </div>
+      </td>
       <td class="align-middle">
         <div class="row">
           <div class="col-md-12">
             <div class="input-group">
-                <input type="text" value="-0.12" class="form-control is-invalid text-center" id="inputInvalid">
-                <span class="input-group-text" id="Low-Limit">degC</span>
-              </div>
+              <span class="input-group-text" id="Low-Limit">39.50</span>
+              <input type="text" class="form-control text-center" placeholder="40.00" aria-label="Channel Name">
+              <span class="input-group-text" id="Low-Limit">40.50</span>
+              <span class="input-group-text" id="Low-Limit">degC</span>
             </div>
-          </div> 
-        </div
+          </div>
+        </div>
       </td>
+      <td class="align-middle">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-group">
+              <input type="text" value="-0.12" class="form-control is-invalid text-center" id="inputInvalid">
+              <span class="input-group-text" id="Low-Limit">degC</span>
+            </div>
+          </div>
+        </div>
+        </div </td>
       <td class="align-middle">12-Dec-2020</td>
       <td class="align-middle">
         <input type="text" class="form-control" placeholder="" aria-label="Channel Name">
       </td>
     </tr>
   </tbody>
-  

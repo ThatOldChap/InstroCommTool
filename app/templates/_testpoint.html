@@ -1,16 +1,54 @@
-<tr>
-    <td>{{ channel.id }}</th>
-    <td>{{ channel.name }}</td>  
-    <td>{{ testpoint.input_val }}</td>
-    <td>{{ testpoint.low_limit() }}</td>
-    <td>{{ testpoint.measured_val }}</td>
-    <td>{{ testpoint.high_limit() }}</td>    
-    <td>{{ testpoint.calc_error() }}</td>
-    {% if testpoint.calc_pf() == 'Pass' %}
-        <td class="table-success">{{ testpoint.calc_pf() }}</td>
-    {% else %}
-        <td class="table-danger">{{ testpoint.calc_pf() }}</td>
-    {% endif %}
-    <td>{{ testpoint.date_performed }}</td>
-    <td>{{ testpoint.notes }}</td>
+<style>
+    input[type="text"]::placeholder {
+        text-align: center;
+    }
+</style>
+
+<tr class="text-center">
+    <th scope="row" class="align-middle">{{ channel.id }}</th>
+    <td class="align-middle">{{ channel.name }}</td>
+    <td class="align-middle">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <input type="text" class="form-control text-center" placeholder="{{ testpoint.input_val }}" aria-label="Channel Input Value">
+                    <span class="input-group-text">{{ channel.decode_eu(channel.test_eu) }}</span>
+                </div>
+            </div>
+        </div>
+    </td>
+    <td class="align-middle">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <span class="input-group-text">{{ testpoint.low_limit() }}</span>
+                    <div class="input-group">
+                        <input type="text" class="form-control text-center" placeholder="{{ testpoint.nominal_val }}" aria-label="Channel Measured Value">
+                        <button type="button" class="btn btn-info" formaction="{{ url_for('main.edit_channel') }}">Save</button>
+                    </div>
+                    <span class="input-group-text">{{ testpoint.high_limit() }}</span>
+                    <span class="input-group-text">{{ channel.decode_eu(channel.eu) }}</span>
+                </div>
+            </div>
+        </div>
+    </td>
+    <td class="align-middle">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group align-middle">
+                    {% if testpoint.calc_pf() == 'Pass' %}
+                    <input type="text" class="form-control is-valid text-center" placeholder="0.000" aria-label="Measured Error" readonly="">
+                    {% elif testpoint.calc_pf() == 'Fail' %}
+                    <input type="text" class="form-control is-invalid text-center" placeholder="0.000" aria-label="Measured Error" readonly="">
+                    {% else %}
+                    <input type="text" class="form-control text-center" placeholder="0.000" aria-label="Measured Error" readonly="">
+                    <span class="input-group-text">{{ channel.get_tolerance_type() }}</span>
+                </div>
+            </div>
+        </div>
+    </td>
+    <td class="align-middle">{{ testpoint.date_performed }}</td>
+    <td class="align-middle">
+        <input type="text" class="form-control" placeholder="" aria-label="Date Updated">
+    </td>
 </tr>

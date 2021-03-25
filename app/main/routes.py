@@ -27,6 +27,8 @@ def channel_view():
     if addChannelForm.validate_on_submit():
         return redirect(url_for('main.add_channel'))        
 
+    # class ChannelView
+
     # Create the lists for populating the fixed fields for each channel
     testPointLists = []
 
@@ -90,7 +92,7 @@ def add_channel():
 
         return redirect(url_for('main.channel_view'))
     
-    return render_template('add_channel.html', title='Add Channel', addChannelForm=form)
+    return render_template('add_channel_form.html', title='Add Channel', addChannelForm=form)
 
 @bp.route('/test', methods=['GET'])
 def test():

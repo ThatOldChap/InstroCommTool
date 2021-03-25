@@ -9,7 +9,7 @@ from app.models import Channel, TestPoint
 TYPE_CHOICES = [(0, "RTD"),(1, "Pressure"),(2, "Frequency")]
 
 class EmptyForm(FlaskForm):
-    submit = SubmitField('Add a Channel')
+    submit = SubmitField('Add Channel')
 
 class TestPointForm(FlaskForm):
     measured_val = FloatField('Measured')
