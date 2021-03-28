@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% import 'bootstrap/form.html' as wtf %}
 
 {% block app_content %}
 <h2>Add a New Channel</h2>
@@ -8,25 +7,26 @@
     <legend>Channel Definition: </legend>  
     <div class="col-md-4">
       <div class="input-group mb-3">
-          <span class="input-group-text" id="Channel-Name">Name</span>
+          <span class="input-group-text" id="Channel-Name">{{ form.name.label }}</span>
           <input type="text" class="form-control" placeholder="ex. AnalogInput01" aria-label="Channel Name">
       </div>
     </div> 
     <div class="col-md-4">
-      <div class="input-group mb-3">  
-        <span class="input-group-text" id="Channel-Tolerance">Tolerance</span>
-        <input type="text" class="form-control" placeholder="ex. 0.05" aria-label="Channel Name">
-      </div> 
-    </div>
+      <div class="input-group mb-3">
+          <span class="input-group-text" id="Channel-Type">{{ form.ch_type.label }}</span>
+          <input type="text" class="form-control" placeholder="ex. Pressure" aria-label="Measurement Type">
+      </div>
+    </div> 
     <div class="col-md-4">
       <div class="input-group mb-3">  
-        <span class="input-group-text" id="Channel-Units">Tolerance Type</span>
+        <span class="input-group-text" id="Channel-Range-Units">Units</span>
         <select class="custom-select">
-          <option selected="">Choose Type...</option>
-          <option value="1">EU</option>
-          <option value="2">%FS</option>
-          <option value="3">%RDG</option>
+          <option selected="">Choose Units...</option>
+          <option value="1">degC</option>
+          <option value="2">Ohms</option>
+          <option value="3">Hz</option>
         </select>
+       
       </div> 
     </div>
   </div>
@@ -45,36 +45,31 @@
       </div> 
     </div>
     <div class="col-md-4">
-      <div class="input-group mb-3">  
-        <span class="input-group-text" id="Channel-Range-Units">Units</span>
-        <select class="custom-select">
-          <option selected="">Choose Units...</option>
-          <option value="1">degC</option>
-          <option value="2">Ohms</option>
-          <option value="3">Hz</option>
-        </select>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="Full-Scale-Label">Full-Scale</span>
+        <input type="text" class="form-control" id="Full-Scale-Range" aria-describedby="Maximum">        
       </div> 
     </div>
   </div>
       
   <div class="row">
-    <div class="col-md-8">
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="Full-Scale-Label">Full-Scale Range</span>
-        <input type="text" class="form-control" id="Full-Scale-Range" aria-describedby="Maximum">
-      </div>
-    </div> 
     <div class="col-md-4">
       <div class="input-group mb-3">  
-        <span class="input-group-text" id="Full-Scale-Units">Units</span>
-        <select class="custom-select">
-          <option selected="">Choose Units...</option>
-          <option value="1">degC</option>
-          <option value="2">Ohms</option>
-          <option value="3">Hz</option>
-        </select>
+        <span class="input-group-text" id="Channel-Tolerance">Tolerance</span>
+        <input type="text" class="form-control" placeholder="ex. 0.05" aria-label="Channel Name">
       </div> 
     </div>
+    <div class="col-md-4">
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="Channel-Units">Tolerance Type</span>
+        <select class="custom-select">
+          <option selected="">Choose Type...</option>
+          <option value="1">EU</option>
+          <option value="2">%FS</option>
+          <option value="3">%RDG</option>
+        </select>
+      </div>
+    </div> 
   </div>   
   
   <div class="row">

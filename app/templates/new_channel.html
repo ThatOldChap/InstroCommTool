@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<h2>Add a New Channel</h2>
+<br>
+<div>
+    <form action="" method="POST" name="form">
+        {{ form.hidden_tag() }}
+
+        <!-- Channel Definition Section -->
+        <!-- Basic Channel Info -->
+        <div class="row">            
+            <legend>Channel Definition:</legend>  
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.name.label.text }}</span>
+                    {{ form.name() }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.meas_type.label.text }}</span>
+                    {{ form.meas_type() }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.eu.label.text }}</span>
+                    {{ form.eu() }}
+                </div>
+            </div>
+        </div>        
+        <!-- Measurement Range Info -->
+        <div class="row">            
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.meas_range_min.label.text }}</span>
+                    {{ form.meas_range_min() }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.meas_range_max.label.text }}</span>
+                    {{ form.meas_range_max() }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.full_scale.label.text }}</span>
+                    {{ form.full_scale() }}
+                </div>
+            </div>
+        </div>       
+        <!-- Channel Tolerance Info --> 
+        <div class="row">            
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.tolerance.label.text }}</span>
+                    {{ form.tolerance() }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.tolerance_type.label.text }}</span>
+                    {{ form.tolerance_type() }}
+                </div>
+            </div>
+        </div>
+        <!-- Test Point Definition Section -->
+        <!-- Test Point Input Range Info -->
+        <div class="row">            
+            <legend>Test Point Definition:</legend>  
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.test_range_min.label.text }}</span>
+                    {{ form.test_range_min() }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.test_range_max.label.text }}</span>
+                    {{ form.test_range_max() }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.test_eu.label.text }}</span>
+                    {{ form.test_eu() }}
+                </div>
+            </div>
+        </div> 
+        <!-- Test Point Value Info -->
+        <div class="row">            
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.num_test_points.label.text }}</span>
+                    {{ form.num_test_points() }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">{{ form.test_point_type.label.text }}</span>
+                    {{ form.test_point_type() }}
+                </div>
+            </div>
+        </div> 
+        <!-- Custom Test Point Value Definition -->
+
+        <!-- Form Submission -->
+        <div>{{ form.submit() }}</div>    
+    </form>    
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- JQuery to add the custom Test Point fields based on user selection -->
+    <script>
+        $(function () {
+            var testPointType = $('#test_point_type');
+            testPointType.change(function() {
+                alert("Test Point Type has been changed");
+                if (testPointType.val() == 'Custom') {
+                    
+                }
+            });
+            
+        });
+    </script>    
+{% endblock %}

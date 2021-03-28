@@ -2,18 +2,16 @@ from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, current_app, g
 from flask_login import current_user, login_required
 from app import db
-from app.main.forms import ChannelForm, TestPointForm, EmptyForm, AddChannelForm
+from app.main.forms import ChannelForm, TestPointForm, EmptyForm, AddChannelForm, NewChannelForm, TestSubmitForm
 from app.models import Channel, TestPoint
 from app.main import bp
-from app.main.forms import TYPE_CHOICES
-
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
     
     # Setup the button to add a new Channel
-    testForm = EmptyForm()
+    testForm = TestSubmitForm()
     if testForm.validate_on_submit():
         return redirect(url_for('main.test')) 
 
@@ -23,7 +21,7 @@ def index():
 def channel_view():
 
     # Setup the button to add a new Channel
-    addChannelForm = EmptyForm()    
+    addChannelForm = EmptyForm('Add New Channel')    
     if addChannelForm.validate_on_submit():
         return redirect(url_for('main.add_channel'))        
 
@@ -94,9 +92,22 @@ def add_channel():
     
     return render_template('add_channel_form.html', title='Add Channel', addChannelForm=form)
 
-@bp.route('/test', methods=['GET'])
+@bp.route('/test', methods=['GET', 'POST'])
 def test():
 
-    testForm = AddChannelForm()
+    newChannelForm = NewChannelForm()
 
-    return render_template('add_channel_form.html', title='Test', testForm=testForm)
+    if newChannelForm.validate_on_submit():
+        #Take the data from the form and commit to the db
+        name = newChannelForm.name.data
+        meas_type = newChannelForm.meas_type.data
+        eu = newChannelForm.eu.data
+        meas_range_min = newChannelForm.meas_range_min.data
+        meas_range_max = newChannelForm.meas_range_max.data
+        full_scale = newChannelForm.full_scale.data
+
+        print(f'name = {name}, meas_type = {meas_type} and eu = {eu}')
+        return redirect(url_for('main.index'))
+    
+
+    return render_template('new_channel.html', title='Add New Channel', form=newChannelForm)
