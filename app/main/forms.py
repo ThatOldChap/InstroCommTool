@@ -4,9 +4,8 @@ from wtforms import StringField, SubmitField, TextAreaField, SelectField, \
     IntegerField, FloatField, FormField, FieldList
 from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, DataRequired, Length
+from wtforms.widgets import HiddenInput
 from app.models import Channel, TestPoint
-
-
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Add Channel')
@@ -44,6 +43,17 @@ CHOICES_TOLERANCE_TYPE = [("", "Select Type..."),(1, "Units"),(2, f"%FS"),(3, '%
 CHOICES_NUM_TEST_POINTS = [("", "Select Number..."),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),(7, "7"),(8, "8"),(9, "9"),(10, "10")]
 CHOICES_TEST_POINT_TYPE = [(1, "Default"),(2, "Custom")]
 
+class TestPointValuesForm(FlaskForm):
+
+    # CSS attribute definitions
+    kw_vals = {'class': 'form-control'}
+
+    # Value definitions
+    input_val = FloatField('Input Value', validators=[DataRequired()], render_kw=kw_vals)
+    input_val_eu = StringField(widget=HiddenInput)
+    nominal_val = FloatField('Nominal Value', validators=[DataRequired()], render_kw=kw_vals)
+    nominal_val_eu = StringField(widget=HiddenInput)
+
 class NewChannelForm(FlaskForm):
 
     # CSS attribute definitions
@@ -75,8 +85,11 @@ class NewChannelForm(FlaskForm):
     test_range_max = FloatField('Maximum Range', validators=[DataRequired()], render_kw=kw_meas_range_max)
     test_eu = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
 
-    num_test_points = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
-    test_point_type = SelectField('Test Point Definition', choices=CHOICES_TEST_POINT_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
+    num_test_points = SelectField('# of Test Points', choices=CHOICES_NUM_TEST_POINTS, validators=[DataRequired()], render_kw=kw_select_field)
+    test_point_type = SelectField('Test Point Values', choices=CHOICES_TEST_POINT_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
+
+    # Field definitions - TestPoint Values
+    test_point_list = FieldList(FormField(TestPointValuesForm))
 
     # Form submission
     submit = SubmitField('Add New Channel', render_kw=kw_submit)

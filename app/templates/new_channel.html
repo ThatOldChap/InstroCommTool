@@ -105,7 +105,12 @@
             </div>
         </div> 
         <!-- Custom Test Point Value Definition -->
-
+        <div class="row">
+            <legend>Test Point Values:</legend>
+        </div>
+        <div>
+            {{ form.test_point_list() }}
+        </div>
         <!-- Form Submission -->
         <div>{{ form.submit() }}</div>    
     </form>    
@@ -113,17 +118,84 @@
 {% endblock %}
 
 {% block scripts %}
+    {{ super() }}
     <!-- JQuery to add the custom Test Point fields based on user selection -->
     <script>
-        $(function () {
-            var testPointType = $('#test_point_type');
-            testPointType.change(function() {
-                alert("Test Point Type has been changed");
-                if (testPointType.val() == 'Custom') {
-                    
+        $(document).ready(function () {
+            console.log("Script being called")         
+            // Generate the TestPointValueForms based on the user selection
+            $('#test_point_type').change(function() {
+
+                // Finds the relevant data for the form
+                var testPointType = $('#test_point_type').val();
+                console.log("Test Point Type has been changed to: " + testPointType);
+                var numTestPoints = $('#num_test_points').val();
+                var eu = $('#eu').val();
+                var testEU = $('#test_eu').val();                
+
+                if ($("#test_point_type").val() == 2) {                                      
+                    // Add each form to the form list
+                    for (i = 1; i <= numTestPoints; i++) {                        
+                        $('#test_point_list').append(CreateTestPointValueForm(i,
+                            eu, testEU));
+                        console.log("appending testpoint number " + i);
+                    }
                 }
             });
             
+            // Creates a template for the TestPointValueForm
+            function CreateTestPointValueForm(index, inputEU, nominalEU) {
+                // Defines all the components for the form template
+                var row = $('<div>').attr({class: 'row'});
+                var inputCol = $('<div>').attr({class: 'col-md-3'});
+                var equalsCol = $('<div>').attr({class: 'col-auto'});
+                var nominalCol = $('<div>').attr({class: 'col-md-3'});
+                var inputValGroup = $('<div>').attr({class: 'input-group mb-3'});
+                var equalsGroup = $('<div>').attr({class: 'input-group mb-3'});
+                var nominalValGroup = $('<div>').attr({class: 'input-group mb-3'});
+                var equals = $('<div>').attr({
+                    class: 'input-group-text text-center',
+                }).text('=');               
+                    
+                // Creates the input fields for the form
+                var inputVal = $('<input>').attr({
+                    type: 'text',
+                    id: 'input_val-' + index,
+                    name: 'input_val-' + index,
+                    value: '',
+                    class: 'form-control'
+                });
+                var inputValEU = $('<span>').attr({
+                    class: 'input-group-text',
+                    id: 'input_val_eu-' + index,
+                    name: 'input_val_eu-' + index
+                }).text(inputEU);
+                var nominalVal = $('<input>').attr({
+                    type: 'text',
+                    id: 'nominal_val-' + index,
+                    name: 'nominal_val-' + index,
+                    value: '',
+                    class: 'form-control'
+                });
+                var nominalValEU = $('<span>').attr({
+                    class: 'input-group-text',
+                    id: 'nominal_val_eu-' + index,
+                    name: 'nominal_val_eu-' + index
+                }).text(nominalEU);
+                
+                // Creates the final form to return
+                inputValGroup.append(inputVal, inputValEU);
+                equalsGroup.append(equals)
+                nominalValGroup.append(nominalVal, nominalValEU);
+
+                inputCol.append(inputValGroup);
+                equalsCol.append(equalsGroup);
+                nominalCol.append(nominalValGroup);
+
+                row.append(inputCol, equalsCol, nominalCol);                
+                
+                return row
+            }
         });
     </script>    
 {% endblock %}
