@@ -122,7 +122,8 @@
     <!-- JQuery to add the custom Test Point fields based on user selection -->
     <script>
         $(document).ready(function () {
-            console.log("Script being called")         
+            $('#test_point_list').attr({style: 'padding-left: 0px;'})
+
             // Generate the TestPointValueForms based on the user selection
             $('#test_point_type').change(function() {
 
@@ -136,23 +137,60 @@
                 if ($("#test_point_type").val() == 2) {                                      
                     // Add each form to the form list
                     for (i = 1; i <= numTestPoints; i++) {                        
-                        $('#test_point_list').append(CreateTestPointValueForm(i,
-                            eu, testEU));
+                        $('#test_point_list').append(createTestPointValueForm(i, eu, testEU));
                         console.log("appending testpoint number " + i);
                     }
                 }
             });
+
+            /* // Adjusts the TestPointValueForm EUs in case they are changed
+            $('#eu').change(function() {      
+                // Checks whether the list of testpoints has been generated          
+                isValid = ($('#input_val_eu-1').length > 0) ? true : false;
+                if (isValid) {
+                    var newVal = $('#eu').val()
+                    $("[id^=input_val_eu]").each(function(index, element) {                        
+                        $(element).text(newVal);
+                    });
+                } else {
+                    console.log('The list of test points has not been generated yet.')
+                }
+            }); */
+
+            // Adjusts the TestPointValueForm EUs in case they are changed
+            $('#eu').change(function() {
+                euFieldID = '#eu'
+                spanID = 'nominal_val_eu'
+                updateEUVal(euFieldID, spanID)
+            });
+            $('#test_eu').change(function() {
+                euFieldID = '#test_eu'
+                spanID = 'input_val_eu'
+                updateEUVal(euFieldID, spanID)
+            });                
             
+            // Updates the TestPoints' EU fields with new values as they are changed
+            function updateEUVal(euFieldID, spanID) {                
+                if ($("[id$=val_eu-1").length > 0) {
+                    console.log(`Calling updateEUVal() with euFieldID=${euFieldID} and spanID=${spanID}`)
+                    $(`[id^=${spanID}]`).each(function(index, element) {                        
+                        $(element).text($(euFieldID).val());
+                    });
+                } else {
+                    console.log('The list of test points has not been generated yet.')
+                }
+            }
+
             // Creates a template for the TestPointValueForm
-            function CreateTestPointValueForm(index, inputEU, nominalEU) {
+            function createTestPointValueForm(index, inputEU, nominalEU) {
                 // Defines all the components for the form template
                 var row = $('<div>').attr({class: 'row'});
-                var inputCol = $('<div>').attr({class: 'col-md-3'});
+                var inputCol = $('<div>').attr({class: 'col-md-2'});
                 var equalsCol = $('<div>').attr({class: 'col-auto'});
-                var nominalCol = $('<div>').attr({class: 'col-md-3'});
-                var inputValGroup = $('<div>').attr({class: 'input-group mb-3'});
-                var equalsGroup = $('<div>').attr({class: 'input-group mb-3'});
-                var nominalValGroup = $('<div>').attr({class: 'input-group mb-3'});
+                var nominalCol = $('<div>').attr({class: 'col-md-2'});
+                var inputValGroup = $('<div>').attr({class: 'input-group'});
+                var equalsGroup = $('<div>').attr({class: 'input-group'});
+                var nominalValGroup = $('<div>').attr({class: 'input-group'});
                 var equals = $('<div>').attr({
                     class: 'input-group-text text-center',
                 }).text('=');               
