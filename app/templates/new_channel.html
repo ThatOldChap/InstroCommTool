@@ -123,6 +123,7 @@
     <script>
         $(document).ready(function () {
             $('#test_point_list').attr({style: 'padding-left: 0px;'})
+            var prevNumTestPoints = 0;
 
             // Generate the TestPointValueForms based on the user selection
             $('#test_point_type').change(function() {
@@ -143,20 +144,6 @@
                 }
             });
 
-            /* // Adjusts the TestPointValueForm EUs in case they are changed
-            $('#eu').change(function() {      
-                // Checks whether the list of testpoints has been generated          
-                isValid = ($('#input_val_eu-1').length > 0) ? true : false;
-                if (isValid) {
-                    var newVal = $('#eu').val()
-                    $("[id^=input_val_eu]").each(function(index, element) {                        
-                        $(element).text(newVal);
-                    });
-                } else {
-                    console.log('The list of test points has not been generated yet.')
-                }
-            }); */
-
             // Adjusts the TestPointValueForm EUs in case they are changed
             $('#eu').change(function() {
                 euFieldID = '#eu'
@@ -167,12 +154,38 @@
                 euFieldID = '#test_eu'
                 spanID = 'input_val_eu'
                 updateEUVal(euFieldID, spanID)
-            });                
+            });   
+            
+            // Adjusts the number of TestPoints to reflect a new value
+            $('#num_test_points').change(function() {
+                // Record the current number of test points and the delta from the previous
+                numTestPoints = $('#num_test_points').val();
+                var delta = numTestPoints - prevNumTestPoints;
+
+                // Get the list of test points
+                testPointList = $('#test_point_list .row');
+                var len = testPointList.length;
+
+                // Create a list of the affected elements to add/remove
+                var affElems = '';
+                // TODO: Create number of affected elements in a form loop with the createTestPointValueForm
+                // Also need to get the current EU of both input and nominal, maybe create global variables
+
+                if (delta > 0) {
+
+                    testPointList.append(elem1, elem2)
+                } else if (delta < 0) {
+                    
+                    testPoint.remove(elem1, elem2)
+                } else {
+                    // No change, may not even get here. TODO: Test
+                }
+
+            });
             
             // Updates the TestPoints' EU fields with new values as they are changed
             function updateEUVal(euFieldID, spanID) {                
                 if ($("[id$=val_eu-1").length > 0) {
-                    console.log(`Calling updateEUVal() with euFieldID=${euFieldID} and spanID=${spanID}`)
                     $(`[id^=${spanID}]`).each(function(index, element) {                        
                         $(element).text($(euFieldID).val());
                     });
