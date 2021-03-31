@@ -123,75 +123,109 @@
     <script>
         $(document).ready(function () {
             $('#test_point_list').attr({style: 'padding-left: 0px;'})
+
+            // Global variables to track the previous values in each relevant field
             var prevNumTestPoints = 0;
+            var prevInputEU = "";
+            var prevNominalEU = "";
+            var prevTestPointType = 1;
+
+            // Checks whether the fields are valid to display the testPointList
+            function testPointListReady() {
+                numTestPointsValid = !($('#num_test_points').val() == 0);
+                inputEUValid = !($('#eu').val() == "");
+                nominalEUValid = !($('#test_eu').val() == "");
+                testPointTypeValid = !($('#test_point_type').val() == 1);
+
+                isReady = numTestPointsValid && inputEUValid && nominalEUValid && testPointTypeValid;
+                console.log(`The testPointList isReady = ${isReady}`);
+
+                return isReady;
+            }
 
             // Generate the TestPointValueForms based on the user selection
             $('#test_point_type').change(function() {
 
                 // Finds the relevant data for the form
                 var testPointType = $('#test_point_type').val();
-                console.log("Test Point Type has been changed to: " + testPointType);
+                console.log(`Test Point Type has been changed from ${prevTestPointType} to ${testPointType}`);
                 var numTestPoints = $('#num_test_points').val();
                 var eu = $('#eu').val();
                 var testEU = $('#test_eu').val();                
 
-                if ($("#test_point_type").val() == 2) {                                      
+                if (testPointListReady()) {                                      
                     // Add each form to the form list
                     for (i = 1; i <= numTestPoints; i++) {                        
                         $('#test_point_list').append(createTestPointValueForm(i, eu, testEU));
-                        console.log("appending testpoint number " + i);
                     }
+                } else {
+                    console.log('TestPointList is not ready to be generated. Skipping #test_point_type.change...');
                 }
             });
 
             // Adjusts the TestPointValueForm EUs in case they are changed
             $('#eu').change(function() {
-                euFieldID = '#eu'
-                spanID = 'nominal_val_eu'
-                updateEUVal(euFieldID, spanID)
+                euFieldID = '#eu';
+                spanID = 'nominal_val_eu';
+                updateEUVal(euFieldID, spanID);
+                
+                // Update the global variable for use elsewhere
+                prevInputEU = $('#eu').val()
             });
             $('#test_eu').change(function() {
-                euFieldID = '#test_eu'
-                spanID = 'input_val_eu'
-                updateEUVal(euFieldID, spanID)
+                euFieldID = '#test_eu';
+                spanID = 'input_val_eu';
+                updateEUVal(euFieldID, spanID);
+
+                // Update the global variable for use elsewhere
+                prevNominalEU = $('#test_eu').val()
             });   
             
             // Adjusts the number of TestPoints to reflect a new value
             $('#num_test_points').change(function() {
-                // Record the current number of test points and the delta from the previous
-                numTestPoints = $('#num_test_points').val();
-                var delta = numTestPoints - prevNumTestPoints;
 
-                // Get the list of test points
-                testPointList = $('#test_point_list .row');
-                var len = testPointList.length;
+                if (testPointListReady()) {
+                    // Record the current number of test points and the delta from the previous
+                    numTestPoints = $('#num_test_points').val();
+                    var delta = numTestPoints - prevNumTestPoints;
 
-                // Create a list of the affected elements to add/remove
-                var affElems = '';
-                // TODO: Create number of affected elements in a form loop with the createTestPointValueForm
-                // Also need to get the current EU of both input and nominal, maybe create global variables
-
-                if (delta > 0) {
-
-                    testPointList.append(elem1, elem2)
-                } else if (delta < 0) {
-                    
-                    testPoint.remove(elem1, elem2)
+                    if (delta > 0) {
+                        // Adds more rows to the table
+                        for (i = prevNumTestPoints + 1; i <= numTestPoints; i++) {
+                            $('#test_point_list').append(
+                                createTestPointValueForm(i, prevInputEU, prevNominalEU)
+                            );
+                        }
+                    } else if (delta < 0) {
+                        // Start removing rows from the end of the table
+                        for (i = prevNumTestPoints - 1; i >= numTestPoints; i--) {
+                            $('#test_point_list .row:last-child').remove();
+                        }
+                    } else {
+                        console.log('No change in delta');
+                    }
+                    prevNumTestPoints = numTestPoints;
                 } else {
-                    // No change, may not even get here. TODO: Test
+                    console.log('TestPointList is not ready to be generated. Skipping #num_test_points.change...');
                 }
-
+                
             });
             
             // Updates the TestPoints' EU fields with new values as they are changed
-            function updateEUVal(euFieldID, spanID) {                
-                if ($("[id$=val_eu-1").length > 0) {
-                    $(`[id^=${spanID}]`).each(function(index, element) {                        
-                        $(element).text($(euFieldID).val());
-                    });
+            function updateEUVal(euFieldID, spanID) {
+
+                if (testPointListReady()) {
+
+                    if ($("[id$=val_eu-1").length > 0) {
+                        $(`[id^=${spanID}]`).each(function(index, element) {                        
+                            $(element).text($(euFieldID).val());
+                        });
+                    } else {
+                        console.log('The list of test points has not been generated yet.')
+                    }
                 } else {
-                    console.log('The list of test points has not been generated yet.')
-                }
+                    console.log('TestPointList is not ready to be generated. Skipping updateEUVal()...');
+                }               
             }
 
             // Creates a template for the TestPointValueForm
