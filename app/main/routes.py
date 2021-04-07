@@ -5,6 +5,7 @@ from app import db
 from app.main.forms import ChannelForm, TestPointForm, EmptyForm, AddChannelForm, NewChannelForm, TestSubmitForm
 from app.models import Channel, TestPoint
 from app.main import bp
+from app.main.measurements import ENG_UNITS
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
@@ -71,14 +72,14 @@ def add_channel():
             _type=form.ch_type.data, 
             range_min=form.range_min.data,
             range_max=form.range_max.data,
-            eu=form.eu.data,
+            nominal_eu=form.nominal_eu.data,
             full_scale_range=form.full_scale_range.data,
             full_scale_eu=form.full_scale_eu.data,
             tolerance=form.tolerance.data,
             tolerance_type=form.tolerance_type.data,
             test_range_min=form.test_range_min.data,
             test_range_max=form.test_range_max.data,
-            test_eu=form.test_eu.data
+            input_eu=form.input_eu.data
         )
         db.session.add(channel)
         db.session.commit()
@@ -110,4 +111,4 @@ def test():
         return redirect(url_for('main.index'))
     
 
-    return render_template('new_channel.html', title='Add New Channel', form=newChannelForm)
+    return render_template('new_channel.html', title='Add New Channel', form=newChannelForm, units_dict=ENG_UNITS)

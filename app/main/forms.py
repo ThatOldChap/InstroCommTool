@@ -71,7 +71,7 @@ class NewChannelForm(FlaskForm):
     # Field definitions - Channel
     name = StringField('Name', validators=[DataRequired()], render_kw=kw_name)
     meas_type = SelectField('Type', choices=CHOICES_MEAS_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
-    eu = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
+    nominal_eu = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
 
     meas_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)
     meas_range_max = FloatField('Maximum Range', validators=[DataRequired()], render_kw=kw_meas_range_max)
@@ -83,7 +83,7 @@ class NewChannelForm(FlaskForm):
     # Field definitions - TestPoints
     test_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)
     test_range_max = FloatField('Maximum Range', validators=[DataRequired()], render_kw=kw_meas_range_max)
-    test_eu = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
+    input_eu = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
 
     num_test_points = SelectField('# of Test Points', choices=CHOICES_NUM_TEST_POINTS, validators=[DataRequired()], render_kw=kw_select_field)
     test_point_type = SelectField('Test Point Values', choices=CHOICES_TEST_POINT_TYPE, validators=[DataRequired()], render_kw=kw_select_field)

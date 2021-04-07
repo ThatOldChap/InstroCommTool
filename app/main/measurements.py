@@ -18,7 +18,7 @@ class MeasurementType():
         GENERAL_PURPOSE = 1
         VOLTAGE = 2
         CURRENT = 3
-        STRAIN GAGE = 4
+        STRAIN_GAGE = 4
         VIBRATION = 5
         ACCELEROMETER = 6
         RESOLVER = 7
@@ -67,4 +67,14 @@ class MeasurementType():
     class Buzzout(AbstractEnum):
         END_2_END = 1
         POLARITY = 2
+    
+ENG_UNITS = {0: 'V', 1: 'mA', 2: 'degC', 3: 'Hz', 4: 'Ohms',
+    5: 'm', 6: 'psi', 7: 'kg', 8: 'm/s', 9: 'lbf'
+}
+
+#class Measurement():
+    # Dictionary of units
+    # Type
+    # Description
+    # 
     
