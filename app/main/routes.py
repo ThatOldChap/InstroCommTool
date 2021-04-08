@@ -100,14 +100,27 @@ def test():
 
     if newChannelForm.validate_on_submit():
         #Take the data from the form and commit to the db
-        name = newChannelForm.name.data
-        meas_type = newChannelForm.meas_type.data
-        eu = newChannelForm.eu.data
-        meas_range_min = newChannelForm.meas_range_min.data
-        meas_range_max = newChannelForm.meas_range_max.data
-        full_scale = newChannelForm.full_scale.data
+        print(f'name = {newChannelForm.name.data}')
+        print(f'meas_type = {newChannelForm.meas_type.data}')
+        print(f'nominal_eu = {newChannelForm.nominal_eu.data}')
+        print(f'meas_range_min = {newChannelForm.meas_range_min.data}')
+        print(f'meas_range_max = {newChannelForm.meas_range_max.data}')
+        print(f'full_scale = {newChannelForm.full_scale.data}')
+        print(f'tolerance = {newChannelForm.tolerance.data}')
+        print(f'tolerance_type = {newChannelForm.tolerance_type.data}')
+        print(f'test_range_min = {newChannelForm.test_range_min.data}')
+        print(f'test_range_max = {newChannelForm.test_range_max.data}')
+        print(f'input_eu = {newChannelForm.input_eu.data}')
+        print(f'num_test_points = {newChannelForm.num_test_points.data}')
+        print(f'test_point_type = {newChannelForm.test_point_type.data}')
+        print(f'test_point_list = {newChannelForm.test_point_list.data}')
 
-        print(f'name = {name}, meas_type = {meas_type} and eu = {eu}')
+        # Look at naming input fields like input_val_eu[1] and accessing them as [x:-1] to get contents
+
+        for idx, data in enumerate(newChannelForm.test_point_list.data):
+            print(f'tp{idx} input_val = {data["input_val"]}')
+            print(f'tp{idx} nominal_val = {data["nominal_val"]}')
+
         return redirect(url_for('main.index'))
     
 

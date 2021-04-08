@@ -6,6 +6,7 @@ from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, DataRequired, Length
 from wtforms.widgets import HiddenInput
 from app.models import Channel, TestPoint
+from app.main.measurements import ENG_UNITS
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Add Channel')
@@ -38,7 +39,10 @@ class AddChannelForm(FlaskForm):
     submit = SubmitField('Add New Channel')
 
 CHOICES_MEAS_TYPE = [("", "Select Type..."),(0, "RTD"),(1, "Pressure"),(2, "Frequency"),(3, "Voltage")]
-CHOICES_EU = [("", "Select Units..."),(0, "degC"),(1, "Ohms"),(2, "Hz"),(3, "V")]
+# CHOICES_EU = [("", "Select Units..."),(0, "degC"),(1, "Ohms"),(2, "Hz"),(3, "V")]
+CHOICES_EU = list(ENG_UNITS.items())
+CHOICES_EU.insert(0, ("", 'Select Units...'))
+
 CHOICES_TOLERANCE_TYPE = [("", "Select Type..."),(1, "Units"),(2, f"%FS"),(3, '%RDG')]
 CHOICES_NUM_TEST_POINTS = [("", "Select Number..."),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),(7, "7"),(8, "8"),(9, "9"),(10, "10")]
 CHOICES_TEST_POINT_TYPE = [(1, "Default"),(2, "Custom")]
@@ -50,9 +54,9 @@ class TestPointValuesForm(FlaskForm):
 
     # Value definitions
     input_val = FloatField('Input Value', validators=[DataRequired()], render_kw=kw_vals)
-    input_val_eu = StringField(widget=HiddenInput)
+    #input_val_eu = StringField(widget=HiddenInput)
     nominal_val = FloatField('Nominal Value', validators=[DataRequired()], render_kw=kw_vals)
-    nominal_val_eu = StringField(widget=HiddenInput)
+    #nominal_val_eu = StringField(widget=HiddenInput)
 
 class NewChannelForm(FlaskForm):
 
