@@ -21,7 +21,7 @@ class Channel(db.Model):
 
 	# Channel Tolerance info
 	tolerance = db.Column(db.Float(8))
-	tolerance_type = db.Column(db.Integer) # 0 = EU, 1 = %FS, 2 = %RDG, 3 = Custom, etc...
+	tolerance_type = db.Column(db.Integer) # 0 = Units, 1 = %FS, 2 = %RDG, 3 = Custom, etc...
 
 	# Test Point Input Range Info
 	input_range_min = db.Column(db.Float(16))
@@ -41,8 +41,8 @@ class Channel(db.Model):
 	def test_point_list():
 		return TestPoint.query.filter_by(channel_id=self.id).all()
 
-	def decode_eu(self, eu):
-		return eu_lookup[eu]
+	def decode_eu(self, input_eu):
+		return eu_lookup[input_eu]
 
 	def get_tolerance_type(self):
 		if self.tolerance_type == 0:

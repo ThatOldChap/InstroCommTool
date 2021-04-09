@@ -38,10 +38,12 @@ class AddChannelForm(FlaskForm):
     test_eu = SelectField('Test EU', choices=[(0, "degC"),(1, "Ohms"),(2, "Hz")], validators=[DataRequired()])
     submit = SubmitField('Add New Channel')
 
+EMPTY_CHOICE = ("", 'Select Units...')
+
 CHOICES_MEAS_TYPE = [("", "Select Type..."),(0, "RTD"),(1, "Pressure"),(2, "Frequency"),(3, "Voltage")]
-# CHOICES_EU = [("", "Select Units..."),(0, "degC"),(1, "Ohms"),(2, "Hz"),(3, "V")]
+
 CHOICES_EU = list(ENG_UNITS.items())
-CHOICES_EU.insert(0, ("", 'Select Units...'))
+CHOICES_EU.insert(0, EMPTY_CHOICE)
 
 CHOICES_TOLERANCE_TYPE = [("", "Select Type..."),(1, "Units"),(2, f"%FS"),(3, '%RDG')]
 CHOICES_NUM_TEST_POINTS = [("", "Select Number..."),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),(7, "7"),(8, "8"),(9, "9"),(10, "10")]

@@ -99,7 +99,7 @@ def test():
     newChannelForm = NewChannelForm()
 
     if newChannelForm.validate_on_submit():
-
+        
         channel = Channel(
             name=newChannelForm.name.data,
             meas_type=newChannelForm.meas_type.data,
@@ -111,9 +111,15 @@ def test():
             tolerance_type=newChannelForm.tolerance_type.data,
             input_range_min=newChannelForm.input_range_min.data,
             input_range_max=newChannelForm.input_range_max.data,
-            input_eu=newChannelForm.input_eu.data,
-            
+            input_eu=newChannelForm.input_eu.data
         )
+
+        if newChannelForm.test_point_type.data == 1:
+            # Generate a default list of test points
+            
+
+        else:
+            # Store the custom list of test points
 
         #Take the data from the form and commit to the db
         print(f'name = {newChannelForm.name.data}')
