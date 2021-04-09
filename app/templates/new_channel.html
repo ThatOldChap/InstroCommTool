@@ -25,8 +25,8 @@
             </div>
             <div class="col-md-4">
                 <div class="input-group mb-3">
-                    <span class="input-group-text">{{ form.nominal_eu.label.text }}</span>
-                    {{ form.nominal_eu() }}
+                    <span class="input-group-text">{{ form.meas_eu.label.text }}</span>
+                    {{ form.meas_eu() }}
                 </div>
             </div>
         </div>        
@@ -72,14 +72,14 @@
             <legend>Test Point Definition:</legend>  
             <div class="col-md-4">
                 <div class="input-group mb-3">
-                    <span class="input-group-text">{{ form.test_range_min.label.text }}</span>
-                    {{ form.test_range_min() }}
+                    <span class="input-group-text">{{ form.input_range_min.label.text }}</span>
+                    {{ form.input_range_min() }}
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="input-group mb-3">
-                    <span class="input-group-text">{{ form.test_range_max.label.text }}</span>
-                    {{ form.test_range_max() }}
+                    <span class="input-group-text">{{ form.input_range_max.label.text }}</span>
+                    {{ form.input_range_max() }}
                 </div>
             </div>
             <div class="col-md-4">
@@ -162,7 +162,7 @@
 
                 // Defines the values to help create the test points
                 let numTestPoints = $('#num_test_points').val();
-                let nominalEUVal = units_dict[$('#nominal_eu').val()];
+                let nominalEUVal = units_dict[$('#meas_eu').val()];
                 let inputEUVal = units_dict[$('#input_eu').val()];
                 let numRows = 0;
 
@@ -184,15 +184,15 @@
             }
 
             // Adjusts the TestPointValueForm EUs in case they are changed
-            $('#nominal_eu').change(function() {
+            $('#meas_eu').change(function() {
 
                 // Tracker variable for the number of updated rows
-                let nominalEUVal = units_dict[$('#nominal_eu').val()];
+                let nominalEUVal = units_dict[$('#meas_eu').val()];
 
                 // Update the Test Point EUs only if they exist
                 if (testPointListCreated) {
                     spanID = 'nominal_val_eu';                        
-                    updateEUVal($('#nominal_eu').attr('id'), nominalEUVal, spanID);
+                    updateEUVal($('#meas_eu').attr('id'), nominalEUVal, spanID);
                 }
                 prevNominalEU = nominalEUVal;
             });
@@ -310,7 +310,7 @@
                     value: ' '
                 }).text(nominalEU);
 
-                // Defines the csrf_token to help validate the form
+                // Creates a csrf_token to help validate each
                 let csrf = $('<input>').attr({
                     id: `test_point_list-${tpNum}-csrf_token`,
                     name: `test_point_list-${tpNum}-csrf_token`,

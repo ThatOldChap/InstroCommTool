@@ -99,17 +99,33 @@ def test():
     newChannelForm = NewChannelForm()
 
     if newChannelForm.validate_on_submit():
+
+        channel = Channel(
+            name=newChannelForm.name.data,
+            meas_type=newChannelForm.meas_type.data,
+            meas_range_min=newChannelForm.meas_range_min.data,
+            meas_range_max=newChannelForm.meas_range_max.data,
+            meas_eu=newChannelForm.meas_eu.data,
+            full_scale=newChannelForm.full_scale.data,
+            tolerance=newChannelForm.tolerance.data,
+            tolerance_type=newChannelForm.tolerance_type.data,
+            input_range_min=newChannelForm.input_range_min.data,
+            input_range_max=newChannelForm.input_range_max.data,
+            input_eu=newChannelForm.input_eu.data,
+            
+        )
+
         #Take the data from the form and commit to the db
         print(f'name = {newChannelForm.name.data}')
         print(f'meas_type = {newChannelForm.meas_type.data}')
-        print(f'nominal_eu = {newChannelForm.nominal_eu.data}')
+        print(f'meas_eu = {newChannelForm.meas_eu.data}')
         print(f'meas_range_min = {newChannelForm.meas_range_min.data}')
         print(f'meas_range_max = {newChannelForm.meas_range_max.data}')
         print(f'full_scale = {newChannelForm.full_scale.data}')
         print(f'tolerance = {newChannelForm.tolerance.data}')
         print(f'tolerance_type = {newChannelForm.tolerance_type.data}')
-        print(f'test_range_min = {newChannelForm.test_range_min.data}')
-        print(f'test_range_max = {newChannelForm.test_range_max.data}')
+        print(f'input_range_min = {newChannelForm.input_range_min.data}')
+        print(f'input_range_max = {newChannelForm.input_range_max.data}')
         print(f'input_eu = {newChannelForm.input_eu.data}')
         print(f'num_test_points = {newChannelForm.num_test_points.data}')
         print(f'test_point_type = {newChannelForm.test_point_type.data}')
@@ -120,9 +136,6 @@ def test():
             print(f'tp{tpNum} input_val = {value["input_val"]}')
             print(f'tp{tpNum} nominal_val = {value["nominal_val"]}')
 
-        return redirect(url_for('main.index'))
-
-    print('form data is not valid yet')
-    
+        return redirect(url_for('main.index'))    
 
     return render_template('new_channel.html', title='Add New Channel', form=newChannelForm, units_dict=ENG_UNITS)

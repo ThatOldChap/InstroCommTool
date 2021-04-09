@@ -54,9 +54,7 @@ class TestPointValuesForm(FlaskForm):
 
     # Value definitions
     input_val = FloatField('Input Value', validators=[DataRequired()], render_kw=kw_vals)
-    #input_val_eu = StringField(widget=HiddenInput)
     nominal_val = FloatField('Nominal Value', validators=[DataRequired()], render_kw=kw_vals)
-    #nominal_val_eu = StringField(widget=HiddenInput)
 
 class NewChannelForm(FlaskForm):
 
@@ -68,31 +66,32 @@ class NewChannelForm(FlaskForm):
     kw_meas_range_max = {'class': 'form-control', 'placeholder': 'ex. 50'}
     kw_full_scale = {'class': 'form-control', 'placeholder': 'ex. 70'}
     kw_tolerance = {'class': 'form-control', 'placeholder': 'ex. 1.5'}
-    kw_test_range_min = {'class': 'form-control', 'placeholder': 'ex. 80'}
-    kw_test_range_max = {'class': 'form-control', 'placeholder': 'ex. 120'}
+    kw_input_range_min = {'class': 'form-control', 'placeholder': 'ex. 80'}
+    kw_input_range_max = {'class': 'form-control', 'placeholder': 'ex. 120'}
     kw_submit = {'class': 'btn btn-primary'}
 
-    # Field definitions - Channel
+    # Basic Channel Info
     name = StringField('Name', validators=[DataRequired()], render_kw=kw_name)
     meas_type = SelectField('Type', choices=CHOICES_MEAS_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
-    nominal_eu = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
 
+    # Measurement Range Info
     meas_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)
     meas_range_max = FloatField('Maximum Range', validators=[DataRequired()], render_kw=kw_meas_range_max)
+    meas_eu = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
     full_scale = FloatField('Full Scale Range', validators=[DataRequired()], render_kw=kw_full_scale)
 
+    # Channel Tolerance Info
     tolerance = FloatField('Tolerance', validators=[DataRequired()], render_kw=kw_tolerance)
     tolerance_type = SelectField('Tolerance Type', choices=CHOICES_TOLERANCE_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
 
-    # Field definitions - TestPoints
-    test_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)
-    test_range_max = FloatField('Maximum Range', validators=[DataRequired()], render_kw=kw_meas_range_max)
+    # Test Point Input Range Info
+    input_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)
+    input_range_max = FloatField('Maximum Range', validators=[DataRequired()], render_kw=kw_meas_range_max)
     input_eu = SelectField('Units', choices=CHOICES_EU, validators=[DataRequired()], render_kw=kw_select_field)
 
+    # Test Point Creation Info
     num_test_points = SelectField('# of Test Points', choices=CHOICES_NUM_TEST_POINTS, validators=[DataRequired()], render_kw=kw_select_field)
     test_point_type = SelectField('Test Point Values', choices=CHOICES_TEST_POINT_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
-
-    # Field definitions - TestPoint Values
     test_point_list = FieldList(FormField(TestPointValuesForm))
 
     # Form submission

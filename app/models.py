@@ -7,23 +7,33 @@ import math
 # List of all the engineering units (eu)
 eu_lookup = ['degC', 'Ohms', 'Hz', 'V', 'mA']
 
-class Channel(db.Model):	
+class Channel(db.Model):
+	# Basic channel info
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
-	_type = db.Column(db.Integer) # 0 = RTD, 1 = Pressure, 2 = Frequency, etc...
-	range_min = db.Column(db.Float(16))
-	range_max = db.Column(db.Float(16))
-	eu = db.Column(db.Integer) # 0 = degC, 1 = Hz, 2 = lbf, etc...
-	full_scale_range = db.Column(db.Float(16))
-	full_scale_eu = db.Column(db.Integer) # 0 = degC, 1 = Hz, 2 = lbf, etc...
+	meas_type = db.Column(db.Integer) # 0 = RTD, 1 = Pressure, 2 = Frequency, etc...
+
+	# Measurement Range info
+	meas_range_min = db.Column(db.Float(16))
+	meas_range_max = db.Column(db.Float(16))
+	meas_eu = db.Column(db.Integer) # 0 = degC, 1 = Hz, 2 = lbf, etc...
+	full_scale = db.Column(db.Float(16))
+
+	# Channel Tolerance info
 	tolerance = db.Column(db.Float(8))
 	tolerance_type = db.Column(db.Integer) # 0 = EU, 1 = %FS, 2 = %RDG, 3 = Custom, etc...
-	test_range_min = db.Column(db.Float(16))
-	test_range_max = db.Column(db.Float(16))
-	test_eu = db.Column(db.Integer) # 0 = degC, 1 = Hz, 2 = lbf, etc...
+
+	# Test Point Input Range Info
+	input_range_min = db.Column(db.Float(16))
+	input_range_max = db.Column(db.Float(16))
+	input_eu = db.Column(db.Integer) # 0 = degC, 1 = Hz, 2 = lbf, etc...
+
+	# List of Test Points
 	test_points = db.relationship('TestPoint', backref='channel', lazy='dynamic')
-	cal_eq_id_1 = db.Column(db.Integer)
-	cal_eq_id_1_due_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+	# Future Fields:
+	#cal_eq_id_1 = db.Column(db.Integer)
+	#cal_eq_id_1_due_date = db.Column(db.DateTime, default=datetime.utcnow)
 	
 	def __repr__(self):
 		return '<Channel {}>'.format(self.name)
