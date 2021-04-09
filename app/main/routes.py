@@ -113,15 +113,16 @@ def test():
         print(f'input_eu = {newChannelForm.input_eu.data}')
         print(f'num_test_points = {newChannelForm.num_test_points.data}')
         print(f'test_point_type = {newChannelForm.test_point_type.data}')
-        print(f'test_point_list = {newChannelForm.test_point_list.data}')
 
         # Look at naming input fields like input_val_eu[1] and accessing them as [x:-1] to get contents
 
-        for idx, data in enumerate(newChannelForm.test_point_list.data):
-            print(f'tp{idx} input_val = {data["input_val"]}')
-            print(f'tp{idx} nominal_val = {data["nominal_val"]}')
+        for tpNum, value in enumerate(newChannelForm.test_point_list.data):
+            print(f'tp{tpNum} input_val = {value["input_val"]}')
+            print(f'tp{tpNum} nominal_val = {value["nominal_val"]}')
 
         return redirect(url_for('main.index'))
+
+    print('form data is not valid yet')
     
 
     return render_template('new_channel.html', title='Add New Channel', form=newChannelForm, units_dict=ENG_UNITS)

@@ -132,7 +132,8 @@
             let prevTestPointType = 1;
             let testPointListCreated = false;
             let units = '{{ units_dict|tojson }}';
-            let units_dict = JSON.parse(units);            
+            let units_dict = JSON.parse(units);
+            let csrf_token_val = $('#csrf_token').val();
             
             // Generate the TestPointValueForms based on the user selection
             $('#test_point_type').change(function() {
@@ -270,43 +271,53 @@
             // Creates a template for the TestPointValueForm
             function createTestPointValueForm(tpNum, inputEU, nominalEU) {
                 // Defines all the components for the form template
-                var row = $('<div>').attr({class: 'row'});
-                var inputCol = $('<div>').attr({class: 'col-md-2'});
-                var equalsCol = $('<div>').attr({class: 'col-auto'});
-                var nominalCol = $('<div>').attr({class: 'col-md-2'});
-                var inputValGroup = $('<div>').attr({class: 'input-group'});
-                var equalsGroup = $('<div>').attr({class: 'input-group'});
-                var nominalValGroup = $('<div>').attr({class: 'input-group'});
-                var equals = $('<div>').attr({
+                let row = $('<div>').attr({class: 'row'});
+                let inputCol = $('<div>').attr({class: 'col-md-2'});
+                let equalsCol = $('<div>').attr({class: 'col-auto'});
+                let nominalCol = $('<div>').attr({class: 'col-md-2'});
+                let inputValGroup = $('<div>').attr({class: 'input-group'});
+                let equalsGroup = $('<div>').attr({class: 'input-group'});
+                let nominalValGroup = $('<div>').attr({class: 'input-group'});
+                let equals = $('<div>').attr({
                     class: 'input-group-text text-center',
                 }).text('=');               
                     
                 // Creates the input fields for the form
-                var inputVal = $('<input>').attr({
+                let inputVal = $('<input>').attr({
                     type: 'text',
                     id: `test_point_list-${tpNum}-input_val`,
                     name: `test_point_list-${tpNum}-input_val`,
-                    value: '',
+                    value: ' ',
                     class: 'form-control'
                 });
-                var inputValEU = $('<span>').attr({
+                let inputValEU = $('<span>').attr({
                     class: 'input-group-text',
                     id: `input_val_eu-${tpNum}`,
-                    name: `input_val_eu-${tpNum}`
+                    name: `input_val_eu-${tpNum}`,
+                    value: ' '
                 }).text(inputEU);
-                var nominalVal = $('<input>').attr({
+                let nominalVal = $('<input>').attr({
                     type: 'text',
                     id: `test_point_list-${tpNum}-nominal_val`,
                     name: `test_point_list-${tpNum}-nominal_val`,
-                    value: '',
+                    value: ' ',
                     class: 'form-control'
                 });
-                var nominalValEU = $('<span>').attr({
+                let nominalValEU = $('<span>').attr({
                     class: 'input-group-text',
                     id: `nominal_val_eu-${tpNum}`,
-                    name: `nominal_val_eu-${tpNum}`
+                    name: `nominal_val_eu-${tpNum}`,
+                    value: ' '
                 }).text(nominalEU);
-                
+
+                // Defines the csrf_token to help validate the form
+                let csrf = $('<input>').attr({
+                    id: `test_point_list-${tpNum}-csrf_token`,
+                    name: `test_point_list-${tpNum}-csrf_token`,
+                    type: 'hidden',
+                    value: `${csrf_token_val}`
+                });
+
                 // Creates each input group
                 inputValGroup.append(inputVal, inputValEU);
                 equalsGroup.append(equals);
@@ -318,7 +329,7 @@
                 nominalCol.append(nominalValGroup);
 
                 // Creates the new Test Point Row
-                row.append(inputCol, equalsCol, nominalCol);
+                row.append(inputCol, equalsCol, nominalCol, csrf);
                 return row;
             }
         });
