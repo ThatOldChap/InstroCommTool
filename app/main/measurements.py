@@ -74,6 +74,8 @@ ENG_UNITS = {0: 'V', 1: 'mA', 2: 'degC', 3: 'Hz', 4: 'Ohms',
 }
 TOLERANCE_TYPES = {0: 'Units', 1: f'%FS', 2: '%RDG'}
 
+#class Units(Enum):
+    #volts = 
 
 #class Measurement():
     # Dictionary of units

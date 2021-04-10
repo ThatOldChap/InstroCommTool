@@ -38,7 +38,58 @@ class Channel(db.Model):
 	def __repr__(self):
 		return '<Channel {}>'.format(self.name)
 
-	def test_point_list():
+	def create_test_point_list(self, num_test_points, style, input_val_list, nominal_val_list):
+
+		# Debugging variables
+		num_test_points_added = 0
+
+		# Custom, User-chosen test points
+		if style == 2:
+			# Create the TestPoints from the provided info
+			for i in range(num_test_points):
+				test_point = TestPoint(
+					channel_id=self.id,
+					input_val=input_val_list[i],
+					nominal_val=nominal_val_list[i]
+				)
+				self.test_points.append(test_point)
+				num_test_points_added += 1	
+
+		# Default, auto-generated test points
+		else:		
+			# Calculates the nominal values for the measurement points	
+			meas_range = self.meas_range()
+			div = meas_range / num_test_points
+			nominal_vals = [self.meas_range_min]
+			for i in range(1, num_test_points):
+				nominal_vals.append(nominal_vals[i-1] + div)
+			
+			# Calculates the input values for the input points
+			input_range = self.input_range()
+			div = input_range / num_test_points
+			input_vals = [self.input_range_min]
+			for i in range(1, num_test_points):
+				input_vals.append(input_vals[i-1] + div)		
+
+			# Create the TestPoints and add to them to the database
+			for i in range(num_test_points):
+				test_point = TestPoint(
+					channel_id=self.id,
+					input_val=input_vals[i],
+					nominal_val=nominal_vals[i]
+				)
+				self.test_points.append(test_point)
+				num_test_points_added += 1
+		
+		print(f'{num_test_points_added} TestPoints added to channel {self.name}')
+
+	def meas_range(self):
+		return self.meas_range_max - self.meas_range_min
+
+	def input_range(self):
+		return self.input_range_max - self.input_range_min
+
+	def all_test_points():
 		return TestPoint.query.filter_by(channel_id=self.id).all()
 
 	def decode_eu(self, input_eu):
@@ -52,49 +103,14 @@ class Channel(db.Model):
 		elif self.tolerance_type == 2:
 			return '%RDG'
 	
-	def get_channel_range(self):
-		return self.range_max - self.range_min
 
-	def get_test_range(self):
-		return self.test_range_max - self.test_range_min
-
-	def generate_default_test_points(self, num_points):
-
-		# Generate the input values for the TestPoints
-		test_range = self.get_test_range()
-		test_range_div = test_range / num_points
-		test_range_values = [self.test_range_min]
-		for i in range(1, num_points, 1):
-			test_range_values.append(test_range_values[i-1] + test_range_div)
-
-		# Generate the input values for the TestPoints
-		channel_range = self.get_channel_range()
-		channel_range_div = channel_range / num_points
-		channel_range_values = [self.range_min]
-		for i in range(1, num_points, 1):
-			channel_range_values.append(channel_range_values[i-1] + channel_range_div)
-
-		# Create the TestPoints and add to the database
-		for i in range(num_points):
-			test_point = TestPoint(
-				channel_id=self.id,
-				input_val=test_range_values[i],
-				measured_val=channel_range_values[i] + i,
-				nominal_val=channel_range_values[i],
-				pf=2,
-				notes='None'
-			)
-			print(test_point)
-			self.test_points.append(test_point)
-
-	
 class TestPoint(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'))
 	input_val = db.Column(db.Float(16))
-	measured_val = db.Column(db.Float(16))
+	meas_val = db.Column(db.Float(16))
 	nominal_val = db.Column(db.Float(16))
-	pf = db.Column(db.Integer) # 0 = Fail, 1 = Pass, 2 = TBD
+	pf = db.Column(db.Integer) # 0 = Untested, 1 = Pass, 2 = Fail
 	date_performed = db.Column(db.DateTime, default=datetime.utcnow)
 	notes = db.Column(db.String(128))
 	

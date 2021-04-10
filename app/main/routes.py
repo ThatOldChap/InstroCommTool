@@ -99,7 +99,14 @@ def test():
     newChannelForm = NewChannelForm()
 
     if newChannelForm.validate_on_submit():
+
+        # Collect variables being used multiple times
+        style = newChannelForm.test_point_type.data
+        test_point_list = newChannelForm.test_point_list.data
+        nominal_vals = []
+        input_vals = []
         
+        # Create the channel and commit to the db to get an id
         channel = Channel(
             name=newChannelForm.name.data,
             meas_type=newChannelForm.meas_type.data,
@@ -113,34 +120,24 @@ def test():
             input_range_max=newChannelForm.input_range_max.data,
             input_eu=newChannelForm.input_eu.data
         )
+        db.session.add(channel)
+        db.session.commit()
+        flash(f'Channel {channel.name} has been added to the database.')
 
-        if newChannelForm.test_point_type.data == 1:
-            # Generate a default list of test points
-            
+        # Collects the custom test point data only if selected 
+        if style == 2:
+            for tpNum, val in enumerate(test_point_list):
+                nominal_vals.append(val["nominal_val"])
+                input_vals.append(val["input_val"])
 
-        else:
-            # Store the custom list of test points
-
-        #Take the data from the form and commit to the db
-        print(f'name = {newChannelForm.name.data}')
-        print(f'meas_type = {newChannelForm.meas_type.data}')
-        print(f'meas_eu = {newChannelForm.meas_eu.data}')
-        print(f'meas_range_min = {newChannelForm.meas_range_min.data}')
-        print(f'meas_range_max = {newChannelForm.meas_range_max.data}')
-        print(f'full_scale = {newChannelForm.full_scale.data}')
-        print(f'tolerance = {newChannelForm.tolerance.data}')
-        print(f'tolerance_type = {newChannelForm.tolerance_type.data}')
-        print(f'input_range_min = {newChannelForm.input_range_min.data}')
-        print(f'input_range_max = {newChannelForm.input_range_max.data}')
-        print(f'input_eu = {newChannelForm.input_eu.data}')
-        print(f'num_test_points = {newChannelForm.num_test_points.data}')
-        print(f'test_point_type = {newChannelForm.test_point_type.data}')
-
-        # Look at naming input fields like input_val_eu[1] and accessing them as [x:-1] to get contents
-
-        for tpNum, value in enumerate(newChannelForm.test_point_list.data):
-            print(f'tp{tpNum} input_val = {value["input_val"]}')
-            print(f'tp{tpNum} nominal_val = {value["nominal_val"]}')
+        # Creates and adds the TestPoints to the channel and database
+        channel.create_test_point_list(
+            num_test_points=int(newChannelForm.num_test_points.data),
+            style=style,
+            input_val_list=input_vals,
+            nominal_val_list=nominal_vals
+        )
+        db.session.commit()
 
         return redirect(url_for('main.index'))    
 
