@@ -15,13 +15,13 @@ class TestSubmitForm(FlaskForm):
     submit = SubmitField('Test')
 
 class TestPointForm(FlaskForm):
-    measured_val = FloatField('Measured')
-    date_performed = StringField('Date Performed')    
-    # date_performed = DateField('Date', format='%Y-%m-%d' ) 
+    meas_val = FloatField('Measured')
+    input_val = FloatField('Input')    
     notes = StringField('Notes')
+    save = SubmitField('Save')
 
 class ChannelForm(FlaskForm):
-    testPoints = FieldList(FormField(TestPointForm))
+    testpoints = FieldList(FormField(TestPointForm))
 
 class AddChannelForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
@@ -98,3 +98,6 @@ class NewChannelForm(FlaskForm):
 
     # Form submission
     submit = SubmitField('Add New Channel', render_kw=kw_submit)
+
+class ChannelGroupForm(FlaskForm):
+    channels = FieldList(FormField(ChannelForm))

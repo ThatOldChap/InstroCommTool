@@ -1,18 +1,21 @@
 <style>
     input[type="text"]::placeholder {
-        text-align: center;
+        text-align: center;        
+    }
+    div[class="input-group"] {
+        flex-wrap: nowrap;
     }
 </style>
 
 <tr class="text-center">
-    <th scope="row" class="align-middle">{{ channel.id }}</th>
-    <td class="align-middle">{{ channel.name }}</td>
+    <th scope="row" class="align-middle">{{ testpoint_item.id }}</th>
+    <td class="align-middle">{{ testpoint_item.name }}</td>
     <td class="align-middle">
         <div class="row">
             <div class="col-md-12">
                 <div class="input-group">
-                    <input type="text" class="form-control text-center" placeholder="{{ testpoint.input_val }}" aria-label="Channel Input Value">
-                    <span class="input-group-text">{{ channel.decode_eu(channel.test_eu) }}</span>
+                    {{ channel.input_val() }}
+                    <span class="input-group-text">{{ units_dict[testpoint_item.input_eu] }}</span>
                 </div>
             </div>
         </div>
@@ -20,14 +23,14 @@
     <td class="align-middle">
         <div class="row">
             <div class="col-md-12">
-                <div class="input-group">
-                    <span class="input-group-text">{{ testpoint.low_limit() }}</span>
+                <div class="input-group">                    
                     <div class="input-group">
-                        <input type="text" class="form-control text-center" placeholder="{{ testpoint.nominal_val }}" aria-label="Channel Measured Value">
-                        <button type="button" class="btn btn-info" formaction="{{ url_for('main.edit_channel') }}">Save</button>
-                    </div>
-                    <span class="input-group-text">{{ testpoint.high_limit() }}</span>
-                    <span class="input-group-text">{{ channel.decode_eu(channel.eu) }}</span>
+                        <span class="input-group-text">{{ testpoint_item.low_limit }}</span>
+                        {{ channel.meas_val() }}
+                        <span class="input-group-text">{{ testpoint_item.high_limit }}</span>
+                        <span class="input-group-text">{{ units_dict[testpoint_item.meas_eu] }}</span>                     
+                    </div>                    
+                    <button type="button" class="btn btn-info" formaction="{{ url_for('main.save_testpoint') }}">Save</button>
                 </div>
             </div>
         </div>
@@ -36,19 +39,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="input-group align-middle">
-                    {% if testpoint.calc_pf() == 'Pass' %}
-                    <input type="text" class="form-control is-valid text-center" placeholder="0.000" aria-label="Measured Error" readonly="">
-                    {% elif testpoint.calc_pf() == 'Fail' %}
-                    <input type="text" class="form-control is-invalid text-center" placeholder="0.000" aria-label="Measured Error" readonly="">
-                    {% else %}
                     <input type="text" class="form-control text-center" placeholder="0.000" aria-label="Measured Error" readonly="">
-                    <span class="input-group-text">{{ channel.get_tolerance_type() }}</span>
+                    <span class="input-group-text">{{ units_dict[testpoint_item.meas_eu] }}</span>
                 </div>
             </div>
         </div>
     </td>
-    <td class="align-middle">{{ testpoint.date_performed }}</td>
+    <td class="align-middle">{{ testpoint_item.date }}</td>
     <td class="align-middle">
-        <input type="text" class="form-control" placeholder="" aria-label="Date Updated">
+        {{ channel.notes() }}
     </td>
 </tr>

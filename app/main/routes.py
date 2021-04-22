@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import ChannelForm, TestPointForm, EmptyForm, AddChannelForm, NewChannelForm, TestSubmitForm
+from app.main.forms import ChannelGroupForm
 from app.models import Channel, TestPoint
 from app.main import bp
 from app.main.measurements import ENG_UNITS
@@ -121,8 +122,7 @@ def test():
             input_eu=newChannelForm.input_eu.data
         )
         db.session.add(channel)
-        db.session.commit()
-        flash(f'Channel {channel.name} has been added to the database.')
+        db.session.commit()        
 
         # Collects the custom test point data only if selected 
         if style == 2:
@@ -138,7 +138,97 @@ def test():
             nominal_val_list=nominal_vals
         )
         db.session.commit()
+        flash(f'Channel {channel.name} has been added to the database.')
 
         return redirect(url_for('main.index'))    
 
     return render_template('new_channel.html', title='Add New Channel', form=newChannelForm, units_dict=ENG_UNITS)
+
+@bp.route('/channel_list', methods=['GET', 'POST'])
+def channel_list():
+
+    # Gets a list of the channels in the database
+    channel_list = Channel.query.all()
+    channel_group_form = ChannelGroupForm()
+
+    # Create a list of all TestPointItems
+    testpoint_item_list = []
+
+    for channel in channel_list:
+
+        # Get a list of the channel's TestPoints
+        testpoint_list = channel.all_test_points()
+        channel_form = ChannelForm()
+
+        for testpoint in testpoint_list:
+            
+            # Create a new TestPointForm
+            testpoint_form = TestPointForm()
+
+            # Assign the values to the editable fields
+            testpoint_form.meas_val = testpoint.meas_val
+            testpoint_form.input_val = testpoint.input_val
+            testpoint_form.notes = testpoint.notes
+
+            # Add the TestPointForm to the ChannelGroupForm
+            channel_form.testpoints.append_entry(testpoint_form)
+
+            # Assign the values to the fixed fields
+            testpoint_item = TestPointItem(
+                id=channel.id,
+                name=channel.name,
+                testpoint_form=testpoint_form,
+                input_eu=channel.input_eu,
+                low_limit=testpoint.low_limit(),
+                high_limit=testpoint.high_limit(),
+                meas_eu=channel.meas_eu,
+                date=testpoint.date
+            )
+            testpoint_item_list.append(testpoint_item)
+        
+        # Add each channel to the channel group 
+        channel_group_form.channels.append_entry(channel_form)
+
+    return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS, 
+                            testpoint_item_list=testpoint_item_list, channel_form=channel_form)
+
+
+class ChannelItem(object):
+    channel_form = None
+    testpoint_items = []
+
+    # Constructor
+    def __init__(self, channel_form, testpoint_items):
+        self.channel_form = channel_form
+        self.testpoint_items = testpoint_items
+    
+    def add_testpoint(testpoint_item):
+        self.testpoint_items.append(testpoint_item)
+
+
+class TestPointItem(object):
+    id = 0
+    name = ""
+    testpoint_form = None
+    input_eu = 0
+    low_limit = 0
+    high_limit = 0
+    meas_eu = 0
+    date = ""
+
+    # Constructor
+    def __init__(self, id, name, testpoint_form, input_eu, low_limit, high_limit,
+                meas_eu, date):
+        self.id = id
+        self.name = name
+        self.testpoint_form = testpoint_form
+        self.low_limit = low_limit
+        self.high_limit = high_limit
+        self.meas_eu = meas_eu
+        self.date = date    
+
+@bp.route('/save_testpoint', methods=['GET', 'POST'])
+def save_testpoint():
+    print('Saving testpoint...')
+
+    return redirect(url_for('main.index')) 

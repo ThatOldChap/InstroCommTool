@@ -89,7 +89,7 @@ class Channel(db.Model):
 	def input_range(self):
 		return self.input_range_max - self.input_range_min
 
-	def all_test_points():
+	def all_test_points(self):
 		return TestPoint.query.filter_by(channel_id=self.id).all()
 
 	def decode_eu(self, input_eu):
@@ -111,7 +111,7 @@ class TestPoint(db.Model):
 	meas_val = db.Column(db.Float(16))
 	nominal_val = db.Column(db.Float(16))
 	pf = db.Column(db.Integer) # 0 = Untested, 1 = Pass, 2 = Fail
-	date_performed = db.Column(db.DateTime, default=datetime.utcnow)
+	date = db.Column(db.DateTime, default=datetime.utcnow)
 	notes = db.Column(db.String(128))
 	
 	def __repr__(self):
@@ -120,43 +120,44 @@ class TestPoint(db.Model):
 	def get_channel(self):
 		return Channel.query.filter_by(id=self.channel_id).first()
 
-	def get_tolerance_type(self):
-		return self.get_channel().tolerance_type
-
 	def calc_error(self):
 		return self.nominal_val - self.measured_val
 
-	def calc_pf(self):
-		if abs(self.calc_error()) > self.error_limit(self.get_tolerance_type()):
+	def calc_tolerance(self):
+		ch = self.get_channel()
+		tolerance = ch.tolerance
+		adj_tolerance = tolerance / 100
+		tol_type = ch.tolerance_type
+		
+		if tol_type == 0:
+			# EU
+			return tolerance
+		elif tol_type == 1:
+			# % FS
+			return ch.full_scale * adj_tolerance
+		elif tol_type == 2:
+			# % RDG
+			return self.nominal_val * adj_tolerance
+		# elif tol_type == 3:
+			# Custom
+			# TODO
+
+	def tol_type(self):
+		return self.get_channel().tolerance_type
+
+	""" def calc_pf(self):
+		if abs(self.calc_error()) > self.calc_tolerance():
 			self.pf = 0
 			return 'Fail'
 		else:
 			self.pf == 1
-			return 'Pass'
+			return 'Pass' """
 	
 	def low_limit(self):
-		return self.nominal_val - self.error_limit(self.get_tolerance_type())
+		return self.nominal_val - self.calc_tolerance()
 
 	def high_limit(self):
-		return self.nominal_val + self.error_limit(self.get_tolerance_type())
-
-	# Need to handle EU or %
-	def error_limit(self, get_tolerance_type):
-		ch = self.get_channel()
-		if get_tolerance_type == 0: # EU
-			return ch.tolerance
-
-		elif get_tolerance_type == 1: # %FS
-			return ch.full_scale_range * (ch.tolerance / 100)	
-
-		elif get_tolerance_type == 2: # %RDG
-			return self.nominal_val * (ch.tolerance / 100) 
-	
-		# elif get_tolerance_type == 3: # Custom
-			# TODO: Figure out how to handle a 1 %RDG + 0.05 %FS style error
-
-		else: # Error condition
-			return -999
+		return self.nominal_val + self.calc_tolerance()
 	
 
 class Project(db.Model):
