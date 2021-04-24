@@ -58,41 +58,7 @@ def channel_view():
             
     return render_template('channel_view.html', channelForm=channelForm, addChannelForm=addChannelForm,
                             testPointLists=testPointLists, channelList=channelList)
-        
-@bp.route('/add_channel', methods=['GET', 'POST'])
-def add_channel():
 
-    # Create the form for the new channel
-    form = AddChannelForm()
-
-    if form.validate_on_submit():
-
-        # Check fields and add to the database
-        channel = Channel(
-            name=form.name.data,
-            _type=form.ch_type.data, 
-            range_min=form.range_min.data,
-            range_max=form.range_max.data,
-            nominal_eu=form.nominal_eu.data,
-            full_scale_range=form.full_scale_range.data,
-            full_scale_eu=form.full_scale_eu.data,
-            tolerance=form.tolerance.data,
-            tolerance_type=form.tolerance_type.data,
-            test_range_min=form.test_range_min.data,
-            test_range_max=form.test_range_max.data,
-            input_eu=form.input_eu.data
-        )
-        db.session.add(channel)
-        db.session.commit()
-        flash('Channel {} has been added to the database'.format(channel.name))
-
-        # Generate the default test points for the new channel
-        channel.generate_default_test_points(5)
-        db.session.commit()
-
-        return redirect(url_for('main.channel_view'))
-    
-    return render_template('add_channel_form.html', title='Add Channel', addChannelForm=form)
 
 @bp.route('/test', methods=['GET', 'POST'])
 def test():
@@ -104,7 +70,7 @@ def test():
         # Collect variables being used multiple times
         style = newChannelForm.test_point_type.data
         test_point_list = newChannelForm.test_point_list.data
-        nominal_vals = []
+        meas_vals = []
         input_vals = []
         
         # Create the channel and commit to the db to get an id
@@ -127,7 +93,7 @@ def test():
         # Collects the custom test point data only if selected 
         if style == 2:
             for tpNum, val in enumerate(test_point_list):
-                nominal_vals.append(val["nominal_val"])
+                meas_vals.append(val["meas_val"])
                 input_vals.append(val["input_val"])
 
         # Creates and adds the TestPoints to the channel and database
@@ -135,12 +101,14 @@ def test():
             num_test_points=int(newChannelForm.num_test_points.data),
             style=style,
             input_val_list=input_vals,
-            nominal_val_list=nominal_vals
+            meas_val_list=meas_vals
         )
         db.session.commit()
         flash(f'Channel {channel.name} has been added to the database.')
 
         return redirect(url_for('main.index'))    
+
+        print(newChannelForm.errors.items())
 
     return render_template('new_channel.html', title='Add New Channel', form=newChannelForm, units_dict=ENG_UNITS)
 
@@ -176,10 +144,14 @@ def channel_list():
             # Assign the values to the fixed fields
             testpoint_item = TestPointItem(
                 id=channel.id,
-                name=channel.name,
+                name=channel.name,                
+                input_val=testpoint.input_val,
+                input_val_nom=testpoint.input_val_nom,
                 testpoint_form=testpoint_form,
                 input_eu=channel.input_eu,
                 low_limit=testpoint.low_limit(),
+                meas_val_nom=testpoint.meas_val_nom,
+                meas_val=testpoint.meas_val,
                 high_limit=testpoint.high_limit(),
                 meas_eu=channel.meas_eu,
                 date=testpoint.date
@@ -209,20 +181,28 @@ class ChannelItem(object):
 class TestPointItem(object):
     id = 0
     name = ""
+    input_val_nom = 0
+    input_val = 0
     testpoint_form = None
     input_eu = 0
     low_limit = 0
+    meas_val = 0
     high_limit = 0
     meas_eu = 0
     date = ""
 
     # Constructor
-    def __init__(self, id, name, testpoint_form, input_eu, low_limit, high_limit,
-                meas_eu, date):
+    def __init__(self, id, name, input_val_nom, input_val, testpoint_form, input_eu,
+                low_limit, meas_val_nom, meas_val, high_limit, meas_eu, date):
         self.id = id
         self.name = name
+        self.input_val_nom = input_val_nom
+        self.input_val = input_val
         self.testpoint_form = testpoint_form
+        self.input_eu = input_eu
         self.low_limit = low_limit
+        self.meas_val_nom = meas_val_nom
+        self.meas_val = meas_val
         self.high_limit = high_limit
         self.meas_eu = meas_eu
         self.date = date    

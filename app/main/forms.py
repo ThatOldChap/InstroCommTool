@@ -56,7 +56,7 @@ class TestPointValuesForm(FlaskForm):
 
     # Value definitions
     input_val = FloatField('Input Value', validators=[DataRequired()], render_kw=kw_vals)
-    nominal_val = FloatField('Nominal Value', validators=[DataRequired()], render_kw=kw_vals)
+    meas_val = FloatField('Nominal Value', validators=[DataRequired()], render_kw=kw_vals)
 
 class NewChannelForm(FlaskForm):
 

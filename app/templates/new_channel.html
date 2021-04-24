@@ -128,7 +128,7 @@
             // Global variables to track the previous values in each relevant field
             let prevNumTestPoints = 0;
             let prevInputEU = "";
-            let prevNominalEU = "";
+            let prevMeasEU = "";
             let prevTestPointType = 1;
             let testPointListCreated = false;
             let units = '{{ units_dict|tojson }}';
@@ -162,13 +162,13 @@
 
                 // Defines the values to help create the test points
                 let numTestPoints = $('#num_test_points').val();
-                let nominalEUVal = units_dict[$('#meas_eu').val()];
+                let measEUVal = units_dict[$('#meas_eu').val()];
                 let inputEUVal = units_dict[$('#input_eu').val()];
                 let numRows = 0;
 
                 // Add each form to the form list
                 for (tpNum = 1; tpNum <= numTestPoints; tpNum++) {                        
-                    $('#test_point_list').append(createTestPointValueForm(tpNum, inputEUVal, nominalEUVal));
+                    $('#test_point_list').append(createTestPointValueForm(tpNum, inputEUVal, measEUVal));
                     numRows++;
                 }
                 testPointListCreated = true;
@@ -187,14 +187,14 @@
             $('#meas_eu').change(function() {
 
                 // Tracker variable for the number of updated rows
-                let nominalEUVal = units_dict[$('#meas_eu').val()];
+                let measEUVal = units_dict[$('#meas_eu').val()];
 
                 // Update the Test Point EUs only if they exist
                 if (testPointListCreated) {
-                    spanID = 'nominal_val_eu';                        
-                    updateEUVal($('#meas_eu').attr('id'), nominalEUVal, spanID);
+                    spanID = 'meas_val_eu';                        
+                    updateEUVal($('#meas_eu').attr('id'), measEUVal, spanID);
                 }
-                prevNominalEU = nominalEUVal;
+                prevMeasEU = measEUVal;
             });
 
             $('#input_eu').change(function() {
@@ -252,7 +252,7 @@
                     console.log(`Adding ${delta} rows after test point #${prevNumTestPoints}.`);
                     for (tpNum = parseInt(prevNumTestPoints) + 1; tpNum <= numTestPoints; tpNum++) {
                         $('#test_point_list').append(
-                            createTestPointValueForm(tpNum, prevInputEU, prevNominalEU)
+                            createTestPointValueForm(tpNum, prevInputEU, prevMeasEU)
                         );
                         rowsUpdated++;
                     }
@@ -269,15 +269,15 @@
             }
 
             // Creates a template for the TestPointValueForm
-            function createTestPointValueForm(tpNum, inputEU, nominalEU) {
+            function createTestPointValueForm(tpNum, inputEU, measEU) {
                 // Defines all the components for the form template
                 let row = $('<div>').attr({class: 'row'});
                 let inputCol = $('<div>').attr({class: 'col-md-2'});
                 let equalsCol = $('<div>').attr({class: 'col-auto'});
-                let nominalCol = $('<div>').attr({class: 'col-md-2'});
+                let measCol = $('<div>').attr({class: 'col-md-2'});
                 let inputValGroup = $('<div>').attr({class: 'input-group'});
                 let equalsGroup = $('<div>').attr({class: 'input-group'});
-                let nominalValGroup = $('<div>').attr({class: 'input-group'});
+                let measValGroup = $('<div>').attr({class: 'input-group'});
                 let equals = $('<div>').attr({
                     class: 'input-group-text text-center',
                 }).text('=');               
@@ -296,19 +296,19 @@
                     name: `input_val_eu-${tpNum}`,
                     value: ' '
                 }).text(inputEU);
-                let nominalVal = $('<input>').attr({
+                let measVal = $('<input>').attr({
                     type: 'text',
-                    id: `test_point_list-${tpNum}-nominal_val`,
-                    name: `test_point_list-${tpNum}-nominal_val`,
+                    id: `test_point_list-${tpNum}-meas_val`,
+                    name: `test_point_list-${tpNum}-meas_val`,
                     value: ' ',
                     class: 'form-control'
                 });
-                let nominalValEU = $('<span>').attr({
+                let measValEU = $('<span>').attr({
                     class: 'input-group-text',
-                    id: `nominal_val_eu-${tpNum}`,
-                    name: `nominal_val_eu-${tpNum}`,
+                    id: `meas_val_eu-${tpNum}`,
+                    name: `meas_val_eu-${tpNum}`,
                     value: ' '
-                }).text(nominalEU);
+                }).text(measEU);
 
                 // Creates a csrf_token to help validate each
                 let csrf = $('<input>').attr({
@@ -321,15 +321,15 @@
                 // Creates each input group
                 inputValGroup.append(inputVal, inputValEU);
                 equalsGroup.append(equals);
-                nominalValGroup.append(nominalVal, nominalValEU);
+                measValGroup.append(measVal, measValEU);
 
                 // Creates each column
                 inputCol.append(inputValGroup);
                 equalsCol.append(equalsGroup);
-                nominalCol.append(nominalValGroup);
+                measCol.append(measValGroup);
 
                 // Creates the new Test Point Row
-                row.append(inputCol, equalsCol, nominalCol, csrf);
+                row.append(inputCol, equalsCol, measCol, csrf);
                 return row;
             }
         });

@@ -1,4 +1,7 @@
 <style>
+    input[type="text"] {
+        text-align: center;        
+    }
     input[type="text"]::placeholder {
         text-align: center;        
     }
@@ -14,7 +17,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="input-group">
-                    {{ channel.input_val() }}
+                    {{ channel.input_val(placeholder=testpoint_item.input_val_nom) }}
                     <span class="input-group-text">{{ units_dict[testpoint_item.input_eu] }}</span>
                 </div>
             </div>
@@ -26,7 +29,7 @@
                 <div class="input-group">                    
                     <div class="input-group">
                         <span class="input-group-text">{{ testpoint_item.low_limit }}</span>
-                        {{ channel.meas_val() }}
+                        {{ channel.meas_val(placeholder=testpoint_item.meas_val_nom) }}
                         <span class="input-group-text">{{ testpoint_item.high_limit }}</span>
                         <span class="input-group-text">{{ units_dict[testpoint_item.meas_eu] }}</span>                     
                     </div>                    

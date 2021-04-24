@@ -2,10 +2,8 @@ from datetime import datetime, timedelta
 from time import time
 from flask import current_app
 from app import db
-import math
 
-# List of all the engineering units (eu)
-eu_lookup = ['degC', 'Ohms', 'Hz', 'V', 'mA']
+import math
 
 class Channel(db.Model):
 	# Basic channel info
@@ -38,7 +36,7 @@ class Channel(db.Model):
 	def __repr__(self):
 		return '<Channel {}>'.format(self.name)
 
-	def create_test_point_list(self, num_test_points, style, input_val_list, nominal_val_list):
+	def create_test_point_list(self, num_test_points, style, input_val_list, meas_val_list):
 
 		# Debugging variables
 		num_test_points_added = 0
@@ -49,24 +47,24 @@ class Channel(db.Model):
 			for i in range(num_test_points):
 				test_point = TestPoint(
 					channel_id=self.id,
-					input_val=input_val_list[i],
-					nominal_val=nominal_val_list[i]
+					input_val_nom=input_val_list[i],
+					meas_val_nom=meas_val_list[i]
 				)
 				self.test_points.append(test_point)
 				num_test_points_added += 1	
 
 		# Default, auto-generated test points
 		else:		
-			# Calculates the nominal values for the measurement points	
+			# Calculates the nominal measured values for the measurement points	
 			meas_range = self.meas_range()
-			div = meas_range / num_test_points
-			nominal_vals = [self.meas_range_min]
+			div = meas_range / (num_test_points - 1)
+			meas_vals = [self.meas_range_min]
 			for i in range(1, num_test_points):
-				nominal_vals.append(nominal_vals[i-1] + div)
+				meas_vals.append(meas_vals[i-1] + div)
 			
-			# Calculates the input values for the input points
+			# Calculates the nominal input values for the input points
 			input_range = self.input_range()
-			div = input_range / num_test_points
+			div = input_range / (num_test_points - 1) 
 			input_vals = [self.input_range_min]
 			for i in range(1, num_test_points):
 				input_vals.append(input_vals[i-1] + div)		
@@ -75,8 +73,8 @@ class Channel(db.Model):
 			for i in range(num_test_points):
 				test_point = TestPoint(
 					channel_id=self.id,
-					input_val=input_vals[i],
-					nominal_val=nominal_vals[i]
+					input_val_nom=input_vals[i],
+					meas_val_nom=meas_vals[i]
 				)
 				self.test_points.append(test_point)
 				num_test_points_added += 1
@@ -91,25 +89,15 @@ class Channel(db.Model):
 
 	def all_test_points(self):
 		return TestPoint.query.filter_by(channel_id=self.id).all()
-
-	def decode_eu(self, input_eu):
-		return eu_lookup[input_eu]
-
-	def get_tolerance_type(self):
-		if self.tolerance_type == 0:
-			return eu_lookup[self.eu]
-		elif self.tolerance_type == 1:
-			return f'%FS'
-		elif self.tolerance_type == 2:
-			return '%RDG'
 	
 
 class TestPoint(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	channel_id = db.Column(db.Integer, db.ForeignKey('channel.id'))
 	input_val = db.Column(db.Float(16))
+	input_val_nom = db.Column(db.Float(16))
 	meas_val = db.Column(db.Float(16))
-	nominal_val = db.Column(db.Float(16))
+	meas_val_nom = db.Column(db.Float(16))
 	pf = db.Column(db.Integer) # 0 = Untested, 1 = Pass, 2 = Fail
 	date = db.Column(db.DateTime, default=datetime.utcnow)
 	notes = db.Column(db.String(128))
@@ -121,7 +109,7 @@ class TestPoint(db.Model):
 		return Channel.query.filter_by(id=self.channel_id).first()
 
 	def calc_error(self):
-		return self.nominal_val - self.measured_val
+		return self.meas_val_nom - self.measured_val
 
 	def calc_tolerance(self):
 		ch = self.get_channel()
@@ -129,16 +117,16 @@ class TestPoint(db.Model):
 		adj_tolerance = tolerance / 100
 		tol_type = ch.tolerance_type
 		
-		if tol_type == 0:
+		if tol_type == 1:
 			# EU
 			return tolerance
-		elif tol_type == 1:
+		elif tol_type == 2:
 			# % FS
 			return ch.full_scale * adj_tolerance
-		elif tol_type == 2:
+		elif tol_type == 3:
 			# % RDG
-			return self.nominal_val * adj_tolerance
-		# elif tol_type == 3:
+			return self.meas_val_nom * adj_tolerance
+		# elif tol_type == 4:
 			# Custom
 			# TODO
 
@@ -154,10 +142,10 @@ class TestPoint(db.Model):
 			return 'Pass' """
 	
 	def low_limit(self):
-		return self.nominal_val - self.calc_tolerance()
+		return self.meas_val_nom - self.calc_tolerance()
 
 	def high_limit(self):
-		return self.nominal_val + self.calc_tolerance()
+		return self.meas_val_nom + self.calc_tolerance()
 	
 
 class Project(db.Model):
