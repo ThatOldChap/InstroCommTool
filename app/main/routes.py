@@ -115,99 +115,34 @@ def test():
 @bp.route('/channel_list', methods=['GET', 'POST'])
 def channel_list():
 
-    # Gets a list of the channels in the database
+    # Get a list of the channels in the database
     channel_list = Channel.query.all()
-    channel_group_form = ChannelGroupForm()
 
-    # Create a list of all TestPointItems
-    # testpoint_item_list = []
-    # channel_item_list = []
+    # Initialize the master channel_group_form that is passed to the template
+    channel_group_form = ChannelGroupForm()
 
     for channel in channel_list:
 
-        # Get a list of the channel's TestPoints
-        testpoint_list = channel.all_test_points()
-        channel_form = ChannelForm()
-        # channel_item = ChannelItem()
+        # Get a list of all the testpoints in each channel
+        testpoint_list = channel.all_test_points()  
+
+        # Initialize each channel_form
+        channel_form = ChannelForm()              
 
         for testpoint in testpoint_list:
             
-            # Create a new TestPointForm
+            # Initialize each testpoint_form
             testpoint_form = TestPointForm()
 
-            # Assign the values to the editable fields
-            """ testpoint_form.input_val = testpoint.input_val
-            testpoint_form.meas_val = testpoint.meas_val            
-            testpoint_form.notes = testpoint.notes """
-
-            # Add the TestPointForm to the ChannelGroupForm
+            # Add the testpoint_form to 
             channel_form.testpoints.append_entry(testpoint_form)
 
-            # Assign the values to the fixed fields
-            """ testpoint_item = TestPointItem(
-                id=channel.id,
-                name=channel.name,                
-                input_val=testpoint.input_val,
-                input_val_nom=testpoint.input_val_nom,
-                testpoint_form=testpoint_form,
-                input_eu=channel.input_eu,
-                low_limit=testpoint.low_limit(),
-                meas_val_nom=testpoint.meas_val_nom,
-                meas_val=testpoint.meas_val,
-                high_limit=testpoint.high_limit(),
-                meas_eu=channel.meas_eu,
-                date=testpoint.date
-            ) """
-            # channel_item.add_testpoint(testpoint_item)
-        
-        # Add each channel to the channel group         
-        # channel_item.add_channel_form(channel_form)
-        # channel_item_list.append(channel_item)
+        # Add each channel_form to the master form
         channel_group_form.channels.append_entry(channel_form)
 
     return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS, 
                             channel_list=channel_list)
-
-
-class ChannelItem(object):
-    channel_form = None
-    testpoint_items = []
-    
-    def add_channel_form(self, channel_form):
-        self.channel_form = channel_form
-    
-    def add_testpoint(self, testpoint_item):
-        self.testpoint_items.append(testpoint_item)
-
-
-class TestPointItem(object):
-    id = 0
-    name = ""
-    input_val_nom = 0
-    input_val = 0
-    testpoint_form = None
-    input_eu = 0
-    low_limit = 0
-    meas_val = 0
-    high_limit = 0
-    meas_eu = 0
-    date = ""
-
-    # Constructor
-    def __init__(self, id, name, input_val_nom, input_val, testpoint_form, input_eu,
-                low_limit, meas_val_nom, meas_val, high_limit, meas_eu, date):
-        self.id = id
-        self.name = name
-        self.input_val_nom = input_val_nom
-        self.input_val = input_val
-        self.testpoint_form = testpoint_form
-        self.input_eu = input_eu
-        self.low_limit = low_limit
-        self.meas_val_nom = meas_val_nom
-        self.meas_val = meas_val
-        self.high_limit = high_limit
-        self.meas_eu = meas_eu
-        self.date = date    
+ 
 
 @bp.route('/save_testpoint', methods=['GET', 'POST'])
 def save_testpoint():

@@ -17,6 +17,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="input-group">
+                    {# Format the formfield to handle testpoints with no input_val yet #}
                     {% if testpoint.input_val == None %}                    
                     {{ testpoint_form.input_val(placeholder=testpoint.input_val_nom, value="") }}
                     {% else %}
@@ -29,17 +30,18 @@
     </td>
     <td class="align-middle">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <div class="input-group">                    
-                    <div class="input-group">
+                    <div class="input-group">                       
                         <span class="input-group-text">{{ testpoint.low_limit() }}</span>
+                        {# Format the formfield to handle testpoints with no meas_val yet #}
                         {% if testpoint.meas_val == None %}
                         {{ testpoint_form.meas_val(placeholder=testpoint.meas_val_nom, value="") }}
                         {% else %}
                         {{ testpoint_form.meas_val(placeholder=testpoint.meas_val_nom, value=testpoint.meas_val) }}
                         {% endif %}
                         <span class="input-group-text">{{ testpoint.high_limit() }}</span>
-                        <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>                     
+                        <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>            
                     </div>                    
                     <button type="button" class="btn btn-info" formaction="{{ url_for('main.save_testpoint') }}">Save</button>
                 </div>
@@ -56,8 +58,10 @@
             </div>
         </div>
     </td>
-    <td class="align-middle">{{ testpoint.date }}</td>
+    {% set date_str = testpoint.date %}
+    <td class="align-middle">{{ date_str.strftime("%I:%M %p, %d-%b-%Y") }}</td>
     <td class="align-middle">
+        {# Format the formfield to handle testpoints with no notes yet #}
         {% if testpoint.notes == None %}
         {{ testpoint_form.notes(value="") }}
         {% else %}
