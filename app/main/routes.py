@@ -121,12 +121,14 @@ def channel_list():
 
     # Create a list of all TestPointItems
     testpoint_item_list = []
+    channel_item_list = []
 
     for channel in channel_list:
 
         # Get a list of the channel's TestPoints
         testpoint_list = channel.all_test_points()
         channel_form = ChannelForm()
+        channel_item = ChannelItem()
 
         for testpoint in testpoint_list:
             
@@ -156,25 +158,25 @@ def channel_list():
                 meas_eu=channel.meas_eu,
                 date=testpoint.date
             )
-            testpoint_item_list.append(testpoint_item)
+            channel_item.add_testpoint(testpoint_item)
         
-        # Add each channel to the channel group 
+        # Add each channel to the channel group         
+        channel_item.add_channel_form(channel_form)
+        channel_item_list.append(channel_item)
         channel_group_form.channels.append_entry(channel_form)
 
     return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS, 
-                            testpoint_item_list=testpoint_item_list, channel_form=channel_form)
+                            channel_item_list=channel_item_list)
 
 
 class ChannelItem(object):
     channel_form = None
     testpoint_items = []
-
-    # Constructor
-    def __init__(self, channel_form, testpoint_items):
-        self.channel_form = channel_form
-        self.testpoint_items = testpoint_items
     
-    def add_testpoint(testpoint_item):
+    def add_channel_form(self, channel_form):
+        self.channel_form = channel_form
+    
+    def add_testpoint(self, testpoint_item):
         self.testpoint_items.append(testpoint_item)
 
 

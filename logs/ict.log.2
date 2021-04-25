@@ -1,4 +1,4 @@
-2021-04-21 23:00:53,957 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-04-24 20:21:48,669 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -12,7 +12,7 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 194, in channel_list
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 168, in channel_list
     return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS,
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
@@ -30,12 +30,13 @@ Traceback (most recent call last):
     {% block content %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in block "content"
     {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 23, in block "app_content"
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 24, in block "app_content"
     {% include '_testpoint.html' %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 14, in top-level template code
-    {{ testpoint_item.testpoint_form.input_val() }}
-TypeError: 'float' object is not callable
-2021-04-21 23:01:00,474 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 21, in top-level template code
+    {{ print(item) }}
+jinja2.exceptions.UndefinedError: 'print' is undefined
+2021-04-24 20:23:21,051 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-24 20:23:22,939 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -49,7 +50,7 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 194, in channel_list
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 172, in channel_list
     return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS,
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
@@ -67,13 +68,13 @@ Traceback (most recent call last):
     {% block content %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in block "content"
     {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 23, in block "app_content"
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 24, in block "app_content"
     {% include '_testpoint.html' %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 14, in top-level template code
-    {{ testpoint_item.testpoint_form.input_val() }}
-TypeError: 'float' object is not callable
-2021-04-21 23:01:39,780 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-21 23:01:41,394 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 20, in top-level template code
+    {{ channel_item.channel_form.testpoints.input_val(placeholder=testpoint_item.input_val_nom) }}
+jinja2.exceptions.UndefinedError: 'wtforms.fields.core.FieldList object' has no attribute 'input_val'
+2021-04-24 20:23:39,513 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-24 20:23:40,789 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -87,7 +88,27 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 190, in channel_list
-    print(testpoint_item.testpoint_form.input_val())
-TypeError: 'float' object is not callable
-2021-04-21 23:03:02,334 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 172, in channel_list
+    return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS,
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
+    return _render(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 2, in top-level template code
+    {% import 'bootstrap/form.html' as wtf %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 43, in top-level template code
+    {% block content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 24, in block "app_content"
+    {% include '_testpoint.html' %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 20, in top-level template code
+    {{ channel_item.channel_form.testpoints.input_val(placeholder=testpoint_item.input_val_nom) }}
+jinja2.exceptions.UndefinedError: 'wtforms.fields.core.FieldList object' has no attribute 'input_val'
+2021-04-24 20:24:50,131 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
