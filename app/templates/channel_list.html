@@ -2,7 +2,7 @@
 {% import 'bootstrap/form.html' as wtf %}
 
 {% block app_content %}
-    <div class="container-fluid">
+    <div>
         <form action="" method="POST" name="channel_group_form">
             {{ channel_group_form.hidden_tag() }}
             <table class="table table-hover table-bordered align-middle">
@@ -19,9 +19,9 @@
                 </thead>
                 <tbody>
                     <!-- Loop through each channel and testpoint -->
-                    {% for channel_item in channel_item_list %}
-                        {% for testpoint_item, channel_form in zip(channel_item.testpoint_items, channel_item.channel_form.testpoints) %}
-                            {% include '_testpoint.html' %}                            
+                    {% for channel, channel_form in zip(channel_list, channel_group_form.channels) %}
+                        {% for testpoint, testpoint_form in zip(channel.all_test_points(), channel_form.testpoints) %}
+                            {% include '_testpoint.html' %}
                         {% endfor %}
                     {% endfor %}
                 </tbody>

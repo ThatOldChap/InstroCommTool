@@ -11,14 +11,18 @@
 </style>
 
 <tr class="text-center">
-    <th scope="row" class="align-middle">{{ testpoint_item.id }}</th>
-    <td class="align-middle">{{ testpoint_item.name }}</td>
+    <th scope="row" class="align-middle">{{ channel.id }}</th>
+    <td class="align-middle">{{ channel.name }}</td>
     <td class="align-middle">
         <div class="row">
             <div class="col-md-12">
                 <div class="input-group">
-                    {{ channel_form.input_val(placeholder=testpoint_item.input_val_nom) }}
-                    <span class="input-group-text">{{ units_dict[testpoint_item.input_eu] }}</span>
+                    {% if testpoint.input_val == None %}                    
+                    {{ testpoint_form.input_val(placeholder=testpoint.input_val_nom, value="") }}
+                    {% else %}
+                    {{ testpoint_form.input_val(placeholder=testpoint.input_val_nom, value=testpoint.input_val) }}
+                    {% endif %}
+                    <span class="input-group-text">{{ units_dict[channel.input_eu] }}</span>
                 </div>
             </div>
         </div>
@@ -28,10 +32,14 @@
             <div class="col-md-12">
                 <div class="input-group">                    
                     <div class="input-group">
-                        <span class="input-group-text">{{ testpoint_item.low_limit }}</span>
-                        {{ channel_form.meas_val(placeholder=testpoint_item.meas_val_nom) }}
-                        <span class="input-group-text">{{ testpoint_item.high_limit }}</span>
-                        <span class="input-group-text">{{ units_dict[testpoint_item.meas_eu] }}</span>                     
+                        <span class="input-group-text">{{ testpoint.low_limit() }}</span>
+                        {% if testpoint.meas_val == None %}
+                        {{ testpoint_form.meas_val(placeholder=testpoint.meas_val_nom, value="") }}
+                        {% else %}
+                        {{ testpoint_form.meas_val(placeholder=testpoint.meas_val_nom, value=testpoint.meas_val) }}
+                        {% endif %}
+                        <span class="input-group-text">{{ testpoint.high_limit() }}</span>
+                        <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>                     
                     </div>                    
                     <button type="button" class="btn btn-info" formaction="{{ url_for('main.save_testpoint') }}">Save</button>
                 </div>
@@ -43,13 +51,17 @@
             <div class="col-md-12">
                 <div class="input-group align-middle">
                     <input type="text" class="form-control text-center" placeholder="0.000" aria-label="Measured Error" readonly="">
-                    <span class="input-group-text">{{ units_dict[testpoint_item.meas_eu] }}</span>
+                    <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>
                 </div>
             </div>
         </div>
     </td>
-    <td class="align-middle">{{ testpoint_item.date }}</td>
+    <td class="align-middle">{{ testpoint.date }}</td>
     <td class="align-middle">
-        {{ channel_form.notes() }}
+        {% if testpoint.notes == None %}
+        {{ testpoint_form.notes(value="") }}
+        {% else %}
+        {{ testpoint_form.notes(value=testpoint.notes) }}
+        {% endif %}
     </td>
 </tr>

@@ -120,15 +120,15 @@ def channel_list():
     channel_group_form = ChannelGroupForm()
 
     # Create a list of all TestPointItems
-    testpoint_item_list = []
-    channel_item_list = []
+    # testpoint_item_list = []
+    # channel_item_list = []
 
     for channel in channel_list:
 
         # Get a list of the channel's TestPoints
         testpoint_list = channel.all_test_points()
         channel_form = ChannelForm()
-        channel_item = ChannelItem()
+        # channel_item = ChannelItem()
 
         for testpoint in testpoint_list:
             
@@ -136,15 +136,15 @@ def channel_list():
             testpoint_form = TestPointForm()
 
             # Assign the values to the editable fields
-            testpoint_form.meas_val = testpoint.meas_val
-            testpoint_form.input_val = testpoint.input_val
-            testpoint_form.notes = testpoint.notes
+            """ testpoint_form.input_val = testpoint.input_val
+            testpoint_form.meas_val = testpoint.meas_val            
+            testpoint_form.notes = testpoint.notes """
 
             # Add the TestPointForm to the ChannelGroupForm
             channel_form.testpoints.append_entry(testpoint_form)
 
             # Assign the values to the fixed fields
-            testpoint_item = TestPointItem(
+            """ testpoint_item = TestPointItem(
                 id=channel.id,
                 name=channel.name,                
                 input_val=testpoint.input_val,
@@ -157,16 +157,16 @@ def channel_list():
                 high_limit=testpoint.high_limit(),
                 meas_eu=channel.meas_eu,
                 date=testpoint.date
-            )
-            channel_item.add_testpoint(testpoint_item)
+            ) """
+            # channel_item.add_testpoint(testpoint_item)
         
         # Add each channel to the channel group         
-        channel_item.add_channel_form(channel_form)
-        channel_item_list.append(channel_item)
+        # channel_item.add_channel_form(channel_form)
+        # channel_item_list.append(channel_item)
         channel_group_form.channels.append_entry(channel_form)
 
     return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS, 
-                            channel_item_list=channel_item_list)
+                            channel_list=channel_list)
 
 
 class ChannelItem(object):
