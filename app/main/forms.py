@@ -18,7 +18,6 @@ class TestPointForm(FlaskForm):
     meas_val = FloatField('Measured')
     input_val = FloatField('Input')    
     notes = StringField('Notes')
-    save = SubmitField('Save')
 
 class ChannelForm(FlaskForm):
     testpoints = FieldList(FormField(TestPointForm))
@@ -72,6 +71,7 @@ class NewChannelForm(FlaskForm):
     kw_input_range_max = {'class': 'form-control', 'placeholder': 'ex. 120'}
     kw_submit = {'class': 'btn btn-primary'}
 
+    # TODO: Add custom validator to allow zero values
     # Basic Channel Info
     name = StringField('Name', validators=[DataRequired()], render_kw=kw_name)
     meas_type = SelectField('Type', choices=CHOICES_MEAS_TYPE, validators=[DataRequired()], render_kw=kw_select_field)

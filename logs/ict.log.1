@@ -1,13 +1,4 @@
-2021-04-25 16:16:11,169 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
-Traceback (most recent call last):
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1204, in _execute_context
-    context = constructor(dialect, self, conn, *args)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 854, in _init_compiled
-    param.append(processors[key](compiled_params[key]))
-ValueError: could not convert string to float: ''
-
-The above exception was the direct cause of the following exception:
-
+2021-04-25 17:16:53,386 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -21,64 +12,97 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 129, in channel_list
-    testpoint_list = channel.all_test_points()
-  File "/home/michael/Projects/InstroCommTool/app/models.py", line 91, in all_test_points
-    return TestPoint.query.filter_by(channel_id=self.id).all()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3373, in all
-    return list(self)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3534, in __iter__
-    self.session._autoflush()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1633, in _autoflush
-    util.raise_(e, with_traceback=sys.exc_info()[2])
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 182, in raise_
-    raise exception
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 1622, in _autoflush
-    self.flush()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 2540, in flush
-    self._flush(objects)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 2682, in _flush
-    transaction.rollback(_capture_exception=True)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/langhelpers.py", line 68, in __exit__
-    compat.raise_(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 182, in raise_
-    raise exception
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/session.py", line 2642, in _flush
-    flush_context.execute()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/unitofwork.py", line 422, in execute
-    rec.execute(self)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/unitofwork.py", line 586, in execute
-    persistence.save_obj(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/persistence.py", line 230, in save_obj
-    _emit_update_statements(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/persistence.py", line 994, in _emit_update_statements
-    c = cached_connections[connection].execute(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1011, in execute
-    return meth(self, multiparams, params)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 298, in _execute_on_connection
-    return connection._execute_clauseelement(self, multiparams, params)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1124, in _execute_clauseelement
-    ret = self._execute_context(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1206, in _execute_context
-    self._handle_dbapi_exception(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1510, in _handle_dbapi_exception
-    util.raise_(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 182, in raise_
-    raise exception
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1204, in _execute_context
-    context = constructor(dialect, self, conn, *args)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 854, in _init_compiled
-    param.append(processors[key](compiled_params[key]))
-sqlalchemy.exc.StatementError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
-(builtins.ValueError) could not convert string to float: ''
-[SQL: UPDATE test_point SET input_val=?, meas_val=?, notes=? WHERE test_point.id = ?]
-[parameters: [{'meas_val': '', 'input_val': '', 'notes': '', 'test_point_id': 1}, {'meas_val': '', 'input_val': '', 'notes': '', 'test_point_id': 2}, {'meas_val':  ... (40 characters truncated) ... point_id': 3}, {'meas_val': '', 'input_val': '', 'notes': '', 'test_point_id': 4}, {'meas_val': '', 'input_val': '', 'notes': '', 'test_point_id': 5}]]
-2021-04-25 16:18:46,577 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 16:22:51,541 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 16:35:42,906 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:07:08,386 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:08:34,357 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:09:16,043 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:09:41,916 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:10:05,771 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:16:50,861 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 168, in channel_list
+    return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS,
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
+    return _render(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 2, in top-level template code
+    {% import 'bootstrap/form.html' as wtf %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 43, in top-level template code
+    {% block content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 24, in block "app_content"
+    {% include '_testpoint.html' %}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 56, in template
+    {{ testpoint_form.notes(value="") }}
+jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endif'. The innermost block that needs to be closed is 'if'.
+2021-04-25 17:17:18,922 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:17:21,902 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 168, in channel_list
+    return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS,
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
+    return _render(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 2, in top-level template code
+    {% import 'bootstrap/form.html' as wtf %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 43, in top-level template code
+    {% block content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 24, in block "app_content"
+    {% include '_testpoint.html' %}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 20, in template
+    {% if testpoint.input_val is None %}
+jinja2.exceptions.TemplateAssertionError: no test named 'None'
+2021-04-25 17:17:42,972 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:18:19,990 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:18:38,460 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:21:27,510 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:23:44,236 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:34:47,147 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:38:01,565 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:38:54,695 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:39:47,992 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:40:32,121 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:41:21,316 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:46:44,168 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:47:01,230 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:47:19,445 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:47:47,330 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:54:39,169 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:59:42,745 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 18:00:37,657 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 18:01:24,486 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 18:01:47,400 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 19:01:28,070 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 19:46:25,247 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 19:46:47,246 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 19:46:58,478 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-26 00:04:48,252 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83

@@ -1,4 +1,4 @@
-2021-04-25 16:13:53,343 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-04-25 16:16:11,169 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1204, in _execute_context
     context = constructor(dialect, self, conn, *args)
@@ -72,7 +72,13 @@ Traceback (most recent call last):
 sqlalchemy.exc.StatementError: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
 (builtins.ValueError) could not convert string to float: ''
 [SQL: UPDATE test_point SET input_val=?, meas_val=?, notes=? WHERE test_point.id = ?]
-[parameters: [{'notes': '', 'meas_val': '', 'input_val': '', 'test_point_id': 1}, {'notes': '', 'meas_val': '', 'input_val': '', 'test_point_id': 2}, {'notes': '', ... (40 characters truncated) ... point_id': 3}, {'notes': '', 'meas_val': '', 'input_val': '', 'test_point_id': 4}, {'notes': '', 'meas_val': '', 'input_val': '', 'test_point_id': 5}]]
-2021-04-25 16:14:28,926 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 16:15:04,907 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 16:16:07,658 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+[parameters: [{'meas_val': '', 'input_val': '', 'notes': '', 'test_point_id': 1}, {'meas_val': '', 'input_val': '', 'notes': '', 'test_point_id': 2}, {'meas_val':  ... (40 characters truncated) ... point_id': 3}, {'meas_val': '', 'input_val': '', 'notes': '', 'test_point_id': 4}, {'meas_val': '', 'input_val': '', 'notes': '', 'test_point_id': 5}]]
+2021-04-25 16:18:46,577 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 16:22:51,541 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 16:35:42,906 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:07:08,386 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:08:34,357 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:09:16,043 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:09:41,916 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:10:05,771 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-04-25 17:16:50,861 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
