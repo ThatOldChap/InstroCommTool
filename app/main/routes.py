@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, current_app, g
+from flask import render_template, flash, redirect, url_for, request, current_app, g, jsonify
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import ChannelForm, TestPointForm, EmptyForm, AddChannelForm, NewChannelForm, TestSubmitForm
@@ -144,8 +144,11 @@ def channel_list():
                             channel_list=channel_list)
  
 
-@bp.route('/save_testpoint', methods=['GET', 'POST'])
-def save_testpoint():
-    print('Saving testpoint...')
+@bp.route('/update_testpoint', methods=['POST'])
+def update_testpoint():
+    print('Updating testpoint...')
+    id = request.form['id']
+    new_input_val = request.form['input_val']
+    print(f'testpoint_id = {id}, new_input_val = {new_input_val}')
 
-    return redirect(url_for('main.index')) 
+    return 1

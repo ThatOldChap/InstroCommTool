@@ -9,13 +9,13 @@
             <table class="table table-hover table-bordered align-middle">
                 <thead>
                     <tr class="table-primary text-center align-middle">
-                        <th class="align-middle" style="width: 5%">Item #</th>
-                        <th class="align-middle" style="width: 10%">Channel Name</th>
-                        <th class="align-middle" style="width: 5%">Input</th>
-                        <th class="align-middle" style="width: 22.5%">Min/Measured/Max</th>
-                        <th class="align-middle" style="width: 15%">Error</th>
-                        <th class="align-middle" style="width: 10%">Date Updated</th>
-                        <th class="align-middle" style="width: 15%">Notes</th>
+                        <th class="align-middle">Item #</th>
+                        <th class="align-middle">Channel Name</th>
+                        <th class="align-middle">Input</th>
+                        <th class="align-middle">Min/Measured/Max</th>
+                        <th class="align-middle">Error</th>
+                        <th class="align-middle">Date Updated</th>
+                        <th class="align-middle">Notes</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,5 +30,27 @@
             </table>
         </form>
     </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <!-- JQuery to handle the form submission -->
+    <script>
+        $(document).ready(function() {
+
+            $('.input-val').change(function(element) {
+                console.log(`${element.target.id} with testpoint_id of ${element.target.dataset.testpointId} has a new value of ${element.target.value}`);
+                let input_val_elem = element.target;
+                $.ajax({
+                    type: 'POST',
+                    url: '/update_testpoint',
+                    data: {input_val: input_val_elem.value, id: input_val_elem.dataset.testpointId}
+                });
+            });
+
+        });
+    </script>
 
 {% endblock %}

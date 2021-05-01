@@ -1,4 +1,4 @@
-2021-04-25 17:16:53,386 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-05-01 16:52:56,002 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -12,7 +12,7 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 168, in channel_list
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 143, in channel_list
     return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS,
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
@@ -30,17 +30,17 @@ Traceback (most recent call last):
     {% block content %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in block "content"
     {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 24, in block "app_content"
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 26, in block "app_content"
     {% include '_testpoint.html' %}
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
     reraise(*rewrite_traceback_stack(source=source))
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 56, in template
-    {{ testpoint_form.notes(value="") }}
-jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endif'. The innermost block that needs to be closed is 'if'.
-2021-04-25 17:17:18,922 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:17:21,902 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 26, in template
+    {{ testpoint_form.input_val(placeholder=round(testpoint.input_val_nom, 3), class="input-val", data-testpoint-id="{{ testpoint.id }}", value="") }}
+jinja2.exceptions.TemplateSyntaxError: invalid syntax for function call expression
+2021-05-01 16:53:57,066 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-01 16:53:58,752 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -54,7 +54,7 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 168, in channel_list
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 143, in channel_list
     return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS,
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
@@ -72,37 +72,13 @@ Traceback (most recent call last):
     {% block content %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in block "content"
     {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 24, in block "app_content"
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 26, in block "app_content"
     {% include '_testpoint.html' %}
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
     reraise(*rewrite_traceback_stack(source=source))
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 20, in template
-    {% if testpoint.input_val is None %}
-jinja2.exceptions.TemplateAssertionError: no test named 'None'
-2021-04-25 17:17:42,972 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:18:19,990 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:18:38,460 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:21:27,510 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:23:44,236 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:34:47,147 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:38:01,565 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:38:54,695 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:39:47,992 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:40:32,121 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:41:21,316 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:46:44,168 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:47:01,230 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:47:19,445 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:47:47,330 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:54:39,169 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 17:59:42,745 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 18:00:37,657 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 18:01:24,486 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 18:01:47,400 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 19:01:28,070 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 19:46:25,247 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 19:46:47,246 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-25 19:46:58,478 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-04-26 00:04:48,252 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+  File "/home/michael/Projects/InstroCommTool/app/templates/_testpoint.html", line 26, in template
+    {{ testpoint_form.input_val(placeholder=round(testpoint.input_val_nom, 3), class="input-val", data-testpoint-id="4", value="") }}
+jinja2.exceptions.TemplateSyntaxError: invalid syntax for function call expression
+2021-05-01 16:58:57,133 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83

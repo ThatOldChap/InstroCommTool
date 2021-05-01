@@ -8,6 +8,10 @@
     div[class="input-group"] {
         flex-wrap: nowrap;
     }
+    span[class="input-group-text"] {
+        width: 75px;
+        text-align: center;
+    }
 </style>
 
 <tr class="text-center">
@@ -19,9 +23,9 @@
                 <div class="input-group">
                     {# Format the formfield to handle testpoints with no input_val yet #}
                     {% if testpoint.input_val == None %}                    
-                    {{ testpoint_form.input_val(placeholder=testpoint.input_val_nom, value="") }}
+                    {{ testpoint_form.input_val(placeholder=round(testpoint.input_val_nom, 3), class="input-val", data_testpoint_id=testpoint.id, value="") }}
                     {% else %}
-                    {{ testpoint_form.input_val(placeholder=testpoint.input_val_nom, value=testpoint.input_val) }}
+                    {{ testpoint_form.input_val(placeholder=round(testpoint.input_val_nom, 3), class="input-val", data_testpoint_id=testpoint.id, value=round(testpoint.input_val, 3)) }}
                     {% endif %}
                     <span class="input-group-text">{{ units_dict[channel.input_eu] }}</span>
                 </div>
@@ -32,14 +36,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="input-group">                 
-                    <span class="input-group-text">{{ testpoint.low_limit() }}</span>
+                    <span class="input-group-text">{{ round(testpoint.low_limit(), 3) }}</span>
                     {# Format the formfield to handle testpoints with no meas_val yet #}
                     {% if testpoint.meas_val == None %}
-                    {{ testpoint_form.meas_val(placeholder=testpoint.meas_val_nom, value="") }}
+                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, value="") }}
                     {% else %}
-                    {{ testpoint_form.meas_val(placeholder=testpoint.meas_val_nom, value=testpoint.meas_val) }}
+                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, value=round(testpoint.meas_val, 3)) }}
                     {% endif %}
-                    <span class="input-group-text">{{ testpoint.high_limit() }}</span>
+                    <span class="input-group-text">{{ round(testpoint.high_limit(), 3) }}</span>
                     <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>            
                 </div>
             </div>
@@ -60,9 +64,9 @@
     <td class="align-middle">
         {# Format the formfield to handle testpoints with no notes yet #}
         {% if testpoint.notes == None %}
-        {{ testpoint_form.notes(value="") }}
+        {{ testpoint_form.notes(data_testpoint_id=testpoint.id, class="notes", value="") }}
         {% else %}
-        {{ testpoint_form.notes(value=testpoint.notes) }}
+        {{ testpoint_form.notes(data_testpoint_id=testpoint.id, class="notes", value=testpoint.notes) }}
         {% endif %}
     </td>
 </tr>
