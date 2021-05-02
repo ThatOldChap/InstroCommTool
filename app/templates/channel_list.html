@@ -46,7 +46,13 @@
                 $.ajax({
                     type: 'POST',
                     url: '/update_testpoint',
-                    data: {input_val: input_val_elem.value, id: input_val_elem.dataset.testpointId}
+                    data: {input_val: input_val_elem.value, id: input_val_elem.dataset.testpointId},
+                    success: function(response) {
+                        console.log(response['message']);
+                    },
+                    error: function(error) {
+                        console.log(`Error transmitting data: ${error}`);
+                    }
                 });
             });
 
