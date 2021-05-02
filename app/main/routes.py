@@ -147,16 +147,30 @@ def channel_list():
 @bp.route('/update_testpoint', methods=['POST'])
 def update_testpoint():
 
-    # Get the data from the field being updated
-    id = request.form['id']
-    new_input_val = request.form['input_val']
-    print(f'testpoint_id = {id}, new_input_val = {new_input_val}')
-
     # Find the testpoint being updated from the database
+    id = request.form['id']
     testpoint = TestPoint.query.filter_by(id=id).first()
-    testpoint.input_val = new_input_val
+    print(request.form.keys)
 
-    # Save the database
+    # Check and write the new values to the database
+    if 'input_val' in request.form:
+        new_input_val = request.form['input_val']
+        if new_input_val == "":
+            testpoint.input_val = None
+        else:
+            testpoint.input_val = new_input_val
+
+    if 'meas_val' in request.form:
+        new_meas_val = request.form['meas_val']
+        if new_meas_val == "":
+            testpoint.meas_val = None
+        else:
+            testpoint.meas_val = new_meas_val
+
+    if 'notes' in request.form:
+        testpoint.notes = request.form['notes']    
+
+    # Save the changes to the database
     db.session.commit()
 
     return jsonify({'message': 'TestPoint has been updated'})

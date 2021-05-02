@@ -41,12 +41,31 @@
         $(document).ready(function() {
 
             $('.input-val').change(function(element) {
-                console.log(`${element.target.id} with testpoint_id of ${element.target.dataset.testpointId} has a new value of ${element.target.value}`);
+
                 let input_val_elem = element.target;
+                let data = {id: input_val_elem.dataset.testpointId, input_val: input_val_elem.value};
+                updateTestPoint(data); 
+            });
+
+            $('.meas-val').change(function(element) {
+
+                let meas_val_elem = element.target;
+                let data = {id: meas_val_elem.dataset.testpointId, meas_val: meas_val_elem.value};
+                updateTestPoint(data); 
+            });
+
+            $('.notes').change(function(element) {
+
+                let notes_elem = element.target;
+                let data = {id: notes_elem.dataset.testpointId, notes: notes_elem.value};
+                updateTestPoint(data); 
+            });
+
+            function updateTestPoint(data) {
                 $.ajax({
                     type: 'POST',
                     url: '/update_testpoint',
-                    data: {input_val: input_val_elem.value, id: input_val_elem.dataset.testpointId},
+                    data: data,
                     success: function(response) {
                         console.log(response['message']);
                     },
@@ -54,7 +73,7 @@
                         console.log(`Error transmitting data: ${error}`);
                     }
                 });
-            });
+            }
 
         });
     </script>
