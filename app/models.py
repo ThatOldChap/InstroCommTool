@@ -98,6 +98,7 @@ class TestPoint(db.Model):
 	input_val_nom = db.Column(db.Float(16))
 	meas_val = db.Column(db.Float(16))
 	meas_val_nom = db.Column(db.Float(16))
+	error = db.Column(db.Float(8))
 	pf = db.Column(db.Integer) # 0 = Untested, 1 = Pass, 2 = Fail
 	date = db.Column(db.DateTime, default=datetime.utcnow)
 	notes = db.Column(db.String(128))

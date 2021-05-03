@@ -53,7 +53,11 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="input-group align-middle">
-                    <input type="text" class="form-control text-center" placeholder="0.000" aria-label="Measured Error" readonly="">
+                    {% if testpoint.error == None %}                    
+                    <input type="text" class="form-control text-center error" placeholder="0.000" data_testpoint_id="{{ testpoint.id }}" readonly="">
+                    {% else %}
+                    <input type="text" class="form-control text-center error" placeholder="0.000" data_testpoint_id="{{ testpoint.id }}" readonly="" value="{{ testpoint.error }}">
+                    {% endif %}
                     <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>
                 </div>
             </div>
