@@ -1,3 +1,4 @@
+{% block styles %}
 <style>
     input[type="text"] {
         text-align: center;        
@@ -12,8 +13,10 @@
         width: 75px;
         text-align: center;
     }
-</style>
+</style> 
+{% endblock %}
 
+{% block app_content %}
 <tr class="text-center">
     <th scope="row" class="align-middle">{{ channel.id }}</th>
     <td class="align-middle">{{ channel.name }}</td>
@@ -39,9 +42,9 @@
                     <span class="input-group-text">{{ round(testpoint.low_limit(), 3) }}</span>
                     {# Format the formfield to handle testpoints with no meas_val yet #}
                     {% if testpoint.meas_val == None %}
-                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, value="") }}
+                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, data_tolerance=testpoint.calc_tolerance(), value="") }}
                     {% else %}
-                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, value=round(testpoint.meas_val, 3)) }}
+                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, data_tolerance=testpoint.calc_tolerance(), value=round(testpoint.meas_val, 3)) }}
                     {% endif %}
                     <span class="input-group-text">{{ round(testpoint.high_limit(), 3) }}</span>
                     <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>            
@@ -54,9 +57,9 @@
             <div class="col-md-12">
                 <div class="input-group align-middle">
                     {% if testpoint.error == None %}                    
-                    <input type="text" class="form-control text-center error" placeholder="0.000" data_testpoint_id="{{ testpoint.id }}" readonly="">
+                    <input type="text" class="form-control text-center error" placeholder="0.000" data_testpoint_id="{{ testpoint.id }}" data_pf="{{ testpoint.pf }}" readonly="">
                     {% else %}
-                    <input type="text" class="form-control text-center error" placeholder="0.000" data_testpoint_id="{{ testpoint.id }}" readonly="" value="{{ testpoint.error }}">
+                    <input type="text" class="form-control text-center error" placeholder="0.000" data_testpoint_id="{{ testpoint.id }}" data_pf="{{ testpoint.pf }}" readonly="" value="{{ round(testpoint.error, 3) }}">
                     {% endif %}
                     <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>
                 </div>
@@ -74,3 +77,4 @@
         {% endif %}
     </td>
 </tr>
+{% endblock %}

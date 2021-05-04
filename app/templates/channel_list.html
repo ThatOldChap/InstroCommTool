@@ -30,7 +30,6 @@
             </table>
         </form>
     </div>
-
 {% endblock %}
 
 {% block scripts %}
@@ -39,6 +38,7 @@
     <!-- JQuery to handle the form submission -->
     <script>
         $(document).ready(function() {
+            updateAllRowColors();
 
             $('.input-val').change(function(element) {
 
@@ -53,26 +53,65 @@
                 let meas_val_elem = element.target;                
                 let id = meas_val_elem.dataset.testpointId;
                 let meas_val_nom = parseFloat(meas_val_elem.placeholder);
-                let meas_val = parseFloat(meas_val_elem.value);
-                let data = {id: id, meas_val: meas_val};
-                updateTestPoint(data); 
+                let meas_val = parseFloat(meas_val_elem.value);  
+                let tolerance = parseFloat(meas_val_elem.dataset.tolerance);              
 
-                // Calculate the error and update the field
+                // Calculate the error and fiend the field to update                
                 let error = meas_val - meas_val_nom;
-                let errorElem = $(`#${this.id}`).parents('tr').find('.error');
+                let errorRow = $(`#${this.id}`).parents('tr');
+                let errorElem = errorRow.find('.error');
+                let pf;      
 
                 // Update the error value in the element
                 if(Number.isNaN(meas_val)) {
                     errorElem.val('');
+                    errorRow.removeClass('table-success table-danger table-warning');
+                    pf = 0;
                 } else {
-                    errorElem.val(error);
-                }                
-            });
-            // "channels-0-testpoints-0-meas_val"
-            function parseID(id) {
-                let idString = id.split('-');
-                // Returns [channels, 0, testpoints, 0, meas_val]
+                    // Round the error
+                    errorElem.val(error.toFixed(3));
 
+                    // Clear the existing formatting
+                    errorRow.removeClass('table-success table-danger table-warning');
+
+                    // Assign the new formatting based on a pass/fail/post result
+                    let absError = Math.abs(error);
+                    if (absError < tolerance) {
+                        errorRow.addClass('table-success');
+                        pf = 1;
+                    } else if (absError > tolerance) {
+                        errorRow.addClass('table-danger');
+                        pf = 2;
+                    } else {
+                        errorRow.addClass('table-warning');
+                        pf = 3;
+                    }        
+                    console.log(errorRow)  
+                }
+
+                // Sends the data to the database to be processed
+                let data = {id: id, meas_val: meas_val, error: error, pf: pf};
+                updateTestPoint(data); 
+            });
+            
+            function updateAllRowColors() {
+                // Adjust the colour of the row based on the pass/fail
+                $('.error').each(function(index, element) {    
+
+                    // Get the pass/fail data to process
+                    let id = element.attributes['data_testpoint_id'].value;
+                    let pf = element.attributes['data_pf'].value;
+                    let rowElem = $(this).parents('tr');          
+                    
+                    // Update the colour of the row depending on the pass/fail
+                    if (pf == 1) {
+                        $(rowElem).addClass('table-success');
+                    } else if (pf == 2) {
+                        $(rowElem).addClass('table-danger');
+                    } else if (pf == 3) {
+                        $(rowElem).addClass('table-warning');
+                    }  
+                });
             }
 
             $('.notes').change(function(element) {
@@ -80,13 +119,6 @@
                 let notes_elem = element.target;
                 let data = {id: notes_elem.dataset.testpointId, notes: notes_elem.value};
                 updateTestPoint(data); 
-            });
-
-            $('.error').change(function(element) {
-
-                let error_elem = element.target;
-                let data = {id: error_elem.dataset.testpointId, error: error_elem.value};
-                updateTestPoint(data);                
             });
 
             function updateTestPoint(data) {

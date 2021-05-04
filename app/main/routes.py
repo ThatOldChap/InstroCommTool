@@ -166,9 +166,19 @@ def update_testpoint():
             testpoint.meas_val = None
         else:
             testpoint.meas_val = new_meas_val
+    
+    if 'error' in request.form:
+        new_error = request.form['error']
+        if new_error == "":
+            testpoint.error = None
+        else:
+            testpoint.error = new_error 
 
     if 'notes' in request.form:
-        testpoint.notes = request.form['notes']    
+        testpoint.notes = request.form['notes']
+    
+    if 'pf' in request.form:
+        testpoint.pf = request.form['pf']  
 
     # Save the changes to the database
     db.session.commit()
