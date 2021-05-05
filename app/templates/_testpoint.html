@@ -67,7 +67,8 @@
         </div>
     </td>
     {% set date_str = testpoint.date %}
-    <td class="align-middle">{{ date_str.strftime("%I:%M %p, %d-%b-%Y") }}</td>
+    {#<td class="align-middle date">{{ date_str.strftime("%I:%M %p, %d-%b-%Y") }}</td>#}
+    <td class="align-middle date">{{ moment(date_str).format("hh:mm A, DD-MMM-YYYY") }}</td>
     <td class="align-middle">
         {# Format the formfield to handle testpoints with no notes yet #}
         {% if testpoint.notes == None %}

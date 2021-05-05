@@ -1,4 +1,5 @@
 from datetime import datetime
+import dateutil.parser as dt
 from flask import render_template, flash, redirect, url_for, request, current_app, g, jsonify
 from flask_login import current_user, login_required
 from app import db
@@ -174,11 +175,20 @@ def update_testpoint():
         else:
             testpoint.error = new_error 
 
+    if 'date' in request.form:
+        js_date = request.form['date']
+        new_date = dt.parse(js_date)
+        print(f'Python date = {new_date} and JS date = {js_date}')
+        if new_date == "":
+            testpoint.date = None
+        else:
+            testpoint.date = new_date
+
     if 'notes' in request.form:
         testpoint.notes = request.form['notes']
     
     if 'pf' in request.form:
-        testpoint.pf = request.form['pf']  
+        testpoint.pf = request.form['pf']
 
     # Save the changes to the database
     db.session.commit()

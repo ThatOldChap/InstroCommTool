@@ -11,8 +11,10 @@
 {% endblock %}
 
 {% block scripts %}
-    <!-- Optional JavaScript -->
-    {{ bootstrap.load_js() }}    
+    
+    {{ bootstrap.load_js() }}
+    {{ moment.include_moment() }}  
+
 {% endblock %}
 
 {% block navbar %}

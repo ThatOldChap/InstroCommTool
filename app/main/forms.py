@@ -14,9 +14,15 @@ class EmptyForm(FlaskForm):
 class TestSubmitForm(FlaskForm):
     submit = SubmitField('Test')
 
+def validate_meas_val(form, field):
+    try:
+        float(field.data)
+    except ValueError:
+        raise ValidationError('Value entered is not a number.')
+
 class TestPointForm(FlaskForm):
-    meas_val = FloatField('Measured')
-    input_val = FloatField('Input')    
+    meas_val = FloatField('Measured', validators=[validate_meas_val])
+    input_val = FloatField('Input', validators=[validate_meas_val])    
     notes = StringField('Notes')
 
 class ChannelForm(FlaskForm):

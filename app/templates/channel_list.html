@@ -89,11 +89,21 @@
                     console.log(errorRow)  
                 }
 
-                // Sends the data to the database to be processed
+                // Sends the data through AJAX to be processed
                 let data = {id: id, meas_val: meas_val, error: error, pf: pf};
                 updateTestPoint(data); 
             });
-            
+
+            $('.notes').change(function(element) {
+
+                let notes_elem = element.target;           
+                let date = updateDate(this.id);
+                
+                // Sends the data through AJAX to be processed
+                let data = {id: notes_elem.dataset.testpointId, notes: notes_elem.value, date: date};
+                updateTestPoint(data);             
+            });
+
             function updateAllRowColors() {
                 // Adjust the colour of the row based on the pass/fail
                 $('.error').each(function(index, element) {    
@@ -114,13 +124,6 @@
                 });
             }
 
-            $('.notes').change(function(element) {
-
-                let notes_elem = element.target;
-                let data = {id: notes_elem.dataset.testpointId, notes: notes_elem.value};
-                updateTestPoint(data); 
-            });
-
             function updateTestPoint(data) {
                 $.ajax({
                     type: 'POST',
@@ -133,6 +136,48 @@
                         console.log(`Error updating testpoint: ${error}`);
                     }
                 });
+            }
+            
+            // Update the date when a field is modified
+            function updateDate(element) {
+                let rowElem = $(`#${element}`).parents('tr');
+                let dateElem = rowElem.find('.date');
+                let date = new Date();
+                let dateString = date.getDateTime();
+                dateElem.text(dateString);
+                return date.toUTCString();
+            }
+
+            // For today's current time in format '10:06 PM'
+            Date.prototype.timeNow = function () {
+                let hours = formatLeadingZero(this.getHours());
+                let hoursAdj = (hours > 12) ? (hours % 12) : hours;
+                let minutes = formatLeadingZero(this.getMinutes());
+                let ampm = (hours >= 12) ? ' PM' : ' AM';
+                return hoursAdj + ":" + minutes + ampm;
+            }
+
+            // For todays date in format '24-Apr-2021'
+            Date.prototype.today = function () { 
+                let day = formatLeadingZero(this.getDate());
+                let monthName = formatMonthName(this.getMonth());
+                let year = this.getFullYear();
+                return day + "-" + monthName + "-" + year;
+            }
+
+            // For today's datetime in the format '10:06 PM, 24-Apr-2021'
+            Date.prototype.getDateTime = function() {
+                return this.timeNow() + ", " + this.today();
+            }
+
+            // For the short-form name of the month
+            function formatMonthName(month) {
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                return monthNames[month];
+            }
+
+            function formatLeadingZero(dateTime) {
+                return ((dateTime < 10) ? "0" : "") + dateTime;
             }
 
         });
