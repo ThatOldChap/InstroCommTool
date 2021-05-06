@@ -151,7 +151,6 @@ def update_testpoint():
     # Find the testpoint being updated from the database
     id = request.form['id']
     testpoint = TestPoint.query.filter_by(id=id).first()
-    print(request.form.keys)
 
     # Check and write the new values to the database
     if 'input_val' in request.form:
@@ -178,7 +177,6 @@ def update_testpoint():
     if 'date' in request.form:
         js_date = request.form['date']
         new_date = dt.parse(js_date)
-        print(f'Python date = {new_date} and JS date = {js_date}')
         if new_date == "":
             testpoint.date = None
         else:

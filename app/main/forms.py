@@ -21,8 +21,8 @@ def validate_meas_val(form, field):
         raise ValidationError('Value entered is not a number.')
 
 class TestPointForm(FlaskForm):
-    meas_val = FloatField('Measured', validators=[validate_meas_val])
-    input_val = FloatField('Input', validators=[validate_meas_val])    
+    meas_val = FloatField('Measured', validators=[DataRequired()])
+    input_val = FloatField('Input', validators=[DataRequired()])    
     notes = StringField('Notes')
 
 class ChannelForm(FlaskForm):

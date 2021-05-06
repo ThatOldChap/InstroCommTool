@@ -86,7 +86,6 @@
                         errorRow.addClass('table-warning');
                         pf = 3;
                     }        
-                    console.log(errorRow)  
                 }
 
                 // Sends the data through AJAX to be processed
@@ -96,7 +95,7 @@
 
             $('.notes').change(function(element) {
 
-                let notes_elem = element.target;           
+                let notes_elem = element.target;
                 let date = updateDate(this.id);
                 
                 // Sends the data through AJAX to be processed
