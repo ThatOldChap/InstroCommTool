@@ -151,13 +151,17 @@ class TestPoint(db.Model):
 
 
 class ChannelGroup(db.Model):
-	id = db.column(db.Integer, primary_key=True)
-	name = db.column(db.String(32))
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(32))
+	last_updated = db.Column(db.DateTime)
 	channels = db.relationship('Channel', backref='channel_group', lazy='dynamic')
-	job_id = db.column(db.Integer, db.ForeignKey('job.id'))
+	job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
 
 	def all_channels(self):
 		return Channel.query.filter_by(group_id=self.id).all()
+
+	def num_channels(self):
+		return Channel.query.filter_by(group_id=self.id).count()
 
 
 class Job(db.Model):
