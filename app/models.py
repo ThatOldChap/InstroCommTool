@@ -8,6 +8,7 @@ import math
 class Channel(db.Model):
 	# Basic channel info
 	id = db.Column(db.Integer, primary_key=True)
+	group_id = db.Column(db.Integer, db.ForeignKey('channel_group.id'))
 	name = db.Column(db.String(32))
 	meas_type = db.Column(db.Integer) # 0 = RTD, 1 = Pressure, 2 = Frequency, etc...
 
@@ -147,13 +148,38 @@ class TestPoint(db.Model):
 
 	def high_limit(self):
 		return self.meas_val_nom + self.calc_tolerance()
-	
+
+
+class ChannelGroup(db.Model):
+	id = db.column(db.Integer, primary_key=True)
+	name = db.column(db.String(32))
+	channels = db.relationship('Channel', backref='channel_group', lazy='dynamic')
+	job_id = db.column(db.Integer, db.ForeignKey('job.id'))
+
+	def all_channels(self):
+		return Channel.query.filter_by(group_id=self.id).all()
+
+
+class Job(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+	phase = db.Column(db.Integer)	# 0 = In-House, 1 = On-Site
+	job_type = db.Column(db.Integer)	# 0 = Commissioning, 1 = ATP
+	last_updated = db.Column(db.DateTime)
+	channel_groups = db.relationship('ChannelGroup', backref='job', lazy='dynamic')
+
+	def all_groups(self):
+		return ChannelGroup.query.filter_by(job_id=self.id).all()
+
 
 class Project(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
 	number = db.Column(db.Integer)
 	customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
+
+	def all_jobs(self):
+		return Job.query.filter_by(project_id=self.id).all()
 
 
 class Customer(db.Model):

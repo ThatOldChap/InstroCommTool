@@ -4,7 +4,7 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import ChannelForm, TestPointForm, EmptyForm, AddChannelForm, NewChannelForm, TestSubmitForm
-from app.main.forms import ChannelGroupForm
+from app.main.forms import ChannelListForm
 from app.models import Channel, TestPoint
 from app.main import bp
 from app.main.measurements import ENG_UNITS
@@ -120,7 +120,7 @@ def channel_list():
     channel_list = Channel.query.all()
 
     # Initialize the master channel_group_form that is passed to the template
-    channel_group_form = ChannelGroupForm()
+    channel_list_form = ChannelListForm()
 
     for channel in channel_list:
 
@@ -141,7 +141,7 @@ def channel_list():
         # Add each channel_form to the master form
         channel_group_form.channels.append_entry(channel_form)
 
-    return render_template('channel_list.html', title='Channel List', channel_group_form=channel_group_form, units_dict=ENG_UNITS, 
+    return render_template('channel_list.html', title='Channel List', channel_list_form=channel_list_form, units_dict=ENG_UNITS, 
                             channel_list=channel_list)
  
 
