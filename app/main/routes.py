@@ -3,8 +3,7 @@ import dateutil.parser as dt
 from flask import render_template, flash, redirect, url_for, request, current_app, g, jsonify
 from flask_login import current_user, login_required
 from app import db
-from app.main.forms import ChannelForm, TestPointForm, EmptyForm, AddChannelForm, NewChannelForm, TestSubmitForm
-from app.main.forms import ChannelListForm
+from app.main.forms import ChannelForm, TestPointForm, AddChannelForm, NewChannelForm, ChannelListForm
 from app.models import Channel, TestPoint
 from app.main import bp
 from app.main.measurements import ENG_UNITS
@@ -13,56 +12,27 @@ from app.main.measurements import ENG_UNITS
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
     
-    # Setup the button to add a new Channel
-    testForm = TestSubmitForm()
-    if testForm.validate_on_submit():
-        return redirect(url_for('main.test')) 
+ 
 
-    return render_template('index.html', title='Home', form=testForm)
+    return render_template('index.html', title='Home')
+    
 
-@bp.route('/channel_view', methods=['GET', 'POST'])
-def channel_view():
-
-    # Setup the button to add a new Channel
-    addChannelForm = EmptyForm('Add New Channel')    
-    if addChannelForm.validate_on_submit():
-        return redirect(url_for('main.add_channel'))        
-
-    # class ChannelView
-
-    # Create the lists for populating the fixed fields for each channel
-    testPointLists = []
-
-    # Create a form and get a list of all channels in the database    
-    channelForm = ChannelForm()
-    channelList = Channel.query.all()
-
-    for channel in channelList:
-
-        # Get the list of TestPoints for the channel
-        testPointList = TestPoint.query.filter_by(channel_id=channel.id).all()
-        testPointLists.append(testPointList)
-
-        # Create a TestPointForm for the number of testpoints with that channel id
-        for testPoint in testPointList:
-            
-            # Create a TestPointForm
-            testPointForm = TestPointForm()
-
-            # Assign the values to the editable fields
-            testPointForm.measured_val = testPoint.measured_val
-            testPointForm.date_performed = testPoint.date_performed
-            testPointForm.notes = testPoint.notes
-
-            # Add the TestPointForm to the ChannelForm
-            channelForm.testPoints.append_entry(testPointForm)
-            
-    return render_template('channel_view.html', channelForm=channelForm, addChannelForm=addChannelForm,
-                            testPointLists=testPointLists, channelList=channelList)
+@bp.route('/job_list', methods=['GET', 'POST'])
+def job_list():
 
 
-@bp.route('/test', methods=['GET', 'POST'])
-def test():
+    return render_template('job_list.html', title='Job List')
+
+
+@bp.route('/group_list', methods=['GET', 'POST'])
+def group_list():
+
+
+    return render_template('group_list.html', title='Group List')
+
+
+@bp.route('/new_channel', methods=['GET', 'POST'])
+def new_channel():
 
     newChannelForm = NewChannelForm()
 
@@ -139,7 +109,7 @@ def channel_list():
             channel_form.testpoints.append_entry(testpoint_form)
 
         # Add each channel_form to the master form
-        channel_group_form.channels.append_entry(channel_form)
+        channel_list_form.channels.append_entry(channel_form)
 
     return render_template('channel_list.html', title='Channel List', channel_list_form=channel_list_form, units_dict=ENG_UNITS, 
                             channel_list=channel_list)
