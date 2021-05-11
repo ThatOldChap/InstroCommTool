@@ -100,7 +100,7 @@ class TestPoint(db.Model):
 	meas_val = db.Column(db.Float(16))
 	meas_val_nom = db.Column(db.Float(16))
 	error = db.Column(db.Float(8))
-	pf = db.Column(db.Integer) # 0 = Untested, 1 = Pass, 2 = Fail, 3 = Post
+	pf = db.Column(db.Integer, default=0) # 0 = Untested, 1 = Pass, 2 = Fail, 3 = Post
 	date = db.Column(db.DateTime)
 	notes = db.Column(db.String(128))
 	
@@ -134,14 +134,6 @@ class TestPoint(db.Model):
 
 	def tol_type(self):
 		return self.get_channel().tolerance_type
-
-	""" def calc_pf(self):
-		if abs(self.calc_error()) > self.calc_tolerance():
-			self.pf = 0
-			return 'Fail'
-		else:
-			self.pf == 1
-			return 'Pass' """
 	
 	def low_limit(self):
 		return self.meas_val_nom - self.calc_tolerance()
@@ -153,15 +145,33 @@ class TestPoint(db.Model):
 class ChannelGroup(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
-	last_updated = db.Column(db.DateTime)
+	last_updated = db.Column(db.DateTime, default=datetime.utcnow)
 	channels = db.relationship('Channel', backref='channel_group', lazy='dynamic')
 	job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
 
 	def all_channels(self):
 		return Channel.query.filter_by(group_id=self.id).all()
-
+	
 	def num_channels(self):
 		return Channel.query.filter_by(group_id=self.id).count()
+
+	def status(self):
+		channels = self.all_channels()
+		num_passed = 0
+		num_post = 0
+		num_failed = 0
+		num_untested = 0
+
+		for ch in channels:
+			testpoints = ch.all_test_points()
+			for tp in testpoints:
+				pf = tp.pf
+				if pf == 0: num_untested += 1
+				if pf == 1: num_passed += 1
+				if pf == 2: num_failed += 1
+				if pf == 3: num_post += 1
+
+		return {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
 
 
 class Job(db.Model):
@@ -174,6 +184,31 @@ class Job(db.Model):
 
 	def all_groups(self):
 		return ChannelGroup.query.filter_by(job_id=self.id).all()
+
+	def num_channels(self):
+		groups = self.all_groups()
+		count = 0
+
+		for group in groups:
+			count += group.num_channels
+			
+		return count
+
+	def status(self):
+		groups = self.all_groups()
+		num_passed = 0
+		num_post = 0
+		num_failed = 0
+		num_untested = 0
+
+		for group in groups:
+			pf = group.status()
+			num_passed += pf['passed']
+			num_post += pf['post']
+			num_failed += pf['failed']
+			num_untested += pf['untested']
+		
+		return {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
 
 
 class Project(db.Model):
