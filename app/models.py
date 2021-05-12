@@ -190,7 +190,7 @@ class Job(db.Model):
 		count = 0
 
 		for group in groups:
-			count += group.num_channels
+			count += group.num_channels()
 
 		return count
 
@@ -224,6 +224,22 @@ class Job(db.Model):
 			num_untested += pf['untested']
 		
 		return {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
+
+	def progress(self):
+		total = self.num_channels()
+		if total > 0:
+			status = self.status()
+			passed = (status['passed'] / total) * 100
+			post = (status['post'] / total) * 100
+			failed = (status['failed'] / total) * 100
+			untested = (status['untested'] / total) * 100
+		else:
+			passed = 0
+			post = 0
+			failed = 0
+			untested = 100
+
+		return {'passed': passed, 'failed': failed, 'post': post, 'untested': untested}
 
 
 class Project(db.Model):

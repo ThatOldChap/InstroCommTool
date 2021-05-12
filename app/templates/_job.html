@@ -1,6 +1,8 @@
 {% block styles %}
 <style>
-    
+    div[class="progress-bar"] {
+        width:
+    }
 </style> 
 {% endblock %}
 
@@ -14,23 +16,18 @@
     <td class="align-middle">
         <div class="row">
             <div class="col-md-10">
-                
+                <div class="progress">
+                    {% set progress = job.progress() %}
+                    {% set status = job.status() %}
+                    <div class="progress-bar bg-success" role="progressbar" width="{{ progress['passed'] }}%"></div>
+                    <div class="progress-bar bg-warning" role="progressbar" width="{{ progress['post'] }}%"></div>
+                    <div class="progress-bar bg-danger" role="progressbar" width="{{ progress['failed'] }}%"></div>
+                </div>
             </div>
-            <div class="col-md-2">
-                
-            </div>
+            <div class="col-md-2">{{ status['passed'] + status['post'] }}/{{ job.num_channels() }}</div>
         </div>
     </td>
     <td class="align-middle">{{ moment(job.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
 </tr>
 {% endblock %}
-
-
-
-<div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 15%;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-    <div class="progress-bar bg-success" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-    <div class="progress-bar bg-info" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-  </div>
-  
   

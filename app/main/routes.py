@@ -25,8 +25,9 @@ def index():
 @bp.route('/job_list', methods=['GET', 'POST'])
 def job_list():
 
-
-    return render_template('job_list.html', title='Job List')
+    jobs_list = Job.query.all()
+    
+    return render_template('job_list.html', title='Job List', jobs_list=jobs_list)
 
 
 @bp.route('/group_list', methods=['GET', 'POST'])

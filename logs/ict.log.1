@@ -1,4 +1,4 @@
-2021-05-11 22:01:49,479 ERROR: Exception on /index [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-05-12 13:28:40,311 ERROR: Exception on /job_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -12,8 +12,8 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 22, in index
-    return render_template('index.html', title='Home', summary=summary)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 30, in job_list
+    return render_template('job_list.html', title='Job List', jobs_list=jobs_list)
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
@@ -24,21 +24,63 @@ Traceback (most recent call last):
     reraise(*rewrite_traceback_stack(source=source))
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/index.html", line 1, in top-level template code
+  File "/home/michael/Projects/InstroCommTool/app/templates/job_list.html", line 1, in top-level template code
     {% extends "base.html" %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in top-level template code
+    {% block content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 63, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/job_list.html", line 20, in block "app_content"
+    {% include '_job.html' %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_job.html", line 9, in top-level template code
+    {% block app_content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_job.html", line 19, in block "app_content"
+    {% set progress = job.progress() %}
+  File "/home/michael/Projects/InstroCommTool/app/models.py", line 231, in progress
+    passed = (status['passed'] / total) * 100
+ZeroDivisionError: division by zero
+2021-05-12 13:39:30,794 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-12 13:39:35,095 ERROR: Exception on /job_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 30, in job_list
+    return render_template('job_list.html', title='Job List', jobs_list=jobs_list)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
+    return _render(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
     reraise(*rewrite_traceback_stack(source=source))
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 13, in template
-    {% enblock %}
-jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'enblock'. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
-2021-05-11 22:02:02,070 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-11 22:02:24,929 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-11 22:05:18,409 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-11 22:05:49,439 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-11 22:10:01,395 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-11 22:10:13,069 ERROR: Exception on /new_project [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+  File "/home/michael/Projects/InstroCommTool/app/templates/job_list.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in top-level template code
+    {% block content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 63, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/job_list.html", line 20, in block "app_content"
+    {% include '_job.html' %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_job.html", line 9, in top-level template code
+    {% block app_content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_job.html", line 25, in block "app_content"
+    <div class="col-md-2">{{ status['num_passed'] + status['num_post'] }}/{{ job.num_channels() }}</div>
+jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'num_passed'
+2021-05-12 13:40:00,935 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-12 13:40:04,159 ERROR: Exception on /job_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -52,59 +94,34 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 70, in new_project
-    return render_template('new_project.html', title='New Project', form=form)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 138, in render_template
-    ctx.app.jinja_env.get_or_select_template(template_name_or_list),
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 930, in get_or_select_template
-    return self.get_template(template_name_or_list, parent, globals)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 883, in get_template
-    return self._load_template(name, self.make_globals(globals))
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 857, in _load_template
-    template = self.loader.load(self, name, globals)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/loaders.py", line 115, in load
-    source, filename, uptodate = self.get_source(environment, name)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 60, in get_source
-    return self._get_source_fast(environment, template)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 89, in _get_source_fast
-    raise TemplateNotFound(template)
-jinja2.exceptions.TemplateNotFound: new_project.html
-2021-05-11 22:10:48,385 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-11 22:15:42,357 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-11 22:19:17,780 ERROR: Exception on /new_project [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
-Traceback (most recent call last):
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
-    raise value
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 60, in new_project
-    project = Project(
-  File "<string>", line 4, in __init__
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/state.py", line 433, in _initialize_instance
-    manager.dispatch.init_failure(self, args, kwargs)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/langhelpers.py", line 68, in __exit__
-    compat.raise_(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 182, in raise_
-    raise exception
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/state.py", line 430, in _initialize_instance
-    return manager.original_init(*mixed[1:], **kwargs)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/ext/declarative/base.py", line 842, in _declarative_constructor
-    setattr(self, k, kwargs[k])
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/attributes.py", line 279, in __set__
-    self.impl.set(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/attributes.py", line 1024, in set
-    value = self.fire_replace_event(state, dict_, value, old, initiator)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/attributes.py", line 1046, in fire_replace_event
-    value = fn(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/attributes.py", line 1456, in emit_backref_from_scalar_set_event
-    instance_state(child),
-AttributeError: 'str' object has no attribute '_sa_instance_state'
-2021-05-11 22:26:04,671 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 30, in job_list
+    return render_template('job_list.html', title='Job List', jobs_list=jobs_list)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
+    return _render(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/job_list.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in top-level template code
+    {% block content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 63, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/job_list.html", line 20, in block "app_content"
+    {% include '_job.html' %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_job.html", line 9, in top-level template code
+    {% block app_content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_job.html", line 25, in block "app_content"
+    <div class="col-md-2">{{ status['passed'] + status['post'] }}/{{ job.num_channels() }}</div>
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 452, in getitem
+    return obj[argument]
+jinja2.exceptions.UndefinedError: 'status' is undefined
+2021-05-12 13:40:41,688 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-12 13:41:19,544 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-12 13:41:59,303 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-12 13:43:09,979 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
