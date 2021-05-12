@@ -4,7 +4,8 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import ChannelForm, TestPointForm, AddChannelForm, NewChannelForm, ChannelListForm
-from app.models import Channel, TestPoint
+from app.main.forms import CustomerForm, ProjectForm, JobForm, ChannelGroupForm
+from app.models import Channel, TestPoint, Project, Customer, Job, ChannelGroup
 from app.main import bp
 from app.main.measurements import ENG_UNITS
 
@@ -12,10 +13,14 @@ from app.main.measurements import ENG_UNITS
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
     
- 
+    summary = {}
+    summary['customers'] = Customer.query.count()
+    summary['projects'] = Project.query.count()
+    summary['jobs'] = Job.query.count()
+    summary['groups'] = ChannelGroup.query.count()
 
-    return render_template('index.html', title='Home')
-    
+    return render_template('index.html', title='Home', summary=summary)
+
 
 @bp.route('/job_list', methods=['GET', 'POST'])
 def job_list():
@@ -29,6 +34,79 @@ def group_list():
 
 
     return render_template('group_list.html', title='Group List')
+
+
+@bp.route('/new_customer', methods=['GET', 'POST'])
+def new_customer():
+
+    form = CustomerForm()
+
+    if form.validate_on_submit():
+        customer = Customer(name=form.name.data)
+        db.session.add(customer)
+        db.session.commit()
+        flash(f'Customer {customer.name} has been added to the database.')
+        return redirect(url_for('main.index'))
+
+    return render_template('new_customer.html', title='New Customer', form=form)
+
+@bp.route('/new_project', methods=['GET', 'POST'])
+def new_project():
+
+    form = ProjectForm()
+    form.customer.choices = [("", "Select Customer")] + [(c.id, c.name) for c in Customer.query.order_by('name')]
+
+    if form.validate_on_submit():
+        project = Project(
+            name=form.name.data,
+            number=form.number.data,
+            customer_id=form.customer.data
+            )
+        db.session.add(project)
+        db.session.commit()
+        flash(f'Project {project.name} has been added to the database.')
+        return redirect(url_for('main.index'))
+
+    return render_template('new_project.html', title='New Project', form=form)
+
+@bp.route('/new_job', methods=['GET', 'POST'])
+def new_job():
+
+    form = JobForm()
+    form.customer_name.choices = [("", "Select Name")] + [(c.id, c.name) for c in Customer.query.order_by('name')]
+    form.project_number.choices = [("", "Select Number")] + [(p.id, p.number) for p in Project.query.order_by('number')]
+    form.project_name.choices = [("", "Select Name")] + [(p.id, p.name) for p in Project.query.order_by('name')]
+
+    if form.validate_on_submit():
+        job = Job(
+            project_id=form.project_name.data,
+            phase=form.phase.data,
+            job_type=form.job_type.data
+            )
+        db.session.add(job)
+        db.session.commit()
+        flash(f'Job {job.project_name()} {job.phase} {job.job_type} has been added to the database.')
+        return redirect(url_for('main.index'))
+
+    return render_template('new_job.html', title='New Job', form=form)
+
+@bp.route('/new_group', methods=['GET', 'POST'])
+def new_group():
+
+    form = ChannelGroupForm()
+
+    if form.validate_on_submit():
+
+        # Get channel list
+
+        # channel_group = ChannelGroup(
+        #     name=form.name.data)
+        # db.session.add(job)
+        # db.session.commit()
+        flash(f'Group will soon be processed added to the database.')
+        return redirect(url_for('main.index'))
+
+    return render_template('new_group.html', title='New Group', form=form)
 
 
 @bp.route('/new_channel', methods=['GET', 'POST'])

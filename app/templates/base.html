@@ -8,6 +8,8 @@
         {{ bootstrap.load_css() }}
     {% endblock %}
 
+    <title>{% block title %}{{ title }}{% endblock %}</title>    
+
 {% endblock %}
 
 {% block scripts %}

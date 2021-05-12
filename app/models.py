@@ -191,8 +191,23 @@ class Job(db.Model):
 
 		for group in groups:
 			count += group.num_channels
-			
+
 		return count
+
+	def get_project(self):
+		return Project.query.filter_by(id=self.project_id).first()
+
+	def get_customer(self):
+		return self.get_project().get_customer()
+
+	def customer_name(self):
+		return self.get_customer().name
+
+	def project_name(self):
+		return self.get_project().name
+
+	def project_number(self):
+		return self.get_project().number
 
 	def status(self):
 		groups = self.all_groups()
@@ -219,6 +234,9 @@ class Project(db.Model):
 
 	def all_jobs(self):
 		return Job.query.filter_by(project_id=self.id).all()
+
+	def get_customer(self):
+		return Customer.query.filter_by(id=self.customer_id).first()
 
 
 class Customer(db.Model):

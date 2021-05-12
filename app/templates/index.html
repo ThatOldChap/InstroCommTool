@@ -3,9 +3,27 @@
 
 {% block app_content %}
     <h1>Home Page:</h1>
-    {% if form %}
-    {{ wtf.render_form(form) }}
     <br>
-    {% endif %}
+    <button type="button" class="btn btn-primary">
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_customer') }}">New Customer</a>
+    </button>
+    <h3>Customer Count: {{ summary['customers'] }}</h3>
+    <br>
+    <button type="button" class="btn btn-success">
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_project') }}">New Project</a>
+    </button>
+    <h3>Project Count: {{ summary['projects'] }}</h3>
+    <br>
+    <button type="button" class="btn btn-info">
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_job') }}">New Job</a>
+    </button>
+    <h3>Job Count: {{ summary['jobs'] }}</h3>
+    <br>
+    <button type="button" class="btn btn-warning">
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_group') }}">New Channel Group</a>
+    </button>
+    <h3>ChannelGroup Count: {{ summary['groups'] }}</h3>
+    <br>
+    
     
 {% endblock %}

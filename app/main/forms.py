@@ -104,15 +104,25 @@ class ChannelListForm(FlaskForm):
 
 class ChannelGroupForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    submit = SubmitField('Create New Group')
+    submit = SubmitField('Add New Group')
 
-CHOICES_CUSTOMER_NAME = [("", "Select Customer..."),(0, "Rolls-Royce"),(1, "AECC"),(2, "LMCES"),(3, "GATES")]
 CHOICES_PHASE = [("", "Select Phase..."),(0, "In-House"),(1, "On-Site")]
 CHOICES_JOB_TYPE = [("", "Select Type..."),(0, "Commissioning"),(1, "ATP")]
 
 class JobForm(FlaskForm):
-    customer_name = SelectField('Customer Name', choices=CHOICES_CUSTOMER_NAME, validators=[DataRequired()])
-    project_number = IntegerField('Project Number', validators=[DataRequired()])
-    project_name = StringField('Project Name', validators=[DataRequired()])
-    phase = SelectField('Project Phase', choices=CHOICES_PHASE, validators=[DataRequired()])
-    job_type = SelectField('Work Type', choices=CHOICES_JOB_TYPE, validators=[DataRequired()])
+    customer_name = SelectField('Customer Name', render_kw={'class': 'custom-select'}, validators=[DataRequired()])
+    project_number = SelectField('Project Number', render_kw={'class': 'custom-select'}, validators=[DataRequired()])
+    project_name = SelectField('Project Name', render_kw={'class': 'custom-select'}, validators=[DataRequired()])
+    phase = SelectField('Project Phase', choices=CHOICES_PHASE, render_kw={'class': 'custom-select'}, validators=[DataRequired()])
+    job_type = SelectField('Work Type', choices=CHOICES_JOB_TYPE, render_kw={'class': 'custom-select'}, validators=[DataRequired()])
+    submit = SubmitField('Add New Job')
+
+class ProjectForm(FlaskForm):
+    name = StringField('Project Name', validators=[DataRequired()])
+    number = IntegerField('Project Number', validators=[DataRequired()])
+    customer = SelectField('Customer', render_kw={'class': 'custom-select'}, validators=[DataRequired()])
+    submit = SubmitField('Add New Project')
+
+class CustomerForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Add New Customer')
