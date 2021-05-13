@@ -10,22 +10,22 @@ class Channel(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	group_id = db.Column(db.Integer, db.ForeignKey('channel_group.id'))
 	name = db.Column(db.String(32))
-	meas_type = db.Column(db.Integer) # 0 = RTD, 1 = Pressure, 2 = Frequency, etc...
+	meas_type = db.Column(db.String(24)) # 0 = RTD, 1 = Pressure, 2 = Frequency, etc...
 
 	# Measurement Range info
 	meas_range_min = db.Column(db.Float(16))
 	meas_range_max = db.Column(db.Float(16))
-	meas_eu = db.Column(db.Integer) # 0 = degC, 1 = Hz, 2 = lbf, etc...
+	meas_eu = db.Column(db.String(16)) # 0 = degC, 1 = Hz, 2 = lbf, etc...
 	full_scale = db.Column(db.Float(16))
 
 	# Channel Tolerance info
 	tolerance = db.Column(db.Float(8))
-	tolerance_type = db.Column(db.Integer) # 0 = Units, 1 = %FS, 2 = %RDG, 3 = Custom, etc...
+	tolerance_type = db.Column(db.String(8)) # 0 = Units, 1 = %FS, 2 = %RDG, 3 = Custom, etc...
 
 	# Test Point Input Range Info
 	input_range_min = db.Column(db.Float(16))
 	input_range_max = db.Column(db.Float(16))
-	input_eu = db.Column(db.Integer) # 0 = degC, 1 = Hz, 2 = lbf, etc...
+	input_eu = db.Column(db.String(16)) # 0 = degC, 1 = Hz, 2 = lbf, etc...
 
 	# List of Test Points
 	test_points = db.relationship('TestPoint', backref='channel', lazy='dynamic')
@@ -43,7 +43,7 @@ class Channel(db.Model):
 		num_test_points_added = 0
 
 		# Custom, User-chosen test points
-		if style == 2:
+		if style == "Custom":
 			# Create the TestPoints from the provided info
 			for i in range(num_test_points):
 				test_point = TestPoint(
@@ -100,7 +100,7 @@ class TestPoint(db.Model):
 	meas_val = db.Column(db.Float(16))
 	meas_val_nom = db.Column(db.Float(16))
 	error = db.Column(db.Float(8))
-	pf = db.Column(db.Integer, default=0) # 0 = Untested, 1 = Pass, 2 = Fail, 3 = Post
+	pf = db.Column(db.String(8), default="Untested") # 0 = Untested, 1 = Pass, 2 = Fail, 3 = Post
 	date = db.Column(db.DateTime)
 	notes = db.Column(db.String(128))
 	
@@ -119,19 +119,18 @@ class TestPoint(db.Model):
 		adj_tolerance = tolerance / 100
 		tol_type = ch.tolerance_type
 		
-		if tol_type == 1:
+		if tol_type == 'EU':
 			# EU
 			return tolerance
-		elif tol_type == 2:
+		elif tol_type == f'%FS':
 			# % FS
 			return ch.full_scale * adj_tolerance
-		elif tol_type == 3:
+		elif tol_type == '%RDG':
 			# % RDG
 			return self.meas_val_nom * adj_tolerance
-		# elif tol_type == 4:
+		# elif tol_type == 'Custom':
 			# Custom
-			# TODO
-
+			
 	def tol_type(self):
 		return self.get_channel().tolerance_type
 	
@@ -154,6 +153,17 @@ class ChannelGroup(db.Model):
 	
 	def num_channels(self):
 		return Channel.query.filter_by(group_id=self.id).count()
+	
+	def completion(self):
+		total = self.num_channels()
+		status = self.status()
+		num_passing = status['passed'] + status['post']
+		if total == 0:
+			return 'Not Started'
+		elif num_passing < total:
+			return 'In-Progress'
+		elif num_passing == total:
+			return 'Complete'
 
 	def status(self):
 		channels = self.all_channels()
@@ -173,12 +183,28 @@ class ChannelGroup(db.Model):
 
 		return {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
 
+	def progress(self):
+		total = self.num_channels()
+		if total > 0:
+			status = self.status()
+			passed = (status['passed'] / total) * 100
+			post = (status['post'] / total) * 100
+			failed = (status['failed'] / total) * 100
+			untested = (status['untested'] / total) * 100
+		else:
+			passed = 0
+			post = 0
+			failed = 0
+			untested = 100
+
+		return {'passed': passed, 'failed': failed, 'post': post, 'untested': untested}
+
 
 class Job(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
-	phase = db.Column(db.Integer)	# 0 = In-House, 1 = On-Site
-	job_type = db.Column(db.Integer)	# 0 = Commissioning, 1 = ATP
+	phase = db.Column(db.String(8))	# 0 = In-House, 1 = On-Site
+	job_type = db.Column(db.String(16))	# 0 = Commissioning, 1 = ATP
 	last_updated = db.Column(db.DateTime)
 	channel_groups = db.relationship('ChannelGroup', backref='job', lazy='dynamic')
 
@@ -188,10 +214,8 @@ class Job(db.Model):
 	def num_channels(self):
 		groups = self.all_groups()
 		count = 0
-
 		for group in groups:
 			count += group.num_channels()
-
 		return count
 
 	def get_project(self):

@@ -65,7 +65,7 @@
                 if(Number.isNaN(meas_val)) {
                     errorElem.val('');
                     errorRow.removeClass('table-success table-danger table-warning');
-                    pf = 0;
+                    // pf = 0;
                 } else {
                     // Round the error
                     errorElem.val(error.toFixed(3));
@@ -77,13 +77,13 @@
                     let absError = Math.abs(error);
                     if (absError < tolerance) {
                         errorRow.addClass('table-success');
-                        pf = 1;
+                        pf = "Pass";
                     } else if (absError > tolerance) {
                         errorRow.addClass('table-danger');
-                        pf = 2;
+                        pf = "Fail";
                     } else {
                         errorRow.addClass('table-warning');
-                        pf = 3;
+                        pf = "Post";
                     }        
                 }
 
@@ -112,11 +112,11 @@
                     let rowElem = $(this).parents('tr');          
                     
                     // Update the colour of the row depending on the pass/fail
-                    if (pf == 1) {
+                    if (pf == "Pass") {
                         $(rowElem).addClass('table-success');
-                    } else if (pf == 2) {
+                    } else if (pf == "Fail") {
                         $(rowElem).addClass('table-danger');
-                    } else if (pf == 3) {
+                    } else if (pf == "Post") {
                         $(rowElem).addClass('table-warning');
                     }  
                 });

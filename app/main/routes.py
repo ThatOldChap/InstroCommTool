@@ -3,7 +3,7 @@ import dateutil.parser as dt
 from flask import render_template, flash, redirect, url_for, request, current_app, g, jsonify
 from flask_login import current_user, login_required
 from app import db
-from app.main.forms import ChannelForm, TestPointForm, AddChannelForm, NewChannelForm, ChannelListForm
+from app.main.forms import ChannelForm, TestPointForm, NewChannelForm, ChannelListForm
 from app.main.forms import CustomerForm, ProjectForm, JobForm, ChannelGroupForm
 from app.models import Channel, TestPoint, Project, Customer, Job, ChannelGroup
 from app.main import bp
@@ -25,16 +25,17 @@ def index():
 @bp.route('/job_list', methods=['GET', 'POST'])
 def job_list():
 
-    jobs_list = Job.query.all()
-    
-    return render_template('job_list.html', title='Job List', jobs_list=jobs_list)
+    job_list = Job.query.all()
+
+    return render_template('job_list.html', title='Job List', job_list=job_list)
 
 
 @bp.route('/group_list', methods=['GET', 'POST'])
 def group_list():
 
+    group_list = ChannelGroup.query.all()
 
-    return render_template('group_list.html', title='Group List')
+    return render_template('group_list.html', title='Group List', group_list=group_list)
 
 
 @bp.route('/new_customer', methods=['GET', 'POST'])
@@ -98,13 +99,10 @@ def new_group():
 
     if form.validate_on_submit():
 
-        # Get channel list
-
-        # channel_group = ChannelGroup(
-        #     name=form.name.data)
-        # db.session.add(job)
-        # db.session.commit()
-        flash(f'Group will soon be processed added to the database.')
+        group = ChannelGroup(name=form.name.data)
+        db.session.add(group)
+        db.session.commit()
+        flash(f'Group {group.name} has been added to the database.')
         return redirect(url_for('main.index'))
 
     return render_template('new_group.html', title='New Group', form=form)
@@ -141,7 +139,7 @@ def new_channel():
         db.session.commit()        
 
         # Collects the custom test point data only if selected 
-        if style == 2:
+        if style == "Custom":
             for tpNum, val in enumerate(test_point_list):
                 meas_vals.append(val["meas_val"])
                 input_vals.append(val["input_val"])

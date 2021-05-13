@@ -6,13 +6,9 @@
 
 {% block app_content %}
 <tr class="text-center">
-    {% set progress = job.progress() %}
-    {% set status = job.status() %}
-    <td class="align-middle">{{ job.customer_name() }}</td>
-    <td class="align-middle">{{ job.project_number() }}</td>
-    <td class="align-middle">{{ job.project_name() }}</td>
-    <td class="align-middle">{{ job.phase }}</td>
-    <td class="align-middle">{{ job.job_type }}</td>
+    {% set progress = group.progress() %}
+    {% set status = group.status() %}
+    <td class="align-middle">{{ group.name }}</td>
     <td class="align-middle">
         <div class="row">
             <div class="col-12">
@@ -24,8 +20,9 @@
             </div>
         </div>
     </td>
-    <td class="align-middle">{{ status['passed'] + status['post'] }}/{{ job.num_channels() }}</td>
-    <td class="align-middle">{{ moment(job.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
+    <td class="align-middle">{{ status['passed'] + status['post'] }}/{{ group.num_channels() }}</td>
+    <td class="align-middle">{{ group.completion() }}</td>
+    <td class="align-middle">{{ moment(group.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
 </tr>
 {% endblock %}
   

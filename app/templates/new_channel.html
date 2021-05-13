@@ -129,7 +129,7 @@
             let prevNumTestPoints = 0;
             let prevInputEU = "";
             let prevMeasEU = "";
-            let prevTestPointType = 1;
+            let prevTestPointType = "Default";
             let testPointListCreated = false;
             let units = '{{ units_dict|tojson }}';
             let units_dict = JSON.parse(units);
@@ -153,7 +153,7 @@
             // Checks whether the fields are valid to display the testPointList
             function testPointListReady() {
                 validNum = !($('#num_test_points').val() == "");  // Is an integer from the pick list besides the default ""
-                validType = $('#test_point_type').val() == 2;   // Is equal to 'Custom'
+                validType = $('#test_point_type').val() == "Custom"; 
                 return validNum && validType;
             }
 
@@ -162,8 +162,8 @@
 
                 // Defines the values to help create the test points
                 let numTestPoints = $('#num_test_points').val();
-                let measEUVal = units_dict[$('#meas_eu').val()];
-                let inputEUVal = units_dict[$('#input_eu').val()];
+                let measEUVal = $('#meas_eu').val();
+                let inputEUVal = $('#input_eu').val();
                 let numRows = 0;
 
                 // Add each form to the form list
@@ -187,7 +187,7 @@
             $('#meas_eu').change(function() {
 
                 // Tracker variable for the number of updated rows
-                let measEUVal = units_dict[$('#meas_eu').val()];
+                let measEUVal = $('#meas_eu').val();
 
                 // Update the Test Point EUs only if they exist
                 if (testPointListCreated) {
@@ -200,7 +200,7 @@
             $('#input_eu').change(function() {
 
                 // Update the Test Point EUs only if they exist
-                let inputEUVal = units_dict[$('#input_eu').val()];
+                let inputEUVal = $('#input_eu').val();
 
                 if (testPointListCreated) {
                     spanID = 'input_val_eu';                        

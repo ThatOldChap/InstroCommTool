@@ -69,17 +69,6 @@ class MeasurementType():
         POLARITY = 2
 
 # Convert these into Enums at some point
-ENG_UNITS = {0: 'V', 1: 'mA', 2: 'degC', 3: 'Hz', 4: 'Ohms',
-    5: 'm', 6: 'psi', 7: 'kg', 8: 'm/s', 9: 'lbf'
+ENG_UNITS = {'V': 'V', 'mA': 'mA', 'degC': 'degC', 'Hz': 'Hz', 'Ohms': 'Ohms',
+    'm': 'm', 'psi': 'psi', 'kg': 'kg', 'm/s': 'm/s', 'lbf': 'lbf'
 }
-TOLERANCE_TYPES = {0: 'Units', 1: f'%FS', 2: '%RDG'}
-
-#class Units(Enum):
-    #volts = 
-
-#class Measurement():
-    # Dictionary of units
-    # Type
-    # Description
-    # 
-    

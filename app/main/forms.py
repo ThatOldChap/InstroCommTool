@@ -7,6 +7,7 @@ from wtforms.validators import ValidationError, DataRequired, Length
 from wtforms.widgets import HiddenInput
 from app.models import Channel, TestPoint
 from app.main.measurements import ENG_UNITS
+from enum import Enum
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Add Channel')
@@ -22,31 +23,16 @@ class TestPointForm(FlaskForm):
 class ChannelForm(FlaskForm):
     testpoints = FieldList(FormField(TestPointForm))
 
-class AddChannelForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    ch_type = SelectField('Type', choices=[(0, "RTD"),(1, "Pressure"),(2, "Frequency")], validators=[DataRequired()])
-    range_min = FloatField('Minimum Range', validators=[DataRequired()])
-    range_max = FloatField('Maximum Range', validators=[DataRequired()])
-    eu = SelectField('EU', choices=[(0, "degC"),(1, "Ohms"),(2, "Hz")], validators=[DataRequired()])
-    full_scale_range = FloatField('Full Scale Range', validators=[DataRequired()])
-    full_scale_eu = SelectField('Full Scale EU', choices=[(0, "degC"),(1, "Ohms"),(2, "Hz")], validators=[DataRequired()])
-    tolerance = FloatField('Tolerance', validators=[DataRequired()])
-    tolerance_type = SelectField('Tolerance Type', choices=[(0, "EU"),(1, f"%FS"),(2, "%RDG")], validators=[DataRequired()])
-    test_range_min = FloatField('Minimum Test Range', validators=[DataRequired()])
-    test_range_max = FloatField('MaximumTest Range', validators=[DataRequired()])
-    test_eu = SelectField('Test EU', choices=[(0, "degC"),(1, "Ohms"),(2, "Hz")], validators=[DataRequired()])
-    submit = SubmitField('Add New Channel')
-
 EMPTY_CHOICE = ("", 'Select Units...')
 
-CHOICES_MEAS_TYPE = [("", "Select Type..."),(0, "RTD"),(1, "Pressure"),(2, "Frequency"),(3, "Voltage")]
+CHOICES_MEAS_TYPE = [("", "Select Type..."),("RTD", "RTD"),("Pressure", "Pressure"),("Frequency", "Frequency"),("Voltage", "Voltage")]
 
 CHOICES_EU = list(ENG_UNITS.items())
 CHOICES_EU.insert(0, EMPTY_CHOICE)
 
-CHOICES_TOLERANCE_TYPE = [("", "Select Type..."),(1, "Units"),(2, f"%FS"),(3, '%RDG')]
+CHOICES_TOLERANCE_TYPE = [("", "Select Type..."),("EU", "EU"),(f"%FS", f"%FS"),('%RDG', '%RDG')]
 CHOICES_NUM_TEST_POINTS = [("", "Select Number..."),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),(7, "7"),(8, "8"),(9, "9"),(10, "10")]
-CHOICES_TEST_POINT_TYPE = [(1, "Default"),(2, "Custom")]
+CHOICES_TEST_POINT_TYPE = [("Default", "Default"),("Custom", "Custom")]
 
 class TestPointValuesForm(FlaskForm):
 
@@ -106,8 +92,8 @@ class ChannelGroupForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField('Add New Group')
 
-CHOICES_PHASE = [("", "Select Phase..."),(0, "In-House"),(1, "On-Site")]
-CHOICES_JOB_TYPE = [("", "Select Type..."),(0, "Commissioning"),(1, "ATP")]
+CHOICES_PHASE = [("", "Select Phase..."),("In-House", "In-House"),("On-Site", "On-Site")]
+CHOICES_JOB_TYPE = [("", "Select Type..."),("Commissioning", "Commissioning"),("ATP", "ATP")]
 
 class JobForm(FlaskForm):
     customer_name = SelectField('Customer Name', render_kw={'class': 'custom-select'}, validators=[DataRequired()])
