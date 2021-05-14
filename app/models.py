@@ -153,9 +153,16 @@ class ChannelGroup(db.Model):
 	
 	def num_channels(self):
 		return Channel.query.filter_by(group_id=self.id).count()
+
+	def num_testpoints(self):
+		channels = self.all_channels()
+		count = 0
+		for ch in channels:
+			count += len(ch.all_test_points())
+		return count
 	
 	def completion(self):
-		total = self.num_channels()
+		total = self.num_testpoints()
 		status = self.status()
 		num_passing = status['passed'] + status['post']
 		if total == 0:
@@ -176,15 +183,15 @@ class ChannelGroup(db.Model):
 			testpoints = ch.all_test_points()
 			for tp in testpoints:
 				pf = tp.pf
-				if pf == 0: num_untested += 1
-				if pf == 1: num_passed += 1
-				if pf == 2: num_failed += 1
-				if pf == 3: num_post += 1
+				if pf == 'Untested': num_untested += 1
+				if pf == 'Pass': num_passed += 1
+				if pf == 'Fail': num_failed += 1
+				if pf == 'Post': num_post += 1
 
 		return {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
 
 	def progress(self):
-		total = self.num_channels()
+		total = self.num_testpoints()
 		if total > 0:
 			status = self.status()
 			passed = (status['passed'] / total) * 100
