@@ -16,15 +16,14 @@
     <td class="align-middle">
         <div class="row">
             <div class="col-12">
-                <div class="progress">                    
+                <div class="progress">   
                     <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress['passed'] }}%"></div>
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ progress['post'] }}%"></div>
                     <div class="progress-bar bg-danger" role="progressbar" style="width: {{ progress['failed'] }}%"></div>
                 </div>
             </div>
         </div>
     </td>
-    <td class="align-middle">{{ status['passed'] + status['post'] }}/{{ job.num_channels() }}</td>
+    <td class="align-middle">{{ status['passed'] }}/{{ job.num_channels() }} Channels Complete</td>
     <td class="align-middle">{{ moment(job.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
 </tr>
 {% endblock %}

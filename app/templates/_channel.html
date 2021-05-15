@@ -1,21 +1,27 @@
-<table class="table table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Item Number</th>
-            <th scope="col">Channel Name</th>
-            <th scope="col">Input Value ({{ channel.decode_eu(channel.test_eu) }})</th>
-            <th scope="col">Low Limit ({{ channel.decode_eu(channel.eu) }})</th>
-            <th scope="col">Measured ({{ channel.decode_eu(channel.eu) }})</th>
-            <th scope="col">High Limit ({{ channel.decode_eu(channel.eu) }})</th>
-            <th scope="col">Error ({{ channel.get_tolerance_type() }})</th>
-            <th scope="col">Pass/Fail</th>
-            <th scope="col">Date Performed</th>
-            <th scope="col">Notes</th>
-        </tr>      
-    </thead>
-    <tbody>
-        {% for testpoint in testpoints %}
-            {% include '_testpoint.html' %}
-        {% endfor %}          
-    </tbody>
-</table>
+{% block styles %}
+<style>
+
+</style> 
+{% endblock %}
+
+{% block app_content %}
+<tr class="text-center table-info">
+    {% set status = channel.status() %}
+    {% set progress = channel.progress() %}
+    <th scope="row" class="align-middle">{{ channel.id }}</th>
+    <td class="align-middle">{{ channel.name }}</td>
+    <td colspan="2" class="align-middle">
+        <div class="row">
+            <div class="col-12">
+                <div class="progress">                                
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress['passed'] }}%"></div>
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ progress['post'] }}%"></div>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ progress['failed'] }}%"></div>
+                </div>
+            </div>
+        </div>
+    </td>
+    <td class="align-middle">{{ status['passed'] }}/{{ channel.num_test_points() }} Testpoints Complete</td>
+    <td colspan="2" class="align-middle">Last Updated: {{ moment(channel.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
+</tr>
+{% endblock %}

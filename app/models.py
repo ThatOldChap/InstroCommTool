@@ -11,6 +11,7 @@ class Channel(db.Model):
 	group_id = db.Column(db.Integer, db.ForeignKey('channel_group.id'))
 	name = db.Column(db.String(32))
 	meas_type = db.Column(db.String(24)) # 0 = RTD, 1 = Pressure, 2 = Frequency, etc...
+	last_updated = db.Column(db.DateTime, default=datetime.utcnow)
 
 	# Measurement Range info
 	meas_range_min = db.Column(db.Float(16))
@@ -90,6 +91,55 @@ class Channel(db.Model):
 
 	def all_test_points(self):
 		return TestPoint.query.filter_by(channel_id=self.id).all()
+
+	def num_test_points(self):
+		return len(self.all_test_points())
+	
+	def status(self):
+		testpoints = self.all_test_points()
+		num_passed = 0
+		num_post = 0
+		num_failed = 0
+		num_untested = 0
+
+		for tp in testpoints:			
+			pf = tp.pf
+			if pf == 'untested': num_untested += 1
+			if pf == 'passed': num_passed += 1
+			if pf == 'failed': num_failed += 1
+			if pf == 'post': num_post += 1
+
+		result = {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
+		# print(f'Channel status = {result}')	
+
+		return result
+	
+	def progress(self):
+		total = self.num_test_points()
+		status = self.status()
+
+		passed = (status['passed'] / total) * 100
+		post = (status['post'] / total) * 100
+		failed = (status['failed'] / total) * 100
+		untested = (status['untested'] / total) * 100
+		result = {'passed': passed, 'failed': failed, 'post': post, 'untested': untested}
+		# print(f'Channel progress = {result}')
+
+		return result
+
+	def completion(self):
+		status = self.status()
+		total = self.num_test_points()
+		passed = status['passed'] + status['post']
+		
+		if passed == total:
+			return 'passed'
+		elif status['untested'] == total:
+			return 'untested'
+		elif status['failed'] > 0:
+			return 'failed'
+		else:
+			return 'in-progress'
 	
 
 class TestPoint(db.Model):
@@ -158,53 +208,50 @@ class ChannelGroup(db.Model):
 		channels = self.all_channels()
 		count = 0
 		for ch in channels:
-			count += len(ch.all_test_points())
+			count += ch.num_test_points()
 		return count
-	
-	def completion(self):
-		total = self.num_testpoints()
-		status = self.status()
-		num_passing = status['passed'] + status['post']
-		if total == 0:
-			return 'Not Started'
-		elif num_passing < total:
-			return 'In-Progress'
-		elif num_passing == total:
-			return 'Complete'
 
 	def status(self):
 		channels = self.all_channels()
 		num_passed = 0
-		num_post = 0
 		num_failed = 0
 		num_untested = 0
 
 		for ch in channels:
-			testpoints = ch.all_test_points()
-			for tp in testpoints:
-				pf = tp.pf
-				if pf == 'Untested': num_untested += 1
-				if pf == 'Pass': num_passed += 1
-				if pf == 'Fail': num_failed += 1
-				if pf == 'Post': num_post += 1
+			comp = ch.completion()
+			if comp == 'untested' or comp == 'in-progress': num_untested += 1
+			if comp == 'passed': num_passed += 1
+			if comp == 'failed': num_failed += 1
 
-		return {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
+		result = {'passed': num_passed, 'failed': num_failed, 'untested': num_untested}
+		# print(f'Group status = {result}')
+		return result
 
 	def progress(self):
-		total = self.num_testpoints()
+		total = self.num_channels()
 		if total > 0:
 			status = self.status()
 			passed = (status['passed'] / total) * 100
-			post = (status['post'] / total) * 100
 			failed = (status['failed'] / total) * 100
 			untested = (status['untested'] / total) * 100
 		else:
 			passed = 0
-			post = 0
 			failed = 0
 			untested = 100
 
-		return {'passed': passed, 'failed': failed, 'post': post, 'untested': untested}
+		result = {'passed': passed, 'failed': failed, 'untested': untested}
+		# print(f'Group progress = {result}')
+		return result
+	
+	def completion(self):
+		total = self.num_channels()
+		status = self.status()
+		if status['untested'] == total:
+			return 'Not Started'
+		elif status['passed'] == total:
+			return 'Complete'
+		else:
+			return 'In-Progress'		
 
 
 class Job(db.Model):
@@ -243,34 +290,30 @@ class Job(db.Model):
 	def status(self):
 		groups = self.all_groups()
 		num_passed = 0
-		num_post = 0
 		num_failed = 0
 		num_untested = 0
 
 		for group in groups:
-			pf = group.status()
-			num_passed += pf['passed']
-			num_post += pf['post']
-			num_failed += pf['failed']
-			num_untested += pf['untested']
+			comp = group.status()
+			num_passed += comp['passed']
+			num_failed += comp['failed']
+			num_untested += comp['untested']
 		
-		return {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
+		return {'passed': num_passed, 'failed': num_failed, 'untested': num_untested}
 
 	def progress(self):
 		total = self.num_channels()
 		if total > 0:
 			status = self.status()
 			passed = (status['passed'] / total) * 100
-			post = (status['post'] / total) * 100
 			failed = (status['failed'] / total) * 100
 			untested = (status['untested'] / total) * 100
 		else:
 			passed = 0
-			post = 0
 			failed = 0
 			untested = 100
 
-		return {'passed': passed, 'failed': failed, 'post': post, 'untested': untested}
+		return {'passed': passed, 'failed': failed, 'untested': untested}
 
 
 class Project(db.Model):

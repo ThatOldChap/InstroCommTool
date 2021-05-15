@@ -9,18 +9,19 @@
             <table class="table table-hover table-bordered align-middle">
                 <thead>
                     <tr class="table-primary text-center align-middle">
-                        <th class="align-middle">Item #</th>
-                        <th class="align-middle">Channel Name</th>
-                        <th class="align-middle">Input</th>
-                        <th class="align-middle">Min/Measured/Max</th>
-                        <th class="align-middle">Error</th>
-                        <th class="align-middle">Date Updated</th>
-                        <th class="align-middle">Notes</th>
+                        <th scope="col" class="align-middle">Item #</th>
+                        <th scope="col" class="align-middle">Channel Name</th>
+                        <th scope="col" class="align-middle">Input</th>
+                        <th scope="col" class="align-middle">Min/Measured/Max</th>
+                        <th scope="col" class="align-middle">Error</th>
+                        <th scope="col" class="align-middle">Date Updated</th>
+                        <th scope="col" class="align-middle">Notes</th>
                     </tr>
                 </thead>
                 <tbody>
                     {# Loop through each channel and channel_form #}
                     {% for channel, channel_form in zip(channel_list, channel_list_form.channels) %}
+                        {% include '_channel.html' %}
                         {# Loop through each channel's testpoint and each channel_form's testpoint form #}
                         {% for testpoint, testpoint_form in zip(channel.all_test_points(), channel_form.testpoints) %}
                             {% include '_testpoint.html' %}
@@ -65,7 +66,7 @@
                 if(Number.isNaN(meas_val)) {
                     errorElem.val('');
                     errorRow.removeClass('table-success table-danger table-warning');
-                    // pf = 0;
+                    pf = 'untested';
                 } else {
                     // Round the error
                     errorElem.val(error.toFixed(3));
@@ -77,13 +78,13 @@
                     let absError = Math.abs(error);
                     if (absError < tolerance) {
                         errorRow.addClass('table-success');
-                        pf = "Pass";
+                        pf = "passed";
                     } else if (absError > tolerance) {
                         errorRow.addClass('table-danger');
-                        pf = "Fail";
+                        pf = "failed";
                     } else {
                         errorRow.addClass('table-warning');
-                        pf = "Post";
+                        pf = "post";
                     }        
                 }
 
@@ -112,11 +113,11 @@
                     let rowElem = $(this).parents('tr');          
                     
                     // Update the colour of the row depending on the pass/fail
-                    if (pf == "Pass") {
+                    if (pf == "passed") {
                         $(rowElem).addClass('table-success');
-                    } else if (pf == "Fail") {
+                    } else if (pf == "failed") {
                         $(rowElem).addClass('table-danger');
-                    } else if (pf == "Post") {
+                    } else if (pf == "post") {
                         $(rowElem).addClass('table-warning');
                     }  
                 });

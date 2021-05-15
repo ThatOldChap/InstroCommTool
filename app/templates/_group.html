@@ -14,13 +14,12 @@
             <div class="col-12">
                 <div class="progress">                    
                     <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress['passed'] }}%"></div>
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ progress['post'] }}%"></div>
                     <div class="progress-bar bg-danger" role="progressbar" style="width: {{ progress['failed'] }}%"></div>
                 </div>
             </div>
         </div>
     </td>
-    <td class="align-middle">{{ status['passed'] + status['post'] }}/{{ group.num_testpoints() }}</td>
+    <td class="align-middle">{{ status['passed'] }}/{{ group.num_channels() }} Channels</td>
     <td class="align-middle">{{ group.completion() }}</td>
     <td class="align-middle">{{ moment(group.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
 </tr>
