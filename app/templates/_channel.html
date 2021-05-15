@@ -5,15 +5,16 @@
 {% endblock %}
 
 {% block app_content %}
-<tr class="text-center table-info">
+<tr class="text-center clickable table-info" id="ch-{{ channel.id }}" data-toggle="collapse" data-target="[id^=ch-{{ channel.id }}-tp-">
     {% set status = channel.status() %}
     {% set progress = channel.progress() %}
     <th scope="row" class="align-middle">{{ channel.id }}</th>
     <td class="align-middle">{{ channel.name }}</td>
     <td colspan="2" class="align-middle">
         <div class="row">
-            <div class="col-12">
-                <div class="progress">                                
+            <div class='col-3'>Progress: {{ round(progress['passed'] + progress['post'], 0) }}%</div>
+            <div class="col-9">
+                <div class="progress">                       
                     <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress['passed'] }}%"></div>
                     <div class="progress-bar bg-warning" role="progressbar" style="width: {{ progress['post'] }}%"></div>
                     <div class="progress-bar bg-danger" role="progressbar" style="width: {{ progress['failed'] }}%"></div>

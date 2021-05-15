@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block app_content %}
-<tr class="text-center">
+<tr class="text-center collapse" id="ch-{{ channel.id }}-tp-{{ testpoint.id }}">
     <th scope="row" class="align-middle">{{ channel.id }}</th>
     <td class="align-middle">{{ channel.name }}</td>
     <td class="align-middle">

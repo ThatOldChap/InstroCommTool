@@ -10,7 +10,7 @@
  - Add ability to import MCL data to populate the ICT for a project
  - Add ability to create a new like on existing channel definitions
  - Create enum types for all the integers stored in the database
- - 
+ - Add dividers to the testpoint progress bars
  
  
  """
