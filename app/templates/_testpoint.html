@@ -66,7 +66,7 @@
             </div>
         </div>
     </td>
-    <td class="align-middle date">{{ testpoint.pf }}</td>
+    <td class="align-middle pf">{{ testpoint.pf }}</td>
     {% set date_str = testpoint.date %}
     {#<td class="align-middle date">{{ date_str.strftime("%I:%M %p, %d-%b-%Y") }}</td>#}
     <td class="align-middle date">{{ moment(date_str).format("hh:mm A, DD-MMM-YYYY") }}</td>

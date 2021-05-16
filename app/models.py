@@ -104,10 +104,10 @@ class Channel(db.Model):
 
 		for tp in testpoints:			
 			pf = tp.pf
-			if pf == 'untested': num_untested += 1
-			if pf == 'passed': num_passed += 1
-			if pf == 'failed': num_failed += 1
-			if pf == 'post': num_post += 1
+			if pf == 'Untested': num_untested += 1
+			if pf == 'Pass': num_passed += 1
+			if pf == 'Fail': num_failed += 1
+			if pf == 'Post': num_post += 1
 
 		result = {'passed': num_passed, 'failed': num_failed, 'post': num_post, 'untested': num_untested}
 		# print(f'Channel status = {result}')	
@@ -150,7 +150,7 @@ class TestPoint(db.Model):
 	meas_val = db.Column(db.Float(16))
 	meas_val_nom = db.Column(db.Float(16))
 	error = db.Column(db.Float(8))
-	pf = db.Column(db.String(8), default="Untested") # 0 = Untested, 1 = Pass, 2 = Fail, 3 = Post
+	pf = db.Column(db.String(8), default="Untested")
 	date = db.Column(db.DateTime)
 	notes = db.Column(db.String(128))
 	

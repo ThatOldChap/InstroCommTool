@@ -59,32 +59,32 @@
 
                 // Calculate the error and fiend the field to update                
                 let error = meas_val - meas_val_nom;
-                let errorRow = $(`#${this.id}`).parents('tr');
-                let errorElem = errorRow.find('.error');
-                let pf;      
+                let rowElem = $(`#${this.id}`).parents('tr');
+                let errorElem = rowElem.find('.error');
+                let pfElem = rowElem.find('.pf')
+                let pf;   
+
+                // Clear the existing formatting   
+                pfElem.removeClass('table-success table-danger table-warning');
 
                 // Update the error value in the element
                 if(Number.isNaN(meas_val)) {
-                    errorElem.val('');
-                    errorRow.removeClass('table-success table-danger table-warning');
+                    errorElem.val('');                    
                     pf = 'Untested';
                 } else {
                     // Round the error
                     errorElem.val(error.toFixed(3));
 
-                    // Clear the existing formatting
-                    errorRow.removeClass('table-success table-danger table-warning');
-
                     // Assign the new formatting based on a pass/fail/post result
                     let absError = Math.abs(error);
                     if (absError < tolerance) {
-                        errorRow.addClass('table-success');
+                        pfElem.addClass('table-success');
                         pf = "Pass";
                     } else if (absError > tolerance) {
-                        errorRow.addClass('table-danger');
+                        pfElem.addClass('table-danger');
                         pf = "Fail";
                     } else {
-                        errorRow.addClass('table-warning');
+                        pfElem.addClass('table-warning');
                         pf = "Post";
                     }        
                 }
@@ -111,15 +111,15 @@
                     // Get the pass/fail data to process
                     let id = element.attributes['data_testpoint_id'].value;
                     let pf = element.attributes['data_pf'].value;
-                    let rowElem = $(this).parents('tr');          
+                    let pfElem = $(this).parents('tr').find('.pf');    
                     
                     // Update the colour of the row depending on the pass/fail
                     if (pf == "Pass") {
-                        $(rowElem).addClass('table-success');
+                        $(pfElem).addClass('table-success');
                     } else if (pf == "Fail") {
-                        $(rowElem).addClass('table-danger');
+                        $(pfElem).addClass('table-danger');
                     } else if (pf == "Post") {
-                        $(rowElem).addClass('table-warning');
+                        $(pfElem).addClass('table-warning');
                     }  
                 });
             }
