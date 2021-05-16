@@ -14,6 +14,7 @@
                         <th scope="col" class="align-middle">Input</th>
                         <th scope="col" class="align-middle">Min/Measured/Max</th>
                         <th scope="col" class="align-middle">Error</th>
+                        <th scope="col" class="align-middle">Pass/Fail</th>
                         <th scope="col" class="align-middle">Date Updated</th>
                         <th scope="col" class="align-middle">Notes</th>
                     </tr>
@@ -66,7 +67,7 @@
                 if(Number.isNaN(meas_val)) {
                     errorElem.val('');
                     errorRow.removeClass('table-success table-danger table-warning');
-                    pf = 'untested';
+                    pf = 'Untested';
                 } else {
                     // Round the error
                     errorElem.val(error.toFixed(3));
@@ -78,13 +79,13 @@
                     let absError = Math.abs(error);
                     if (absError < tolerance) {
                         errorRow.addClass('table-success');
-                        pf = "passed";
+                        pf = "Pass";
                     } else if (absError > tolerance) {
                         errorRow.addClass('table-danger');
-                        pf = "failed";
+                        pf = "Fail";
                     } else {
                         errorRow.addClass('table-warning');
-                        pf = "post";
+                        pf = "Post";
                     }        
                 }
 
@@ -113,11 +114,11 @@
                     let rowElem = $(this).parents('tr');          
                     
                     // Update the colour of the row depending on the pass/fail
-                    if (pf == "passed") {
+                    if (pf == "Pass") {
                         $(rowElem).addClass('table-success');
-                    } else if (pf == "failed") {
+                    } else if (pf == "Fail") {
                         $(rowElem).addClass('table-danger');
-                    } else if (pf == "post") {
+                    } else if (pf == "Post") {
                         $(rowElem).addClass('table-warning');
                     }  
                 });

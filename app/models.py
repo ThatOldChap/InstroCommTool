@@ -133,13 +133,13 @@ class Channel(db.Model):
 		passed = status['passed'] + status['post']
 		
 		if passed == total:
-			return 'passed'
+			return 'Pass'
 		elif status['untested'] == total:
-			return 'untested'
+			return 'Untested'
 		elif status['failed'] > 0:
-			return 'failed'
+			return 'Fail'
 		else:
-			return 'in-progress'
+			return 'In-Progress'
 	
 
 class TestPoint(db.Model):
@@ -219,9 +219,9 @@ class ChannelGroup(db.Model):
 
 		for ch in channels:
 			comp = ch.completion()
-			if comp == 'untested' or comp == 'in-progress': num_untested += 1
-			if comp == 'passed': num_passed += 1
-			if comp == 'failed': num_failed += 1
+			if comp == 'Untested' or comp == 'In-Progress': num_untested += 1
+			if comp == 'Pass': num_passed += 1
+			if comp == 'Fail': num_failed += 1
 
 		result = {'passed': num_passed, 'failed': num_failed, 'untested': num_untested}
 		# print(f'Group status = {result}')

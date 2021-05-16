@@ -22,7 +22,8 @@
             </div>
         </div>
     </td>
-    <td class="align-middle">{{ status['passed'] }}/{{ channel.num_test_points() }} Testpoints Complete</td>
+    <td class="align-middle">{{ status['passed'] }}/{{ channel.num_test_points() }} Complete</td>
+    <td class="align-middle">{{ channel.completion() }}</td>
     <td colspan="2" class="align-middle">Last Updated: {{ moment(channel.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
 </tr>
 {% endblock %}
