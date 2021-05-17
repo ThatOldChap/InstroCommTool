@@ -32,6 +32,8 @@ class Channel(db.Model):
 	test_points = db.relationship('TestPoint', backref='channel', lazy='dynamic')
 
 	# Future Fields:
+	signed_owner = db.Column(db.String(3), default='No')
+	signed_customer = db.Column(db.String(3), default='No')
 	#cal_eq_id_1 = db.Column(db.Integer)
 	#cal_eq_id_1_due_date = db.Column(db.DateTime, default=datetime.utcnow)
 	

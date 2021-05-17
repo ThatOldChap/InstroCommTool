@@ -1,13 +1,4 @@
-2021-05-15 00:14:11,207 ERROR: Exception on /group_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
-Traceback (most recent call last):
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1276, in _execute_context
-    self.dialect.do_execute(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 608, in do_execute
-    cursor.execute(statement, parameters)
-sqlite3.OperationalError: no such column: channel.last_updated
-
-The above exception was the direct cause of the following exception:
-
+2021-05-16 22:46:14,021 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -21,8 +12,8 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 38, in group_list
-    return render_template('group_list.html', title='Group List', group_list=group_list)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 193, in channel_list
+    return render_template('channel_list.html', title='Channel List', channel_list_form=channel_list_form, units_dict=ENG_UNITS,
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
@@ -33,59 +24,62 @@ Traceback (most recent call last):
     reraise(*rewrite_traceback_stack(source=source))
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/group_list.html", line 1, in top-level template code
-    {% extends "base.html" %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 2, in top-level template code
+    {% import 'bootstrap/form.html' as wtf %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in top-level template code
     {% block content %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 63, in block "content"
     {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/group_list.html", line 18, in block "app_content"
-    {% include '_group.html' %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/_group.html", line 7, in top-level template code
-    {% block app_content %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/_group.html", line 9, in block "app_content"
-    {% set progress = group.progress() %}
-  File "/home/michael/Projects/InstroCommTool/app/models.py", line 231, in progress
-    total = self.num_channels()
-  File "/home/michael/Projects/InstroCommTool/app/models.py", line 205, in num_channels
-    return Channel.query.filter_by(group_id=self.id).count()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3803, in count
-    return self.from_self(col).scalar()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3523, in scalar
-    ret = self.one()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3490, in one
-    ret = self.one_or_none()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3459, in one_or_none
-    ret = list(self)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3535, in __iter__
-    return self._execute_and_instances(context)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3560, in _execute_and_instances
-    result = conn.execute(querycontext.statement, self._params)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1011, in execute
-    return meth(self, multiparams, params)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 298, in _execute_on_connection
-    return connection._execute_clauseelement(self, multiparams, params)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1124, in _execute_clauseelement
-    ret = self._execute_context(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1316, in _execute_context
-    self._handle_dbapi_exception(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1510, in _handle_dbapi_exception
-    util.raise_(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 182, in raise_
-    raise exception
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1276, in _execute_context
-    self.dialect.do_execute(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 608, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such column: channel.last_updated
-[SQL: SELECT count(*) AS count_1 
-FROM (SELECT channel.id AS channel_id, channel.group_id AS channel_group_id, channel.name AS channel_name, channel.meas_type AS channel_meas_type, channel.last_updated AS channel_last_updated, channel.meas_range_min AS channel_meas_range_min, channel.meas_range_max AS channel_meas_range_max, channel.meas_eu AS channel_meas_eu, channel.full_scale AS channel_full_scale, channel.tolerance AS channel_tolerance, channel.tolerance_type AS channel_tolerance_type, channel.input_range_min AS channel_input_range_min, channel.input_range_max AS channel_input_range_max, channel.input_eu AS channel_input_eu 
-FROM channel 
-WHERE channel.group_id = ?) AS anon_1]
-[parameters: (1,)]
-(Background on this error at: http://sqlalche.me/e/13/e3q8)
-2021-05-15 00:14:22,726 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-15 00:14:43,735 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-15 00:14:49,428 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-15 00:15:44,475 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-15 00:15:53,016 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 25, in block "app_content"
+    {% include '_channel.html' %}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/_channel.html", line 27, in template
+    {% set owner = f'signed-owner-{channel.id}'}
+jinja2.exceptions.TemplateSyntaxError: expected token 'end of statement block', got 'string'
+2021-05-16 22:50:31,608 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-16 22:50:48,528 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 193, in channel_list
+    return render_template('channel_list.html', title='Channel List', channel_list_form=channel_list_form, units_dict=ENG_UNITS,
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
+    return _render(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 2, in top-level template code
+    {% import 'bootstrap/form.html' as wtf %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 53, in top-level template code
+    {% block content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 63, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 25, in block "app_content"
+    {% include '_channel.html' %}
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/_channel.html", line 27, in template
+    {% set owner = f'signed-owner-{channel.id}' %}
+jinja2.exceptions.TemplateSyntaxError: expected token 'end of statement block', got 'string'
+2021-05-16 22:51:38,853 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-16 22:52:35,773 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83

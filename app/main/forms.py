@@ -21,7 +21,13 @@ class TestPointForm(FlaskForm):
     notes = StringField('Notes')
 
 class ChannelForm(FlaskForm):
+
+    # CSS attribute definitions
+    kw_btns = {'class': 'btn-check', 'type': 'checkbox', 'checked': '', 'autocomplete': 'off', 'value': ''}
+
     testpoints = FieldList(FormField(TestPointForm))
+    signed_owner = StringField('Signed Owner', render_kw=kw_btns)
+    signed_client = StringField('Signed Client', render_kw=kw_btns)
 
 EMPTY_CHOICE = ("", 'Select Units...')
 

@@ -175,7 +175,7 @@ def channel_list():
         testpoint_list = channel.all_test_points()  
 
         # Initialize each channel_form
-        channel_form = ChannelForm()              
+        channel_form = ChannelForm()
 
         for testpoint in testpoint_list:
             
