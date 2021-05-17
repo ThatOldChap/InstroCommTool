@@ -23,15 +23,15 @@
         </div>
     </td>
     <td class="align-middle">
-        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+        <div class="btn-group-toggle" role="group" data-toggle="buttons">
             {% set owner = "signed-owner-{}".format(channel.id) %}
-            {% set client = "signed-client-{}".format(channel.id) %}
-            
+            {% set client = "signed-client-{}".format(channel.id) %}            
             <label class="btn btn-outline-success" for="signed-owner-{{ channel.id }}">MDS
                 {{ channel_form.signed_owner(id=owner) }}
+            </label>            
+            <label class="btn btn-outline-info" for="signed-client-{{ channel.id }}">Client
+                {{ channel_form.signed_client(id=client) }}
             </label>
-            {{ channel_form.signed_client(id=client) }}
-            <label class="btn btn-outline-info" for="signed-client-{{ channel.id }}">Client</label>
         </div>
     </td>
     <td class="align-middle">{{ channel.completion() }}</td>
