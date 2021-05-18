@@ -5,10 +5,13 @@
 {% endblock %}
 
 {% block app_content %}
-<tr class="text-center clickable table-info" id="ch-{{ channel.id }}" data-toggle="collapse" data-target="[id^=ch-{{ channel.id }}-tp-">
+<tr class="text-center" id="ch-{{ channel.id }}">
     {% set status = channel.status() %}
     {% set progress = channel.progress() %}
-    <th scope="row" class="align-middle">{{ channel.id }}</th>
+    <th scope="row" class="align-middle clickable" data-toggle="collapse" data-target="[id^=ch-{{ channel.id }}-tp-">
+        <i class="bi bi-chevron-right"></i>
+        {{ channel.id }}
+    </th>
     <td class="align-middle">{{ channel.name }}</td>
     <td colspan="2" class="align-middle">
         <div class="row">

@@ -41,6 +41,14 @@
         $(document).ready(function() {
             updateAllRowColors();
 
+            $('.bi-chevron-right').click(function(element) {
+                $(element.target).removeClass('bi-chevron-right').addClass('bi-chevron-down');
+            });
+
+            $('.bi-chevron-down').click(function(element) {
+                $(element.target).removeClass('bi-chevron-down').addClass('bi-chevron-right');
+            });
+
             $('.input-val').change(function(element) {
 
                 let input_val_elem = element.target;
@@ -69,7 +77,8 @@
 
                 // Update the error value in the element
                 if(Number.isNaN(meas_val)) {
-                    errorElem.val('');                    
+                    errorElem.val('');
+                    pfElem.text('Untested');                
                     pf = 'Untested';
                 } else {
                     // Round the error
@@ -79,12 +88,15 @@
                     let absError = Math.abs(error);
                     if (absError < tolerance) {
                         pfElem.addClass('table-success');
+                        pfElem.text('Pass');    
                         pf = "Pass";
                     } else if (absError > tolerance) {
                         pfElem.addClass('table-danger');
+                        pfElem.text('Fail');    
                         pf = "Fail";
                     } else {
                         pfElem.addClass('table-warning');
+                        pfElem.text('Post');    
                         pf = "Post";
                     }        
                 }
