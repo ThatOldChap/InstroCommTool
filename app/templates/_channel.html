@@ -9,7 +9,8 @@
     {% set status = channel.status() %}
     {% set progress = channel.progress() %}
     <th scope="row" class="align-middle clickable" data-toggle="collapse" data-target="[id^=ch-{{ channel.id }}-tp-">
-        <i class="bi bi-chevron-right"></i>
+        <i class="bi bi-chevron-down"></i>
+        <i class="bi bi-chevron-up d-none"></i>
         {{ channel.id }}
     </th>
     <td class="align-middle">{{ channel.name }}</td>

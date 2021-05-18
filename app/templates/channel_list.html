@@ -41,12 +41,14 @@
         $(document).ready(function() {
             updateAllRowColors();
 
-            $('.bi-chevron-right').click(function(element) {
-                $(element.target).removeClass('bi-chevron-right').addClass('bi-chevron-down');
+            $('.bi-chevron-down').click(function(element) {
+                $(element.target).addClass('d-none')
+                $(this).parent('th').find('.bi-chevron-up').removeClass('d-none');
             });
 
-            $('.bi-chevron-down').click(function(element) {
-                $(element.target).removeClass('bi-chevron-down').addClass('bi-chevron-right');
+            $('.bi-chevron-up').click(function(element) {
+                $(element.target).addClass('d-none')
+                $(this).parent('th').find('.bi-chevron-down').removeClass('d-none');
             });
 
             $('.input-val').change(function(element) {
