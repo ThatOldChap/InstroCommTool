@@ -51,6 +51,32 @@
                 $(this).parent('th').find('.bi-chevron-down').removeClass('d-none');
             });
 
+            $('[for^=signed-owner]').click(function(element) {
+                let signedOwner = element.target;
+                let data = {id: signedOwner.dataset.id};
+                let check = signedOwner.classList.contains('active');
+                // Active class gets added after click event so the check is inverted
+                if (!check) {
+                    data['signed_owner'] = 'Yes';
+                } else {
+                    data['signed_owner'] = 'No';
+                }
+                updateChannel(data);          
+            });
+
+            $('[for^=signed-client]').click(function(element) {
+                let signedClient = element.target;
+                let data = {id: signedClient.dataset.id};
+                let check = signedClient.classList.contains('active');
+                // Active class gets added after click event so the check is inverted
+                if (!check) {
+                    data['signed_customer'] = 'Yes';
+                } else {
+                    data['signed_customer'] = 'No';
+                }
+                updateChannel(data);          
+            });
+
             $('.input-val').change(function(element) {
 
                 let input_val_elem = element.target;
@@ -63,6 +89,7 @@
                 // Unpack the data
                 let meas_val_elem = element.target;                
                 let id = meas_val_elem.dataset.testpointId;
+                let chId = meas_val_elem.dataset.chId;
                 let meas_val_nom = parseFloat(meas_val_elem.placeholder);
                 let meas_val = parseFloat(meas_val_elem.value);  
                 let tolerance = parseFloat(meas_val_elem.dataset.tolerance);              
@@ -100,7 +127,7 @@
                         pfElem.addClass('table-warning');
                         pfElem.text('Post');    
                         pf = "Post";
-                    }        
+                    }      
                 }
 
                 // Sends the data through AJAX to be processed
@@ -148,6 +175,20 @@
                     },
                     error: function(error) {
                         console.log(`Error updating testpoint: ${error}`);
+                    }
+                });
+            }
+
+            function updateChannel(data) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/update_channel',
+                    data: data,
+                    success: function(response) {
+                        console.log(response['message']);
+                    },
+                    error: function(error) {
+                        console.log(`Error updating channel: ${error}`);
                     }
                 });
             }

@@ -192,6 +192,29 @@ def channel_list():
                             channel_list=channel_list)
  
 
+@bp.route('/update_channel', methods=['POST'])
+def update_channel():
+
+    # Find the testpoint being updated from the database
+    id = request.form['id']
+    channel = Channel.query.filter_by(id=id).first()
+    print(request.form)
+
+    # Check and write the new values to the database
+    if 'signed_owner' in request.form:
+        channel.signed_owner = request.form['signed_owner']
+
+    # Check and write the new values to the database
+    if 'signed_customer' in request.form:
+        channel.signed_customer = request.form['signed_customer']        
+
+    # Save the changes to the database
+    db.session.commit()
+    print(f'signed_owner = {channel.signed_owner}, signed_customer = {channel.signed_customer}')
+
+    return jsonify({'message': f'Channel [{channel.name}] has been updated'})
+
+
 @bp.route('/update_testpoint', methods=['POST'])
 def update_testpoint():
 
@@ -238,4 +261,4 @@ def update_testpoint():
     # Save the changes to the database
     db.session.commit()
 
-    return jsonify({'message': 'TestPoint has been updated'})
+    return jsonify({'message': f'TestPoint [{testpoint.id}] has been updated'})
