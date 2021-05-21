@@ -42,9 +42,9 @@
                     <span class="input-group-text">{{ round(testpoint.low_limit(), 3) }}</span>
                     {# Format the formfield to handle testpoints with no meas_val yet #}
                     {% if testpoint.meas_val == None %}
-                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, data_tolerance=testpoint.calc_tolerance(), data_ch_id="{{ channel.id }}" value="") }}
+                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, data_tolerance=testpoint.calc_tolerance(), data_ch_id=channel.id, value="") }}
                     {% else %}
-                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, data_tolerance=testpoint.calc_tolerance(), data_ch_id="{{ channel.id }}" value=round(testpoint.meas_val, 3)) }}
+                    {{ testpoint_form.meas_val(placeholder=round(testpoint.meas_val_nom, 3), class="meas-val", data_testpoint_id=testpoint.id, data_tolerance=testpoint.calc_tolerance(), data_ch_id=channel.id, value=round(testpoint.meas_val, 3)) }}
                     {% endif %}
                     <span class="input-group-text">{{ round(testpoint.high_limit(), 3) }}</span>
                     <span class="input-group-text">{{ units_dict[channel.meas_eu] }}</span>            

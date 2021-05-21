@@ -1,4 +1,4 @@
-2021-05-16 22:46:14,021 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-05-16 23:19:05,116 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -37,10 +37,10 @@ Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
   File "/home/michael/Projects/InstroCommTool/app/templates/_channel.html", line 27, in template
-    {% set owner = f'signed-owner-{channel.id}'}
-jinja2.exceptions.TemplateSyntaxError: expected token 'end of statement block', got 'string'
-2021-05-16 22:50:31,608 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-16 22:50:48,528 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+    {% set owner = "signed-owner-%(id)s", id=channel.id %}
+jinja2.exceptions.TemplateSyntaxError: expected token 'end of statement block', got '='
+2021-05-16 23:20:24,550 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-16 23:20:26,634 ERROR: Exception on /channel_list [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -79,7 +79,6 @@ Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
   File "/home/michael/Projects/InstroCommTool/app/templates/_channel.html", line 27, in template
-    {% set owner = f'signed-owner-{channel.id}' %}
-jinja2.exceptions.TemplateSyntaxError: expected token 'end of statement block', got 'string'
-2021-05-16 22:51:38,853 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-16 22:52:35,773 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+    {% set owner = ("signed-owner-%(id)s", id=channel.id) %}
+jinja2.exceptions.TemplateSyntaxError: expected token ')', got '='
+2021-05-16 23:20:47,358 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83

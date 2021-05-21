@@ -40,6 +40,7 @@
     <script>
         $(document).ready(function() {
             updateAllRowColors();
+            let prevResultType = "";
 
             $('.bi-chevron-down').click(function(element) {
                 $(element.target).addClass('d-none')
@@ -66,7 +67,7 @@
 
             $('[for^=signed-client]').click(function(element) {
                 let signedClient = element.target;
-                let data = {id: signedClient.dataset.id};
+                let data = {chId: signedClient.dataset.id};
                 let check = signedClient.classList.contains('active');
                 // Active class gets added after click event so the check is inverted
                 if (!check) {
@@ -80,7 +81,7 @@
             $('.input-val').change(function(element) {
 
                 let input_val_elem = element.target;
-                let data = {id: input_val_elem.dataset.testpointId, input_val: input_val_elem.value};
+                let data = {tpId: input_val_elem.dataset.testpointId, input_val: input_val_elem.value};
                 updateTestPoint(data); 
             });
 
@@ -88,7 +89,7 @@
 
                 // Unpack the data
                 let meas_val_elem = element.target;                
-                let id = meas_val_elem.dataset.testpointId;
+                let tpId = meas_val_elem.dataset.testpointId;
                 let chId = meas_val_elem.dataset.chId;
                 let meas_val_nom = parseFloat(meas_val_elem.placeholder);
                 let meas_val = parseFloat(meas_val_elem.value);  
@@ -103,6 +104,8 @@
 
                 // Clear the existing formatting   
                 pfElem.removeClass('table-success table-danger table-warning');
+
+                
 
                 // Update the error value in the element
                 if(Number.isNaN(meas_val)) {
@@ -131,9 +134,36 @@
                 }
 
                 // Sends the data through AJAX to be processed
-                let data = {id: id, meas_val: meas_val, error: error, pf: pf};
-                updateTestPoint(data); 
+                let data = {tpId: tpId, chId: chId, meas_val: meas_val, error: error, pf: pf};
+                console.log(data);
+                // updateTestPoint(data);
+                $.when(updateTestPoint(data)).done(getUpdatedProgress(data));                
             });
+
+            function getUpdatedProgress(data) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_updated_progress',
+                    data: data,
+                    success: function(response) {
+                        // Find the progress bar element
+                        let chElem = $(`#ch-${data['chId']}`);
+                        let progElem = chElem.find('.progress');
+                        let numTp = progElem[0].dataset.numTp;
+                        let passElem = chElem.find('.bg-success');
+                        let postElem = chElem.find('.bg-warning');
+                        let failElem = chElem.find('.bg-danger');
+                        let passPcg = passElem[0].attributes['style'].value;
+                        let postPcg = postElem[0].attributes['style'].value;
+                        let failPcg = failElem[0].attributes['style'].value;
+                        console.log(`passPcg = ${passPcg}, postPcg = ${postPcg}, failPcg = ${failPcg}`);
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
 
             $('.notes').change(function(element) {
 
@@ -141,7 +171,7 @@
                 let date = updateDate(this.id);
                 
                 // Sends the data through AJAX to be processed
-                let data = {id: notes_elem.dataset.testpointId, notes: notes_elem.value, date: date};
+                let data = {tpId: notes_elem.dataset.testpointId, notes: notes_elem.value, date: date};
                 updateTestPoint(data);             
             });
 
@@ -150,7 +180,7 @@
                 $('.error').each(function(index, element) {    
 
                     // Get the pass/fail data to process
-                    let id = element.attributes['data_testpoint_id'].value;
+                    let tpId = element.attributes['data_testpoint_id'].value;
                     let pf = element.attributes['data_pf'].value;
                     let pfElem = $(this).parents('tr').find('.pf');    
                     

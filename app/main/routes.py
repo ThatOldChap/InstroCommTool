@@ -196,9 +196,8 @@ def channel_list():
 def update_channel():
 
     # Find the testpoint being updated from the database
-    id = request.form['id']
+    id = request.form['chId']
     channel = Channel.query.filter_by(id=id).first()
-    print(request.form)
 
     # Check and write the new values to the database
     if 'signed_owner' in request.form:
@@ -219,7 +218,7 @@ def update_channel():
 def update_testpoint():
 
     # Find the testpoint being updated from the database
-    id = request.form['id']
+    id = request.form['tpId']
     testpoint = TestPoint.query.filter_by(id=id).first()
 
     # Check and write the new values to the database
@@ -262,3 +261,16 @@ def update_testpoint():
     db.session.commit()
 
     return jsonify({'message': f'TestPoint [{testpoint.id}] has been updated'})
+
+
+@bp.route('/get_updated_progress', methods=['GET', 'POST'])
+def get_updated_progress():
+
+    # Find the channel queried from the database
+    id = request.form['chId']
+    print(f'Channel ID = {id}')
+    channel = Channel.query.filter_by(id=id).first()
+    progress = channel.progress()
+    print(jsonify(progress))
+
+    return jsonify(progress)
