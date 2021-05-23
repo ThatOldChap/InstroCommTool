@@ -118,3 +118,11 @@ class ProjectForm(FlaskForm):
 class CustomerForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField('Add New Customer')
+
+class NewCalEquip(FlaskForm):
+    owner_id = StringField('Owner ID', validators=[DataRequired()])
+    name = SelectField('Name', validators=[DataRequired()])
+    manufacturer = StringField('Manufacturer', validators=[DataRequired()])
+    model_num = StringField('Model Number', validators=[DataRequired()])
+    serial_num = StringField('Serial Number', validators=[DataRequired()])
+    cal_due_date = StringField('Calibration Due Date', validators=[DataRequired()])

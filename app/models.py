@@ -157,7 +157,7 @@ class TestPoint(db.Model):
 	notes = db.Column(db.String(128))
 	
 	def __repr__(self):
-		return '<TestPoint {} for Channel id {}>'.format(self.id, self.channel_id)
+		return f'<TestPoint {self.id} for Channel {self.get_channel().name}>'
 
 	def get_channel(self):
 		return Channel.query.filter_by(id=self.channel_id).first()
@@ -199,6 +199,9 @@ class ChannelGroup(db.Model):
 	last_updated = db.Column(db.DateTime, default=datetime.utcnow)
 	channels = db.relationship('Channel', backref='channel_group', lazy='dynamic')
 	job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
+
+	def __repr__(self):
+		return f'<ChannelGroup {self.name}: {self.num_channels()} Channels>'
 
 	def all_channels(self):
 		return Channel.query.filter_by(group_id=self.id).all()
@@ -264,6 +267,9 @@ class Job(db.Model):
 	last_updated = db.Column(db.DateTime)
 	channel_groups = db.relationship('ChannelGroup', backref='job', lazy='dynamic')
 
+	def __repr__(self):
+		return f'<Job: {self.phase} {self.job_type} for Project {self.project_number()}>'
+
 	def all_groups(self):
 		return ChannelGroup.query.filter_by(job_id=self.id).all()
 
@@ -324,6 +330,9 @@ class Project(db.Model):
 	number = db.Column(db.Integer)
 	customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
 
+	def __repr__(self):
+		return f'<Project {self.number}: {self.name}>'
+
 	def all_jobs(self):
 		return Job.query.filter_by(project_id=self.id).all()
 
@@ -335,3 +344,22 @@ class Customer(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
 	projects = db.relationship('Project', backref='customer', lazy='dynamic')
+
+	def __repr__(self):
+		return f'<Customer: {self.name}>'
+
+
+class CalEquip(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	owner_id = db.Column(db.String(24))	# MDS0204
+	name = db.Column(db.String(32)) # DMM, Oscilloscope, Signal Source, Decade Box, etc...
+	manufacturer = db.Column(db.String(24)) # Fluke
+	model_num = db.Column(db.String(24)) 
+	serial_num = db.Column(db.Integer)
+	cal_due_date = db.Column(db.DateTime)
+
+	def __repr__(self):
+		return f'<CalEquip {self.owner_id}: {self.manufacturer} {self.name}>'
+
+
+	
