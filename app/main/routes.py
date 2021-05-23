@@ -4,8 +4,8 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import ChannelForm, TestPointForm, NewChannelForm, ChannelListForm
-from app.main.forms import CustomerForm, ProjectForm, JobForm, ChannelGroupForm
-from app.models import Channel, TestPoint, Project, Customer, Job, ChannelGroup
+from app.main.forms import CustomerForm, ProjectForm, JobForm, ChannelGroupForm, NewTestEquipmentForm
+from app.models import Channel, TestPoint, Project, Customer, Job, ChannelGroup, TestEquipment
 from app.main import bp
 from app.main.measurements import ENG_UNITS
 
@@ -18,6 +18,8 @@ def index():
     summary['projects'] = Project.query.count()
     summary['jobs'] = Job.query.count()
     summary['groups'] = ChannelGroup.query.count()
+    summary['channels'] = Channel.query.count()
+    summary['cal equip'] = TestEquipment.query.count()
 
     return render_template('index.html', title='Home', summary=summary)
 
@@ -273,3 +275,26 @@ def get_updated_progress():
     print(progress)
 
     return jsonify(progress)
+
+@bp.route('/new_test_equipment', methods=['GET', 'POST'])
+def new_test_equipment():
+
+    form = NewTestEquipmentForm()
+
+    if form.validate_on_submit():
+
+        test_equipment = TestEquipment(
+            owner_id=form.owner_id.data,
+            name=form.name.data,
+            manufacturer=form.manufacturer.data,
+            model_num=form.model_num.data,
+            serial_num=form.serial_num.data,
+            cal_due_date=form.cal_due_date.data
+        )        
+        db.session.add(test_equipment)
+        db.session.commit()
+        flash(f'TestEquipment {test_equipment.owner_id} {test_equipment.name} has been added to the database.')
+
+        return redirect(url_for('main.index'))
+
+    return render_template('new_test_equipment.html', title='New Test Equipment', form=form)
