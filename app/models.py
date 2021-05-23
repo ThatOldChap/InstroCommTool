@@ -2,14 +2,13 @@ from datetime import datetime, timedelta
 from time import time
 from flask import current_app
 from app import db
-
 import math
 
 channel_equipment = db.Table(
 	'channel_equipment', db.Model.metadata,
 	db.Column('channel_id', db.Integer, db.ForeignKey('channel.id')),
 	db.Column('test_equipment_id', db.Integer, db.ForeignKey('test_equipment.id'))
-)
+) 
 
 class Channel(db.Model):
 	# Basic channel info
