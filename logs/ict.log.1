@@ -1,4 +1,7 @@
-2021-05-22 19:44:51,827 ERROR: Exception on /get_updated_progress [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-05-22 20:18:41,528 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-22 20:20:00,754 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-22 20:23:43,726 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-22 20:30:25,621 ERROR: Exception on /get_updated_progress [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1276, in _execute_context
     self.dialect.do_execute(
@@ -21,7 +24,7 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 272, in get_updated_progress
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 271, in get_updated_progress
     channel = Channel.query.filter_by(id=id).first()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3429, in first
     ret = list(self[0:1])
@@ -52,11 +55,9 @@ sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) database is locked
 FROM channel 
 WHERE channel.id = ?
  LIMIT ? OFFSET ?]
-[parameters: ('1', 1, 0)]
+[parameters: ('2', 1, 0)]
 (Background on this error at: http://sqlalche.me/e/13/e3q8)
-2021-05-22 19:45:41,966 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-22 19:48:19,221 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-22 19:48:46,778 ERROR: Exception on /get_updated_progress [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-05-22 20:30:51,201 ERROR: Exception on /get_updated_progress [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1276, in _execute_context
     self.dialect.do_execute(
@@ -79,7 +80,7 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 272, in get_updated_progress
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 271, in get_updated_progress
     channel = Channel.query.filter_by(id=id).first()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3429, in first
     ret = list(self[0:1])
@@ -110,8 +111,7 @@ sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) database is locked
 FROM channel 
 WHERE channel.id = ?
  LIMIT ? OFFSET ?]
-[parameters: ('1', 1, 0)]
+[parameters: ('2', 1, 0)]
 (Background on this error at: http://sqlalche.me/e/13/e3q8)
-2021-05-22 19:54:24,192 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-22 19:56:22,969 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-22 20:14:06,397 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-22 20:31:23,823 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-22 20:58:37,888 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83

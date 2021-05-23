@@ -119,10 +119,13 @@ class CustomerForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField('Add New Customer')
 
-class NewCalEquip(FlaskForm):
+CHOICES_EQUIP_NAME = [("", "Select..."),("DMM", "DMM"),("Signal Source", "Signal Source"),('Decade Box', "Decade Box")]
+
+class NewTestEquipmentForm(FlaskForm):
     owner_id = StringField('Owner ID', validators=[DataRequired()])
-    name = SelectField('Name', validators=[DataRequired()])
+    name = SelectField('Name', choices=CHOICES_EQUIP_NAME, render_kw={'class': 'custom-select'}, validators=[DataRequired()])
     manufacturer = StringField('Manufacturer', validators=[DataRequired()])
     model_num = StringField('Model Number', validators=[DataRequired()])
     serial_num = StringField('Serial Number', validators=[DataRequired()])
-    cal_due_date = StringField('Calibration Due Date', validators=[DataRequired()])
+    cal_due_date = DateField('Calibration Due Date', validators=[DataRequired()])
+    submit = SubmitField('Add New Test Equipment')

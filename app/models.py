@@ -5,6 +5,12 @@ from app import db
 
 import math
 
+channel_equipment = db.Table(
+	'channel_equipment', db.Model.metadata,
+	db.Column('channel_id', db.Integer, db.ForeignKey('channel.id')),
+	db.Column('test_equipment_id', db.Integer, db.ForeignKey('test_equipment.id'))
+)
+
 class Channel(db.Model):
 	# Basic channel info
 	id = db.Column(db.Integer, primary_key=True)
@@ -34,8 +40,12 @@ class Channel(db.Model):
 	# Future Fields:
 	signed_owner = db.Column(db.String(3), default='No')
 	signed_customer = db.Column(db.String(3), default='No')
-	#cal_eq_id_1 = db.Column(db.Integer)
-	#cal_eq_id_1_due_date = db.Column(db.DateTime, default=datetime.utcnow)
+	test_equipment = db.relationship(
+		'TestEquipment',
+		secondary=channel_equipment,
+		backref='channel',
+		lazy='dynamic'
+	)
 	
 	def __repr__(self):
 		return '<Channel {}>'.format(self.name)
@@ -349,7 +359,7 @@ class Customer(db.Model):
 		return f'<Customer: {self.name}>'
 
 
-class CalEquip(db.Model):
+class TestEquipment(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	owner_id = db.Column(db.String(24))	# MDS0204
 	name = db.Column(db.String(32)) # DMM, Oscilloscope, Signal Source, Decade Box, etc...
@@ -359,7 +369,5 @@ class CalEquip(db.Model):
 	cal_due_date = db.Column(db.DateTime)
 
 	def __repr__(self):
-		return f'<CalEquip {self.owner_id}: {self.manufacturer} {self.name}>'
+		return f'<TestEquipment {self.owner_id}: {self.manufacturer} {self.name}>'
 
-
-	

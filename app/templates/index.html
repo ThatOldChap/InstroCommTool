@@ -24,6 +24,16 @@
     </button>
     <h3>ChannelGroup Count: {{ summary['groups'] }}</h3>
     <br>
+    <button type="button" class="btn btn-primary">
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_channel') }}">New Channel</a>
+    </button>
+    <h3>Channel Count: {{ summary['channels'] }}</h3>
+    <br>
+    <button type="button" class="btn btn-secondary">
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_cal_equip') }}">New Cal Equipment</a>
+    </button>
+    <h3>Cal Equipment Count: {{ summary['cal equip'] }}</h3>
+    <br>
     
     
 {% endblock %}
