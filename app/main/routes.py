@@ -268,9 +268,8 @@ def get_updated_progress():
 
     # Find the channel queried from the database
     id = request.form['chId']
-    print(f'Channel ID = {id}')
     channel = Channel.query.filter_by(id=id).first()
     progress = channel.progress()
-    print(jsonify(progress))
+    print(progress)
 
     return jsonify(progress)

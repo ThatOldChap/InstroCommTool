@@ -153,14 +153,12 @@
                         let passElem = chElem.find('.bg-success');
                         let postElem = chElem.find('.bg-warning');
                         let failElem = chElem.find('.bg-danger');
-                        let passPcg = passElem[0].attributes['style'].value;
-                        let postPcg = postElem[0].attributes['style'].value;
-                        let failPcg = failElem[0].attributes['style'].value;
-                        console.log(`passPcg = ${passPcg}, postPcg = ${postPcg}, failPcg = ${failPcg}`);
-
+                        passElem[0].attributes['style'].value = `width: ${response['passed']}%`;
+                        postElem[0].attributes['style'].value = `width: ${response['post']}%`;
+                        failElem[0].attributes['style'].value = `width: ${response['failed']}%`;
                     },
                     error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
+                        console.log(`Error = ${xhr.responseText}`);
                     }
                 });
             }
