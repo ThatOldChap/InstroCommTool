@@ -27,7 +27,17 @@
         </div>
     </td>
     <td class="align-middle">
-        <div class="btn-group-toggle" role="group" data-toggle="buttons">
+        <div class="row">            
+            <div class="col-12">
+                <span class="badge bg-success">By: Michael Chaplin</span>
+                <span class="badge bg-info">MDS0504: Signal Source</span>
+            </div>
+        </div>            
+    </td>
+    <td class="align-middle completion">{{ channel.completion() }}</td>
+    <td class="align-middle last-updated">{{ moment(channel.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>    
+    <td class="align-middle">
+        <div class="btn-group-toggle" role="group" data-toggle="buttons">Signed:
             {% set owner = "signed-owner-{}".format(channel.id) %}
             {% set client = "signed-client-{}".format(channel.id) %}
             {% if channel.signed_owner == 'Yes' %}      
@@ -43,8 +53,5 @@
             {% endif %}
         </div>
     </td>
-    <td class="align-middle completion">{{ channel.completion() }}</td>
-    <td class="align-middle last-updated">{{ moment(channel.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
-    <td class="align-middle">Extra</td>
 </tr>
 {% endblock %}

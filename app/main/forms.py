@@ -24,10 +24,12 @@ class ChannelForm(FlaskForm):
 
     # CSS attribute definitions
     kw_btns = {'class': 'btn-check', 'type': 'checkbox', 'checked': '', 'autocomplete': 'off', 'value': ''}
+    kw_selectField = {'class': 'form-control'}
 
     testpoints = FieldList(FormField(TestPointForm))
     signed_owner = StringField('Signed Owner', render_kw=kw_btns)
     signed_client = StringField('Signed Client', render_kw=kw_btns)
+    test_equipment = SelectField('Test Equipment', render_kw=kw_selectField)
 
 EMPTY_CHOICE = ("", 'Select Units...')
 
