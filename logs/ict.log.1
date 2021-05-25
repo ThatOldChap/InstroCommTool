@@ -1,13 +1,14 @@
-2021-05-22 20:18:41,528 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-22 20:20:00,754 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-22 20:23:43,726 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-22 20:30:25,621 ERROR: Exception on /get_updated_progress [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-05-23 10:42:33,818 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 10:42:41,310 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 10:42:46,425 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 10:43:41,515 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 10:43:57,441 ERROR: Exception on /index [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1276, in _execute_context
     self.dialect.do_execute(
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 608, in do_execute
     cursor.execute(statement, parameters)
-sqlite3.OperationalError: database is locked
+sqlite3.OperationalError: no such table: cal_equip
 
 The above exception was the direct cause of the following exception:
 
@@ -24,12 +25,16 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 271, in get_updated_progress
-    channel = Channel.query.filter_by(id=id).first()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3429, in first
-    ret = list(self[0:1])
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3203, in __getitem__
-    return list(res)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 22, in index
+    summary['cal equip'] = CalEquip.query.count()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3803, in count
+    return self.from_self(col).scalar()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3523, in scalar
+    ret = self.one()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3490, in one
+    ret = self.one_or_none()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3459, in one_or_none
+    ret = list(self)
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3535, in __iter__
     return self._execute_and_instances(context)
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3560, in _execute_and_instances
@@ -50,23 +55,20 @@ Traceback (most recent call last):
     self.dialect.do_execute(
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 608, in do_execute
     cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) database is locked
-[SQL: SELECT channel.id AS channel_id, channel.group_id AS channel_group_id, channel.name AS channel_name, channel.meas_type AS channel_meas_type, channel.last_updated AS channel_last_updated, channel.meas_range_min AS channel_meas_range_min, channel.meas_range_max AS channel_meas_range_max, channel.meas_eu AS channel_meas_eu, channel.full_scale AS channel_full_scale, channel.tolerance AS channel_tolerance, channel.tolerance_type AS channel_tolerance_type, channel.input_range_min AS channel_input_range_min, channel.input_range_max AS channel_input_range_max, channel.input_eu AS channel_input_eu, channel.signed_owner AS channel_signed_owner, channel.signed_customer AS channel_signed_customer 
-FROM channel 
-WHERE channel.id = ?
- LIMIT ? OFFSET ?]
-[parameters: ('2', 1, 0)]
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: cal_equip
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT cal_equip.id AS cal_equip_id, cal_equip.owner_id AS cal_equip_owner_id, cal_equip.name AS cal_equip_name, cal_equip.manufacturer AS cal_equip_manufacturer, cal_equip.model_num AS cal_equip_model_num, cal_equip.serial_num AS cal_equip_serial_num, cal_equip.cal_due_date AS cal_equip_cal_due_date 
+FROM cal_equip) AS anon_1]
 (Background on this error at: http://sqlalche.me/e/13/e3q8)
-2021-05-22 20:30:51,201 ERROR: Exception on /get_updated_progress [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
-Traceback (most recent call last):
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1276, in _execute_context
-    self.dialect.do_execute(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 608, in do_execute
-    cursor.execute(statement, parameters)
-sqlite3.OperationalError: database is locked
-
-The above exception was the direct cause of the following exception:
-
+2021-05-23 10:44:45,897 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 10:47:36,637 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 10:53:49,554 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 10:55:12,787 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 10:56:59,026 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 11:00:44,462 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 13:36:44,831 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 22:53:25,645 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-23 22:53:27,500 ERROR: Exception on /index [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -80,38 +82,39 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 271, in get_updated_progress
-    channel = Channel.query.filter_by(id=id).first()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3429, in first
-    ret = list(self[0:1])
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3203, in __getitem__
-    return list(res)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3535, in __iter__
-    return self._execute_and_instances(context)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/orm/query.py", line 3560, in _execute_and_instances
-    result = conn.execute(querycontext.statement, self._params)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1011, in execute
-    return meth(self, multiparams, params)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/sql/elements.py", line 298, in _execute_on_connection
-    return connection._execute_clauseelement(self, multiparams, params)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1124, in _execute_clauseelement
-    ret = self._execute_context(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1316, in _execute_context
-    self._handle_dbapi_exception(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1510, in _handle_dbapi_exception
-    util.raise_(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 182, in raise_
-    raise exception
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 1276, in _execute_context
-    self.dialect.do_execute(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 608, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) database is locked
-[SQL: SELECT channel.id AS channel_id, channel.group_id AS channel_group_id, channel.name AS channel_name, channel.meas_type AS channel_meas_type, channel.last_updated AS channel_last_updated, channel.meas_range_min AS channel_meas_range_min, channel.meas_range_max AS channel_meas_range_max, channel.meas_eu AS channel_meas_eu, channel.full_scale AS channel_full_scale, channel.tolerance AS channel_tolerance, channel.tolerance_type AS channel_tolerance_type, channel.input_range_min AS channel_input_range_min, channel.input_range_max AS channel_input_range_max, channel.input_eu AS channel_input_eu, channel.signed_owner AS channel_signed_owner, channel.signed_customer AS channel_signed_customer 
-FROM channel 
-WHERE channel.id = ?
- LIMIT ? OFFSET ?]
-[parameters: ('2', 1, 0)]
-(Background on this error at: http://sqlalche.me/e/13/e3q8)
-2021-05-22 20:31:23,823 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-22 20:58:37,888 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 24, in index
+    return render_template('index.html', title='Home', summary=summary)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
+    return _render(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
+    rv = template.render(context)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 1090, in render
+    self.environment.handle_exception()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/environment.py", line 832, in handle_exception
+    reraise(*rewrite_traceback_stack(source=source))
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
+    raise value.with_traceback(tb)
+  File "/home/michael/Projects/InstroCommTool/app/templates/index.html", line 2, in top-level template code
+    {% import 'bootstrap/form.html' as wtf %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 55, in top-level template code
+    {% block content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 65, in block "content"
+    {% block app_content %}{% endblock %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/index.html", line 33, in block "app_content"
+    <a style="color:#FFFFFF;" href="{{ url_for('main.new_cal_equip') }}">New Cal Equipment</a>
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/helpers.py", line 370, in url_for
+    return appctx.app.handle_url_build_error(error, endpoint, values)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2216, in handle_url_build_error
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/helpers.py", line 357, in url_for
+    rv = url_adapter.build(
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/werkzeug/routing.py", line 2179, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.BuildError: Could not build url for endpoint 'main.new_cal_equip'. Did you mean 'main.new_test_equipment' instead?
+2021-05-23 22:53:57,156 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-24 16:04:31,632 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-24 17:32:14,344 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-24 17:34:53,501 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-24 17:35:43,648 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83

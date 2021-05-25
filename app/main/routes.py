@@ -198,8 +198,8 @@ def channel_list():
 def update_channel():
 
     # Find the testpoint being updated from the database
-    id = request.form['chId']
-    channel = Channel.query.filter_by(id=id).first()
+    ch_id = request.form['chId']
+    channel = Channel.query.filter_by(id=ch_id).first()
 
     # Check and write the new values to the database
     if 'signed_owner' in request.form:
@@ -207,11 +207,15 @@ def update_channel():
 
     # Check and write the new values to the database
     if 'signed_customer' in request.form:
-        channel.signed_customer = request.form['signed_customer']        
+        channel.signed_customer = request.form['signed_customer']
+
+    if 'date' in request.form:
+        js_date = request.form['date']
+        new_date = dt.parse(js_date)
+        channel.last_updated = new_date
 
     # Save the changes to the database
     db.session.commit()
-    print(f'signed_owner = {channel.signed_owner}, signed_customer = {channel.signed_customer}')
 
     return jsonify({'message': f'Channel [{channel.name}] has been updated'})
 
@@ -219,9 +223,11 @@ def update_channel():
 @bp.route('/update_testpoint', methods=['POST'])
 def update_testpoint():
 
-    # Find the testpoint being updated from the database
-    id = request.form['tpId']
-    testpoint = TestPoint.query.filter_by(id=id).first()
+    # Find the testpoint and channel being updated from the database
+    tp_id = request.form['tpId']
+    ch_id = request.form['chId']
+    testpoint = TestPoint.query.filter_by(id=tp_id).first()
+    channel = Channel.query.filter_by(id=ch_id).first()
 
     # Check and write the new values to the database
     if 'input_val' in request.form:
@@ -245,19 +251,17 @@ def update_testpoint():
         else:
             testpoint.error = new_error 
 
-    if 'date' in request.form:
-        js_date = request.form['date']
-        new_date = dt.parse(js_date)
-        if new_date == "":
-            testpoint.date = None
-        else:
-            testpoint.date = new_date
-
     if 'notes' in request.form:
         testpoint.notes = request.form['notes']
     
     if 'pf' in request.form:
         testpoint.pf = request.form['pf']
+
+    if 'date' in request.form:
+        js_date = request.form['date']
+        new_date = dt.parse(js_date)
+        testpoint.date = new_date
+        channel.last_updated = new_date
 
     # Save the changes to the database
     db.session.commit()
@@ -272,9 +276,9 @@ def get_updated_progress():
     id = request.form['chId']
     channel = Channel.query.filter_by(id=id).first()
     progress = channel.progress()
-    print(progress)
+    completion = channel.completion()
 
-    return jsonify(progress)
+    return jsonify({'progress': progress, 'completion': completion})
 
 @bp.route('/new_test_equipment', methods=['GET', 'POST'])
 def new_test_equipment():

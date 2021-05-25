@@ -40,7 +40,6 @@
     <script>
         $(document).ready(function() {
             updateAllRowColors();
-            let prevResultType = "";
 
             $('.bi-chevron-down').click(function(element) {
                 $(element.target).addClass('d-none')
@@ -54,7 +53,7 @@
 
             $('[for^=signed-owner]').click(function(element) {
                 let signedOwner = element.target;
-                let data = {id: signedOwner.dataset.id};
+                let data = {chId: signedOwner.dataset.chId, date: getNewDate()};
                 let check = signedOwner.classList.contains('active');
                 // Active class gets added after click event so the check is inverted
                 if (!check) {
@@ -67,7 +66,7 @@
 
             $('[for^=signed-client]').click(function(element) {
                 let signedClient = element.target;
-                let data = {chId: signedClient.dataset.id};
+                let data = {chId: signedClient.dataset.chId, date: getNewDate()};
                 let check = signedClient.classList.contains('active');
                 // Active class gets added after click event so the check is inverted
                 if (!check) {
@@ -81,7 +80,7 @@
             $('.input-val').change(function(element) {
 
                 let input_val_elem = element.target;
-                let data = {tpId: input_val_elem.dataset.testpointId, input_val: input_val_elem.value};
+                let data = {tpId: input_val_elem.dataset.tpId, chId:input_val_elem.dataset.chId, input_val: input_val_elem.value, date: getNewDate()};
                 updateTestPoint(data); 
             });
 
@@ -89,7 +88,7 @@
 
                 // Unpack the data
                 let meas_val_elem = element.target;                
-                let tpId = meas_val_elem.dataset.testpointId;
+                let tpId = meas_val_elem.dataset.tpId;
                 let chId = meas_val_elem.dataset.chId;
                 let meas_val_nom = parseFloat(meas_val_elem.placeholder);
                 let meas_val = parseFloat(meas_val_elem.value);  
@@ -132,9 +131,8 @@
                 }
 
                 // Sends the data through AJAX to be processed
-                let data = {tpId: tpId, chId: chId, meas_val: meas_val, error: error, pf: pf};
-                console.log(data);
-                // updateTestPoint(data);
+                let data = {tpId: tpId, chId: chId, meas_val: meas_val, error: error, pf: pf, date: getNewDate()};
+                console.log(`Data being sent via ajax = ${data}`);
                 $.when(updateTestPoint(data)).done(getUpdatedProgress(data));                
             });
 
@@ -144,16 +142,32 @@
                     url: '/get_updated_progress',
                     data: data,
                     success: function(response) {
-                        // Find the progress bar element
+                        // Find the channel element
                         let chElem = $(`#ch-${data['chId']}`);
-                        let progElem = chElem.find('.progress');
-                        let numTp = progElem[0].dataset.numTp;
+
+                        // Update the completion message
+                        let compElem = chElem.find('.completion');
+                        compText = response['completion'];
+                        console.log(`completion = ${compText}`);
+                        compElem.text(compText);
+                        compElem.removeClass('table-success table-danger table-info');
+
+                        if (compText == 'Pass') {
+                            compElem.addClass('table-success');
+                        } else if (compText == 'Fail') {
+                            compElem.addClass('table-danger');
+                        } else if (compText == 'In-Progress') {
+                            compElem.addClass('table-info');
+                        }
+                        
+                        // Update the progress bar
+                        let progElem = chElem.find('.progress');                        
                         let passElem = chElem.find('.bg-success');
                         let postElem = chElem.find('.bg-warning');
                         let failElem = chElem.find('.bg-danger');
-                        passElem[0].attributes['style'].value = `width: ${response['passed']}%`;
-                        postElem[0].attributes['style'].value = `width: ${response['post']}%`;
-                        failElem[0].attributes['style'].value = `width: ${response['failed']}%`;
+                        passElem[0].attributes['style'].value = `width: ${response['progress']['passed']}%`;
+                        postElem[0].attributes['style'].value = `width: ${response['progress']['post']}%`;
+                        failElem[0].attributes['style'].value = `width: ${response['progress']['failed']}%`;
                     },
                     error: function(xhr, status, error) {
                         console.log(`Error = ${xhr.responseText}`);
@@ -164,19 +178,32 @@
             $('.notes').change(function(element) {
 
                 let notes_elem = element.target;
-                let date = updateDate(this.id);
                 
                 // Sends the data through AJAX to be processed
-                let data = {tpId: notes_elem.dataset.testpointId, notes: notes_elem.value, date: date};
+                let data = {tpId: notes_elem.dataset.tpId, chId:notes_elem.dataset.chId, notes: notes_elem.value, date: getNewDate()};
                 updateTestPoint(data);             
             });
 
+            function getNewDate() {
+                let date = new Date(); 
+                return date.toUTCString();
+            }
+
+            function updateTestPointDate(chId, tpId, date) {
+                $(`#ch-${chId}-tp-${tpId} .date`).text(date);
+                console.log(`Updating testpoint's new date as ${date}`);
+            }
+
+            function updateChannelDate(chId, date) {
+                $(`#ch-${chId} .last-updated`).text(date);
+                console.log(`Updating channel's new date as ${date}`);
+            }
+
             function updateAllRowColors() {
-                // Adjust the colour of the row based on the pass/fail
+                // Update the colour of each testpoint's Pass/Fail
                 $('.error').each(function(index, element) {    
 
                     // Get the pass/fail data to process
-                    let tpId = element.attributes['data_testpoint_id'].value;
                     let pf = element.attributes['data_pf'].value;
                     let pfElem = $(this).parents('tr').find('.pf');    
                     
@@ -189,6 +216,20 @@
                         $(pfElem).addClass('table-warning');
                     }  
                 });
+
+                // Update the colour of each channel's Pass/Fail
+                $('.completion').each(function(index, element) {  
+                    console.log(element);
+                    let compElem = element;
+                    let comp = compElem.textContent;
+                    if (comp == 'Pass') {
+                        compElem.classList.add('table-success');
+                    } else if (comp == 'Fail') {
+                        compElem.classList.add('table-danger');
+                    } else if (comp == 'In-Progress') {
+                        compElem.classList.add('table-info');
+                    }
+                });
             }
 
             function updateTestPoint(data) {
@@ -197,7 +238,10 @@
                     url: '/update_testpoint',
                     data: data,
                     success: function(response) {
-                        console.log(response['message']);
+                        console.log('Updating testpoint');
+                        date = new Date(data['date']).getDateTime();
+                        updateTestPointDate(data['chId'], data['tpId'], date);
+                        updateChannelDate(data['chId'], date);
                     },
                     error: function(error) {
                         console.log(`Error updating testpoint: ${error}`);
@@ -211,30 +255,23 @@
                     url: '/update_channel',
                     data: data,
                     success: function(response) {
-                        console.log(response['message']);
+                        console.log('Updating channel');
+                        date = new Date(data['date']).getDateTime();
+                        updateChannelDate(data['chId'], date);
                     },
                     error: function(error) {
                         console.log(`Error updating channel: ${error}`);
                     }
                 });
             }
-            
-            // Update the date when a field is modified
-            function updateDate(element) {
-                let rowElem = $(`#${element}`).parents('tr');
-                let dateElem = rowElem.find('.date');
-                let date = new Date();
-                let dateString = date.getDateTime();
-                dateElem.text(dateString);
-                return date.toUTCString();
-            }
 
             // For today's current time in format '10:06 PM'
             Date.prototype.timeNow = function () {
-                let hours = formatLeadingZero(this.getHours());
-                let hoursAdj = (hours > 12) ? (hours % 12) : hours;
+                let hoursRaw = this.getHours()
+                let hours = (hoursRaw > 12) ? (hoursRaw % 12) : hoursRaw;
+                let hoursAdj = formatLeadingZero(hours);
                 let minutes = formatLeadingZero(this.getMinutes());
-                let ampm = (hours >= 12) ? ' PM' : ' AM';
+                let ampm = (hoursRaw >= 12) ? ' PM' : ' AM';
                 return hoursAdj + ":" + minutes + ampm;
             }
 
@@ -258,7 +295,7 @@
             }
 
             function formatLeadingZero(dateTime) {
-                return ((dateTime < 10) ? "0" : "") + dateTime;
+                return ((dateTime < 10) ? "0" : "") + dateTime;                
             }
 
         });
