@@ -1,7 +1,7 @@
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, SelectField, \
-    IntegerField, FloatField, FormField, FieldList
+    IntegerField, FloatField, FormField, FieldList, BooleanField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, DataRequired, Length
 from wtforms.widgets import HiddenInput
@@ -80,6 +80,9 @@ class NewChannelForm(FlaskForm):
     tolerance = FloatField('Tolerance', validators=[DataRequired()], render_kw=kw_tolerance)
     tolerance_type = SelectField('Tolerance Type', choices=CHOICES_TOLERANCE_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
 
+    # Test Equipment Info
+    test_equipment = FieldList(FormField(TestEquipmentForm))
+
     # Test Point Input Range Info
     input_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)
     input_range_max = FloatField('Maximum Range', validators=[DataRequired()], render_kw=kw_meas_range_max)
@@ -131,3 +134,6 @@ class NewTestEquipmentForm(FlaskForm):
     serial_num = StringField('Serial Number', validators=[DataRequired()])
     cal_due_date = DateField('Calibration Due Date', validators=[DataRequired()])
     submit = SubmitField('Add New Test Equipment')
+
+class TestEquipmentForm(FlaskForm):
+    test_equipment = BooleanField('Equipment')

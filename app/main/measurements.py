@@ -72,3 +72,15 @@ class MeasurementType():
 ENG_UNITS = {'V': 'V', 'mA': 'mA', 'degC': 'degC', 'Hz': 'Hz', 'Ohms': 'Ohms',
     'm': 'm', 'psi': 'psi', 'kg': 'kg', 'm/s': 'm/s', 'lbf': 'lbf'
 }
+
+# Test Equipment List:
+# Function Generator
+# Bridge Simulator
+# Resolver Simulator
+# DC Voltage Calibrator
+# Multi-Function Calibrator
+# Decade Box
+# Low-Pressure Pump
+# High-Pressure Pump
+# Oscilloscope
+# Multimeter

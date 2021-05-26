@@ -39,6 +39,7 @@ class Channel(db.Model):
 	# Future Fields:
 	signed_owner = db.Column(db.String(3), default='No')
 	signed_customer = db.Column(db.String(3), default='No')
+	
 	test_equipment = db.relationship(
 		'TestEquipment',
 		secondary=channel_equipment,

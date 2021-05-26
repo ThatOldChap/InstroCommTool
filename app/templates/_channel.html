@@ -1,6 +1,8 @@
 {% block styles %}
 <style>
-
+    .badge {
+        justify-content: left;
+    }
 </style> 
 {% endblock %}
 
@@ -28,9 +30,15 @@
     </td>
     <td class="align-middle">
         <div class="row">            
-            <div class="col-12">
-                <span class="badge bg-success">By: Michael Chaplin</span>
-                <span class="badge bg-info">MDS0504: Signal Source</span>
+            <div class="col-12 align-middle">
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown">Add Test Equipment </button>                  
+                    <div class="dropdown-menu">
+                        {% for equip in test_equipment_list %}
+                        <a class="dropdown-item" href="#">{{ equip.owner_id }}: {{ equip.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>  
             </div>
         </div>            
     </td>

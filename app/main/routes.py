@@ -167,6 +167,7 @@ def channel_list():
 
     # Get a list of the channels in the database
     channel_list = Channel.query.all()
+    test_equipment_list = TestEquipment.query.all()
 
     # Initialize the master channel_group_form that is passed to the template
     channel_list_form = ChannelListForm()
@@ -191,7 +192,7 @@ def channel_list():
         channel_list_form.channels.append_entry(channel_form)
 
     return render_template('channel_list.html', title='Channel List', channel_list_form=channel_list_form, units_dict=ENG_UNITS, 
-                            channel_list=channel_list)
+                            channel_list=channel_list, test_equipment_list=test_equipment_list)
  
 
 @bp.route('/update_channel', methods=['POST'])
