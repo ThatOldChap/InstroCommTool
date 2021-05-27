@@ -119,7 +119,6 @@ def new_channel():
     test_equipment_types = TestEquipmentType.query.all()
     for test_equipment_type in test_equipment_types:
         equipment_form = RequiredTestEquipmentForm()
-        equipment_form.required.label(test_equipment_type.name)
         newChannelForm.required_test_equipment.append_entry(equipment_form)
 
     if newChannelForm.validate_on_submit():
@@ -167,7 +166,8 @@ def new_channel():
 
         print(newChannelForm.errors.items())
 
-    return render_template('new_channel.html', title='Add New Channel', form=newChannelForm, units_dict=ENG_UNITS)
+    return render_template('new_channel.html', title='Add New Channel', form=newChannelForm, units_dict=ENG_UNITS,
+                            test_equipment_types=test_equipment_types)
 
 @bp.route('/channel_list', methods=['GET', 'POST'])
 def channel_list():
@@ -199,7 +199,7 @@ def channel_list():
         channel_list_form.channels.append_entry(channel_form)
 
     return render_template('channel_list.html', title='Channel List', channel_list_form=channel_list_form, units_dict=ENG_UNITS, 
-                            channel_list=channel_list, test_equipment_list=test_equipment_list)
+                            channel_list=channel_list)
  
 
 @bp.route('/update_channel', methods=['POST'])

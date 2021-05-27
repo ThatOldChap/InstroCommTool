@@ -43,8 +43,8 @@ CHOICES_NUM_TEST_POINTS = [("", "Select Number..."),(1, "1"),(2, "2"),(3, "3"),(
 CHOICES_TEST_POINT_TYPE = [("Default", "Default"),("Custom", "Custom")]
 
 class RequiredTestEquipmentForm(FlaskForm):
-    kw_boolean_field = {'class': 'form-check'}
-    required = BooleanField('Test Equipment', render_kw=kw_boolean_field)
+    kw_boolean_field = {'class': 'form-check form-check-inline'}    
+    required = BooleanField(render_kw=kw_boolean_field)
 
 class TestPointValuesForm(FlaskForm):
 
