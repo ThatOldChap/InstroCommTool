@@ -10,6 +10,12 @@ channel_equipment = db.Table(
 	db.Column('test_equipment_id', db.Integer, db.ForeignKey('test_equipment.id'))
 ) 
 
+channel_equipment_types = db.Table(
+	'channel_equipment_types', db.Model.metadata,
+	db.Column('channel_id', db.Integer, db.ForeignKey('channel.id')),
+	db.Column('test_equipment_type_id', db.Integer, db.ForeignKey('test_equipment_type.id'))
+)
+
 class Channel(db.Model):
 	# Basic channel info
 	id = db.Column(db.Integer, primary_key=True)
@@ -39,7 +45,14 @@ class Channel(db.Model):
 	# Future Fields:
 	signed_owner = db.Column(db.String(3), default='No')
 	signed_customer = db.Column(db.String(3), default='No')
-	
+
+	# Test Equipment
+	test_equipment_required = db.relationship(
+		'TestEquipmentType',
+		secondary=channel_equipment_types,
+		backref='channel',
+		lazy='dynamic'
+	)
 	test_equipment = db.relationship(
 		'TestEquipment',
 		secondary=channel_equipment,
@@ -152,7 +165,35 @@ class Channel(db.Model):
 			return 'Fail'
 		else:
 			return 'In-Progress'
+
+	def has_test_equipment_type(self, test_equipment_type):
+		return self.test_equipment_required.filter(channel_equipment_types.c.test_equipment_type_id == test_equipment_type.id).count() > 0
 	
+	def add_test_equipment_type(self, test_equipment_type):
+		if not self.has_test_equipment_type(test_equipment_type):
+			self.test_equipment_required.append(test_equipment_type)
+	
+	def remove_test_equipment_type(self, test_equipment_type):
+		if self.has_test_equipment_type(test_equipment_type):
+			self.test_equipment_required.remove(test_equipment_type)
+
+	def required_test_equipment(self):
+		return self.test_equipment_required.filter(channel_equipment_types.c.channel_id == self.id).all()
+
+	def has_test_equipment(self, test_equipment):
+		return self.test_equipment.filter(channel_equipment.c.test_equipment_id == test_equipment.id).count() > 0
+
+	def add_test_equipment(self, test_equipment):
+		if not self.has_test_equipment(test_equipment):
+			self.test_equipmment.append(test_equipment)
+
+	def remove_test_equipment(self, test_equipment):
+		if self.has_test_equipment(test_equipment):
+			self.test_equipmment.remove(test_equipment)
+	
+	def test_equipment_list(self):
+		return self.test_equipment.filter(channel_equipment.c.channel_id == self.channel_id)
+
 
 class TestPoint(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -371,3 +412,10 @@ class TestEquipment(db.Model):
 	def __repr__(self):
 		return f'<TestEquipment {self.owner_id}: {self.manufacturer} {self.name}>'
 
+# Use as a type for only the admin to add types of
+class TestEquipmentType(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(32))
+
+	def __repr__(self):
+		return f'<TestEquipmentType {self.id}: {self.name}>'

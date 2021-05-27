@@ -4,8 +4,8 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import ChannelForm, TestPointForm, NewChannelForm, ChannelListForm
-from app.main.forms import CustomerForm, ProjectForm, JobForm, ChannelGroupForm, NewTestEquipmentForm
-from app.models import Channel, TestPoint, Project, Customer, Job, ChannelGroup, TestEquipment
+from app.main.forms import CustomerForm, ProjectForm, JobForm, ChannelGroupForm, NewTestEquipmentForm, RequiredTestEquipmentForm
+from app.models import Channel, TestPoint, Project, Customer, Job, ChannelGroup, TestEquipment, TestEquipmentType
 from app.main import bp
 from app.main.measurements import ENG_UNITS
 
@@ -19,7 +19,8 @@ def index():
     summary['jobs'] = Job.query.count()
     summary['groups'] = ChannelGroup.query.count()
     summary['channels'] = Channel.query.count()
-    summary['cal equip'] = TestEquipment.query.count()
+    summary['test equipment'] = TestEquipment.query.count()
+    summary['test equipment types'] = TestEquipmentType.query.count()
 
     return render_template('index.html', title='Home', summary=summary)
 
@@ -113,7 +114,13 @@ def new_group():
 @bp.route('/new_channel', methods=['GET', 'POST'])
 def new_channel():
 
+    # Pre-populate the NewChannelForm 
     newChannelForm = NewChannelForm()
+    test_equipment_types = TestEquipmentType.query.all()
+    for test_equipment_type in test_equipment_types:
+        equipment_form = RequiredTestEquipmentForm()
+        equipment_form.required.label(test_equipment_type.name)
+        newChannelForm.required_test_equipment.append_entry(equipment_form)
 
     if newChannelForm.validate_on_submit():
 
@@ -167,7 +174,7 @@ def channel_list():
 
     # Get a list of the channels in the database
     channel_list = Channel.query.all()
-    test_equipment_list = TestEquipment.query.all()
+    # test_equipment_list = TestEquipmentType.query.all()
 
     # Initialize the master channel_group_form that is passed to the template
     channel_list_form = ChannelListForm()
@@ -303,3 +310,19 @@ def new_test_equipment():
         return redirect(url_for('main.index'))
 
     return render_template('new_test_equipment.html', title='New Test Equipment', form=form)
+
+@bp.route('/new_test_equipment_type', methods=['GET', 'POST'])
+def new_test_equipment_type():
+
+    form = NewTestEquipmentForm()
+
+    if form.validate_on_submit():
+
+        test_equipment_type = TestEquipmentType(name=form.name.data)        
+        db.session.add(test_equipment_type)
+        db.session.commit()
+        flash(f'TestEquipmentType {test_equipment.name} has been added to the database.')
+
+        return redirect(url_for('main.index'))
+
+    return render_template('new_test_equipment_type.html', title='New Test Equipment Type', form=form)

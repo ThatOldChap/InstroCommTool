@@ -42,6 +42,10 @@ CHOICES_TOLERANCE_TYPE = [("", "Select Type..."),("EU", "EU"),(f"%FS", f"%FS"),(
 CHOICES_NUM_TEST_POINTS = [("", "Select Number..."),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),(7, "7"),(8, "8"),(9, "9"),(10, "10")]
 CHOICES_TEST_POINT_TYPE = [("Default", "Default"),("Custom", "Custom")]
 
+class RequiredTestEquipmentForm(FlaskForm):
+    kw_boolean_field = {'class': 'form-check'}
+    required = BooleanField('Test Equipment', render_kw=kw_boolean_field)
+
 class TestPointValuesForm(FlaskForm):
 
     # CSS attribute definitions
@@ -81,7 +85,7 @@ class NewChannelForm(FlaskForm):
     tolerance_type = SelectField('Tolerance Type', choices=CHOICES_TOLERANCE_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
 
     # Test Equipment Info
-    test_equipment = FieldList(FormField(TestEquipmentForm))
+    required_test_equipment = FieldList(FormField(RequiredTestEquipmentForm))
 
     # Test Point Input Range Info
     input_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)
@@ -135,5 +139,6 @@ class NewTestEquipmentForm(FlaskForm):
     cal_due_date = DateField('Calibration Due Date', validators=[DataRequired()])
     submit = SubmitField('Add New Test Equipment')
 
-class TestEquipmentForm(FlaskForm):
-    test_equipment = BooleanField('Equipment')
+class NewTestEquipmentTypeForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Add new Test Equipment Type')

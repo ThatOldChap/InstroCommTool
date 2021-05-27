@@ -30,9 +30,14 @@
     <h3>Channel Count: {{ summary['channels'] }}</h3>
     <br>
     <button type="button" class="btn btn-secondary">
-        <a style="color:#FFFFFF;" href="{{ url_for('main.new_test_equipment') }}">New Cal Equipment</a>
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_test_equipment') }}">New Test Equipment</a>
     </button>
-    <h3>Cal Equipment Count: {{ summary['cal equip'] }}</h3>
+    <h3>Test Equipment Count: {{ summary['test equipment'] }}</h3>
+    <br>
+    <button type="button" class="btn btn-info">
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_test_equipment_type') }}">New Test Equipment Type</a>
+    </button>
+    <h3>Test Equipment Types: {{ summary['test equipment types'] }}</h3>
     <br>
     
     
