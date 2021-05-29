@@ -71,12 +71,13 @@
             <legend>Test Equipment Selection:</legend>           
             <div class="col-md-12">
                 <div class="btn-group-toggle mb-3" role="group" data-toggle="buttons">
-                    {% for checkbox, equip in zip(form.required_test_equipment, test_equipment_types) %}
-                    {% set id = "checkbox-{}".format(equip.id) %}
-                    <label class="btn btn-outline-info" for="{{ id }}">{{ equip.name }}
-                        {{ checkbox.required(id=id) }}
+                    {% for test_equipment_type in test_equipment_types %}
+                    <label class="btn btn-outline-info" for="checkbox-{{ test_equipment_type.id }}">
+                        {{ test_equipment_type.name }}
+                        {{ form['checkbox_{}'.format(test_equipment_type.name)] }}
                     </label>                    
                     {% endfor %}
+                    {#{{ form.required_test_equipment() }}#}
                 </div>
             </div>
         </div>

@@ -1,13 +1,15 @@
 from flask import request
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, SelectField, \
-    IntegerField, FloatField, FormField, FieldList, BooleanField
+from wtforms import StringField, SubmitField, TextAreaField, SelectField, widgets,\
+    IntegerField, FloatField, FormField, FieldList, BooleanField, SelectMultipleField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, DataRequired, Length
 from wtforms.widgets import HiddenInput
 from app.models import Channel, TestPoint
 from app.main.measurements import ENG_UNITS
 from enum import Enum
+
+from wtforms.widgets.core import HTMLString, html_params, escape
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Add Channel')
@@ -42,9 +44,28 @@ CHOICES_TOLERANCE_TYPE = [("", "Select Type..."),("EU", "EU"),(f"%FS", f"%FS"),(
 CHOICES_NUM_TEST_POINTS = [("", "Select Number..."),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),(7, "7"),(8, "8"),(9, "9"),(10, "10")]
 CHOICES_TEST_POINT_TYPE = [("Default", "Default"),("Custom", "Custom")]
 
-class RequiredTestEquipmentForm(FlaskForm):
-    kw_boolean_field = {'class': 'form-check form-check-inline'}    
-    required = BooleanField(render_kw=kw_boolean_field)
+class MultiCheckboxField(SelectMultipleField):
+    """
+    A multiple-select, except displays a list of checkboxes.
+
+    Iterating the field will produce subfields, allowing custom rendering of
+    the enclosed checkbox fields.
+    """
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput(input_type="button")
+
+
+
+class InlineButtonWidget(object):
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('type', 'submit')
+        # Allow passing title= or alternately use field.description
+        title = kwargs.pop('title', field.description or '')
+        params = html_params(title=title, **kwargs)
+
+        html = '<button %s><span>%s</span></button>'
+        return HTMLString(html % (params, escape(field.label.text)))
+
 
 class TestPointValuesForm(FlaskForm):
 
@@ -67,6 +88,7 @@ class NewChannelForm(FlaskForm):
     kw_tolerance = {'class': 'form-control', 'placeholder': 'ex. 1.5'}
     kw_input_range_min = {'class': 'form-control', 'placeholder': 'ex. 80'}
     kw_input_range_max = {'class': 'form-control', 'placeholder': 'ex. 120'}
+    #kw_multicheck = {'class': 'btn btn-outline-info'}
     kw_submit = {'class': 'btn btn-primary'}
 
     # TODO: Add custom validator to allow zero values
@@ -84,9 +106,6 @@ class NewChannelForm(FlaskForm):
     tolerance = FloatField('Tolerance', validators=[DataRequired()], render_kw=kw_tolerance)
     tolerance_type = SelectField('Tolerance Type', choices=CHOICES_TOLERANCE_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
 
-    # Test Equipment Info
-    required_test_equipment = FieldList(FormField(RequiredTestEquipmentForm))
-
     # Test Point Input Range Info
     input_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)
     input_range_max = FloatField('Maximum Range', validators=[DataRequired()], render_kw=kw_meas_range_max)
@@ -99,6 +118,10 @@ class NewChannelForm(FlaskForm):
 
     # Form submission
     submit = SubmitField('Add New Channel', render_kw=kw_submit)
+
+    # Required Test Equipment Types
+    # Adding dynamically so pass until required
+    pass
 
 class ChannelListForm(FlaskForm):
     channels = FieldList(FormField(ChannelForm))

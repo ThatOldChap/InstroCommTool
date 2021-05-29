@@ -4,10 +4,11 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import ChannelForm, TestPointForm, NewChannelForm, ChannelListForm
-from app.main.forms import CustomerForm, ProjectForm, JobForm, ChannelGroupForm, NewTestEquipmentForm, RequiredTestEquipmentForm
+from app.main.forms import CustomerForm, ProjectForm, JobForm, ChannelGroupForm, NewTestEquipmentForm
 from app.models import Channel, TestPoint, Project, Customer, Job, ChannelGroup, TestEquipment, TestEquipmentType
 from app.main import bp
 from app.main.measurements import ENG_UNITS
+from wtforms import BooleanField
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
@@ -115,14 +116,17 @@ def new_group():
 def new_channel():
 
     # Pre-populate the NewChannelForm 
-    newChannelForm = NewChannelForm()
+    
     test_equipment_types = TestEquipmentType.query.all()
     for test_equipment_type in test_equipment_types:
-        equipment_form = RequiredTestEquipmentForm()
-        newChannelForm.required_test_equipment.append_entry(equipment_form)
+        # create field(s) for each query result
+        setattr(NewChannelForm, f'checkbox_{test_equipment_type.name}', BooleanField(label=test_equipment_type.name, id=f'checkbox-{test_equipment_type.id}'))
+
+    newChannelForm = NewChannelForm()
 
     if newChannelForm.validate_on_submit():
-
+        print('Form has been validated')
+        
         # Collect variables being used multiple times
         style = newChannelForm.test_point_type.data
         test_point_list = newChannelForm.test_point_list.data
@@ -159,12 +163,19 @@ def new_channel():
             input_val_list=input_vals,
             meas_val_list=meas_vals
         )
+
+        for test_equipment_type in test_equipment_types:
+            if newChannelForm.data[f'checkbox_{test_equipment_type.name}']:
+                channel.add_test_equipment_type(test_equipment_type)
+
+        print(f'Channel {channel.name} now has the following required test equipment:\n {channel.required_test_equipment()}')
+
         db.session.commit()
-        flash(f'Channel {channel.name} has been added to the database.')
+        flash(f'Channel {channel.name} has been added to the database.')     
 
         return redirect(url_for('main.index'))    
 
-        print(newChannelForm.errors.items())
+    print(newChannelForm.errors.items())
 
     return render_template('new_channel.html', title='Add New Channel', form=newChannelForm, units_dict=ENG_UNITS,
                             test_equipment_types=test_equipment_types)
