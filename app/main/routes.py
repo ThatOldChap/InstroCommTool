@@ -114,12 +114,10 @@ def new_group():
 
 @bp.route('/new_channel', methods=['GET', 'POST'])
 def new_channel():
-
-    # Pre-populate the NewChannelForm 
     
     test_equipment_types = TestEquipmentType.query.all()
     for test_equipment_type in test_equipment_types:
-        # create field(s) for each query result
+        # Create field(s) for each query result
         setattr(NewChannelForm, f'checkbox_{test_equipment_type.name}', BooleanField(label=test_equipment_type.name, id=f'checkbox-{test_equipment_type.id}'))
 
     newChannelForm = NewChannelForm()
@@ -185,7 +183,6 @@ def channel_list():
 
     # Get a list of the channels in the database
     channel_list = Channel.query.all()
-    # test_equipment_list = TestEquipmentType.query.all()
 
     # Initialize the master channel_group_form that is passed to the template
     channel_list_form = ChannelListForm()
@@ -194,6 +191,11 @@ def channel_list():
 
         # Get a list of all the testpoints in each channel
         testpoint_list = channel.all_test_points()  
+        test_equipment_types = channel.required_test_equipment()
+
+        for test_equipment_type in test_equipment_types:
+            # Create field(s) for each query result
+            setattr(ChannelForm, f'equip_{test_equipment_type.id}', BooleanField(label=test_equipment_type.name, id=f'equip-{test_equipment_type.id}'))
 
         # Initialize each channel_form
         channel_form = ChannelForm()

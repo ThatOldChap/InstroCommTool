@@ -33,6 +33,9 @@ class ChannelForm(FlaskForm):
     signed_client = StringField('Signed Client', render_kw=kw_btns)
     test_equipment = SelectField('Test Equipment', render_kw=kw_selectField)
 
+    # TestEquipmentType addition
+    pass
+
 EMPTY_CHOICE = ("", 'Select Units...')
 
 CHOICES_MEAS_TYPE = [("", "Select Type..."),("RTD", "RTD"),("Pressure", "Pressure"),("Frequency", "Frequency"),("Voltage", "Voltage")]
