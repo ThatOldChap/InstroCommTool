@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block app_content %}
-<tr class="text-center">
+<tr class="text-center" id="group-{{ group.id }}">
     {% set progress = group.progress() %}
     {% set status = group.status() %}
     <td class="align-middle">{{ group.name }}</td>
+    <td class="align-middle">{{ status['passed'] }}/{{ group.num_channels() }} Channels</td>    
     <td class="align-middle">
         <div class="row">
             <div class="col-12">
@@ -19,7 +20,6 @@
             </div>
         </div>
     </td>
-    <td class="align-middle">{{ status['passed'] }}/{{ group.num_channels() }} Channels</td>
     <td class="align-middle">{{ group.completion() }}</td>
     <td class="align-middle">{{ moment(group.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
 </tr>

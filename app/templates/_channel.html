@@ -18,8 +18,8 @@
     <td class="align-middle">{{ channel.name }}</td>
     <td colspan="2" class="align-middle">
         <div class="row">
-            <div class='col-3'>Progress: {{ round(progress['passed'] + progress['post'], 0) }}% ({{ status['passed'] }}/{{ channel.num_test_points() }})</div>
-            <div class="col-9">
+            <div class='col-4'>Progress: {{ round(progress['passed'] + progress['post'], 0) }}% ({{ status['passed'] }}/{{ channel.num_test_points() }})</div>
+            <div class="col-8">
                 <div class="progress">
                     <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress['passed'] }}%"></div>
                     <div class="progress-bar bg-warning" role="progressbar" style="width: {{ progress['post'] }}%"></div>
@@ -30,16 +30,9 @@
     </td>
     <td class="align-middle">
         <div class="row">            
-            <div class="col-12 align-middle">
-                <div class="btn-group-toggle" role="group" data-toggle="buttons"></div>
-                    {#{% for test_equipment_type in channel.required_test_equipment() %}
-                    <label class="btn btn-outline-info btn-sm" for="equip-{{ test_equipment_type.id }}">
-                        {{ test_equipment_type.name }}
-                        {{ channel_form['equip_{}'.format(test_equipment_type.id)] }}
-                    </label>
-                    {% endfor %}#}
+            <div class="col-12 align-middle d-flex align-items-start">
                 {% for test_equipment_type in channel.required_test_equipment() %}
-                <div class="btn-group" role="group" data-toggle="buttons" data-display="static" aria-label="Button group with nested dropdown">
+                <div class="btn-group" role="group" data-toggle="buttons" aria-label="Button group with nested dropdown">
                     <button type="button" class="btn btn-outline-info">{{ test_equipment_type.name }}</button>
                     <div class="btn-group" role="group">
                         {% set equip_id = "equip-{}".format(test_equipment_type.id) %}

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block app_content %}
-<tr class="text-center">
+<tr class="text-center" id="job-{{ job.id }}">
     {% set progress = job.progress() %}
     {% set status = job.status() %}
     <td class="align-middle">{{ job.customer_name() }}</td>
