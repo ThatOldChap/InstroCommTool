@@ -96,20 +96,23 @@ def new_job():
 
     return render_template('new_job.html', title='New Job', form=form)
 
-@bp.route('/new_group', methods=['GET', 'POST'])
-def new_group():
+@bp.route('/job/<job_id>/new_group', methods=['GET', 'POST'])
+def new_group(job_id):
 
     form = ChannelGroupForm()
+    form.job_id.data = job_id
+    print(form.job_id)
+    job = Job.query.filter_by(id=job_id).first_or_404()
 
     if form.validate_on_submit():
 
-        group = ChannelGroup(name=form.name.data)
+        group = ChannelGroup(name=form.name.data, job_id=form.job_id.data)
         db.session.add(group)
         db.session.commit()
         flash(f'Group {group.name} has been added to the database.')
         return redirect(url_for('main.index'))
 
-    return render_template('new_group.html', title='New Group', form=form)
+    return render_template('new_group.html', title='New Group', form=form, job=job)
 
 
 @bp.route('/new_channel', methods=['GET', 'POST'])
@@ -340,11 +343,10 @@ def new_test_equipment_type():
 
     return render_template('new_test_equipment_type.html', title='New Test Equipment Type', form=form)
 
-@bp.route('/jobs/<job_id>', methods=['GET', 'POST'])
+@bp.route('/job/<job_id>', methods=['GET', 'POST'])
 def job(job_id):
 
-    print('Redirect successful')
-    return redirect(url_for('main.index'))
+    job = Job.query.filter_by(id=job_id).first_or_404()
+    group_list = job.all_groups()
 
-   # return render_template('new_test_equipment_type.html', title='New Test Equipment Type', form=form)
-
+    return render_template('group_list.html', title='Group List', group_list=group_list, job=job)

@@ -1,15 +1,13 @@
 from flask import request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, SelectField, widgets,\
-    IntegerField, FloatField, FormField, FieldList, BooleanField, SelectMultipleField
+    IntegerField, FloatField, FormField, FieldList, BooleanField, SelectMultipleField, HiddenField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, DataRequired, Length
 from wtforms.widgets import HiddenInput
 from app.models import Channel, TestPoint
 from app.main.measurements import ENG_UNITS
 from enum import Enum
-
-from wtforms.widgets.core import HTMLString, html_params, escape
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Add Channel')
@@ -46,29 +44,6 @@ CHOICES_EU.insert(0, EMPTY_CHOICE)
 CHOICES_TOLERANCE_TYPE = [("", "Select Type..."),("EU", "EU"),(f"%FS", f"%FS"),('%RDG', '%RDG')]
 CHOICES_NUM_TEST_POINTS = [("", "Select Number..."),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),(7, "7"),(8, "8"),(9, "9"),(10, "10")]
 CHOICES_TEST_POINT_TYPE = [("Default", "Default"),("Custom", "Custom")]
-
-class MultiCheckboxField(SelectMultipleField):
-    """
-    A multiple-select, except displays a list of checkboxes.
-
-    Iterating the field will produce subfields, allowing custom rendering of
-    the enclosed checkbox fields.
-    """
-    widget = widgets.ListWidget(prefix_label=False)
-    option_widget = widgets.CheckboxInput(input_type="button")
-
-
-
-class InlineButtonWidget(object):
-    def __call__(self, field, **kwargs):
-        kwargs.setdefault('type', 'submit')
-        # Allow passing title= or alternately use field.description
-        title = kwargs.pop('title', field.description or '')
-        params = html_params(title=title, **kwargs)
-
-        html = '<button %s><span>%s</span></button>'
-        return HTMLString(html % (params, escape(field.label.text)))
-
 
 class TestPointValuesForm(FlaskForm):
 
@@ -131,6 +106,7 @@ class ChannelListForm(FlaskForm):
 
 class ChannelGroupForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
+    job_id = HiddenField('Job ID')
     submit = SubmitField('Add New Group')
 
 CHOICES_PHASE = [("", "Select Phase..."),("In-House", "In-House"),("On-Site", "On-Site")]
