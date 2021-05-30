@@ -340,19 +340,11 @@ def new_test_equipment_type():
 
     return render_template('new_test_equipment_type.html', title='New Test Equipment Type', form=form)
 
-@bp.route('/job/<group>', methods=['GET', 'POST'])
-def job_group():
+@bp.route('/jobs/<job_id>', methods=['GET', 'POST'])
+def job(job_id):
 
-    form = NewTestEquipmentForm()
+    print('Redirect successful')
+    return redirect(url_for('main.index'))
 
-    if form.validate_on_submit():
-
-        test_equipment_type = TestEquipmentType(name=form.name.data)        
-        db.session.add(test_equipment_type)
-        db.session.commit()
-        flash(f'TestEquipmentType {test_equipment.name} has been added to the database.')
-
-        return redirect(url_for('main.index'))
-
-    return render_template('new_test_equipment_type.html', title='New Test Equipment Type', form=form)
+   # return render_template('new_test_equipment_type.html', title='New Test Equipment Type', form=form)
 

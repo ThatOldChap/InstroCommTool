@@ -25,6 +25,11 @@
     </td>
     <td class="align-middle">{{ status['passed'] }}/{{ job.num_channels() }} Channels Complete</td>
     <td class="align-middle">{{ moment(job.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
+    <td class="align-middle">
+        <button type="button" class="btn btn-primary">
+            <a style="color:#FFFFFF;" href="{{ url_for('main.job', job_id=job.id) }}">View</a>
+        </button>
+    </td>
 </tr>
 {% endblock %}
   
