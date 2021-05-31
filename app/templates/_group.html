@@ -22,6 +22,18 @@
     </td>
     <td class="align-middle">{{ group.completion() }}</td>
     <td class="align-middle">{{ moment(group.last_updated).format("hh:mm A, DD-MMM-YYYY") }}</td>
+    <td class="align-middle">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-primary">
+                    <a style="color:#FFFFFF;" href="{{ url_for('main.group_channels', group_id=group.id) }}">View</a>
+                </button>
+                <button type="button" class="btn btn-info">
+                    <a style="color:#FFFFFF;" href="{{ url_for('main.new_channel', group_id=group.id) }}">Add Channel</a>
+                </button>
+            </div>            
+        </div>        
+    </td>
 </tr>
 {% endblock %}
   

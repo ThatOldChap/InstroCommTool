@@ -101,8 +101,6 @@ def new_group(job_id):
 
     form = ChannelGroupForm()
     form.job_id.data = job_id
-    print(form.job_id)
-    job = Job.query.filter_by(id=job_id).first_or_404()
 
     if form.validate_on_submit():
 
@@ -112,11 +110,11 @@ def new_group(job_id):
         flash(f'Group {group.name} has been added to the database.')
         return redirect(url_for('main.index'))
 
-    return render_template('new_group.html', title='New Group', form=form, job=job)
+    return render_template('new_group.html', title='New Group', form=form)
 
 
-@bp.route('/new_channel', methods=['GET', 'POST'])
-def new_channel():
+@bp.route('/group/<group_id>/new_channel', methods=['GET', 'POST'])
+def new_channel(group_id):
     
     test_equipment_types = TestEquipmentType.query.all()
     for test_equipment_type in test_equipment_types:
@@ -124,6 +122,7 @@ def new_channel():
         setattr(NewChannelForm, f'checkbox_{test_equipment_type.name}', BooleanField(label=test_equipment_type.name, id=f'checkbox-{test_equipment_type.id}'))
 
     newChannelForm = NewChannelForm()
+    newChannelForm.group_id.data = group_id
 
     if newChannelForm.validate_on_submit():
         print('Form has been validated')
@@ -137,6 +136,7 @@ def new_channel():
         # Create the channel and commit to the db to get an id
         channel = Channel(
             name=newChannelForm.name.data,
+            group_id=newChannelForm.group_id.data,
             meas_type=newChannelForm.meas_type.data,
             meas_range_min=newChannelForm.meas_range_min.data,
             meas_range_max=newChannelForm.meas_range_max.data,
@@ -337,7 +337,7 @@ def new_test_equipment_type():
         test_equipment_type = TestEquipmentType(name=form.name.data)        
         db.session.add(test_equipment_type)
         db.session.commit()
-        flash(f'TestEquipmentType {test_equipment.name} has been added to the database.')
+        flash(f'TestEquipmentType {test_equipment_type.name} has been added to the database.')
 
         return redirect(url_for('main.index'))
 
@@ -350,3 +350,30 @@ def job(job_id):
     group_list = job.all_groups()
 
     return render_template('group_list.html', title='Group List', group_list=group_list, job=job)
+
+@bp.route('/group/<group_id>', methods=['GET', 'POST'])
+def group_channels(group_id):
+
+    group = ChannelGroup.query.filter_by(id=group_id).first_or_404()
+    channel_list = group.all_channels()
+    channel_list_form = ChannelListForm()
+
+    for channel in channel_list:
+
+        testpoint_list = channel.all_test_points()
+        test_equipment_types = channel.required_test_equipment()
+
+        for test_equipment_type in test_equipment_types:
+            setattr(ChannelForm, f'equip_{test_equipment_type.id}', BooleanField(label=test_equipment_type.name, id=f'equip-{test_equipment_type.id}'))
+
+        channel_form = ChannelForm()
+
+        for testpoint in testpoint_list:
+
+            testpoint_form = TestPointForm()
+            channel_form.testpoints.append_entry(testpoint_form)
+        
+        channel_list_form.channels.append_entry(channel_form)
+
+    return render_template('channel_list.html', title='Channel List', channel_list_form=channel_list_form,
+                            units_dict=ENG_UNITS, channel_list=channel_list)

@@ -25,7 +25,7 @@
     <h3>ChannelGroup Count: {{ summary['groups'] }}</h3>
     <br>
     <button type="button" class="btn btn-primary">
-        <a style="color:#FFFFFF;" href="{{ url_for('main.new_channel') }}">New Channel</a>
+        <a style="color:#FFFFFF;" href="{{ url_for('main.new_channel', group_id=1) }}">New Channel</a>
     </button>
     <h3>Channel Count: {{ summary['channels'] }}</h3>
     <br>

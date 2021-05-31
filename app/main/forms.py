@@ -73,6 +73,7 @@ class NewChannelForm(FlaskForm):
     # Basic Channel Info
     name = StringField('Name', validators=[DataRequired()], render_kw=kw_name)
     meas_type = SelectField('Type', choices=CHOICES_MEAS_TYPE, validators=[DataRequired()], render_kw=kw_select_field)
+    group_id = HiddenField('Group ID')
 
     # Measurement Range Info
     meas_range_min = FloatField('Minimum Range', validators=[DataRequired()], render_kw=kw_meas_range_min)

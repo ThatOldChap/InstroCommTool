@@ -1,4 +1,4 @@
-2021-05-30 00:09:48,782 ERROR: Exception on /job/1 [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+2021-05-30 20:28:01,037 ERROR: Exception on /index [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -12,8 +12,8 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 352, in job
-    return render_template('group_list.html', title='Group List', group_list=group_list, job=job)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 26, in index
+    return render_template('index.html', title='Home', summary=summary)
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
@@ -24,14 +24,14 @@ Traceback (most recent call last):
     reraise(*rewrite_traceback_stack(source=source))
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/group_list.html", line 1, in top-level template code
-    {% extends "base.html" %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/index.html", line 2, in top-level template code
+    {% import 'bootstrap/form.html' as wtf %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 55, in top-level template code
     {% block content %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 65, in block "content"
     {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/group_list.html", line 8, in block "app_content"
-    <a style="color:#FFFFFF;" href="{{ url_for('main.new_group', job_id=job_id) }}">New Group</a>
+  File "/home/michael/Projects/InstroCommTool/app/templates/index.html", line 28, in block "app_content"
+    <a style="color:#FFFFFF;" href="{{ url_for('main.new_channel') }}">New Channel</a>
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/helpers.py", line 370, in url_for
     return appctx.app.handle_url_build_error(error, endpoint, values)
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2216, in handle_url_build_error
@@ -42,8 +42,11 @@ Traceback (most recent call last):
     rv = url_adapter.build(
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/werkzeug/routing.py", line 2179, in build
     raise BuildError(endpoint, values, method, self)
-werkzeug.routing.BuildError: Could not build url for endpoint 'main.new_group' with values ['job_id']. Did you forget to specify values ['id']?
-2021-05-30 00:12:30,459 ERROR: Exception on /job/1 [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+werkzeug.routing.BuildError: Could not build url for endpoint 'main.new_channel'. Did you forget to specify values ['group_id']?
+2021-05-30 20:28:35,779 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 20:30:52,813 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 20:31:21,726 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 20:32:00,385 ERROR: Exception on /new_test_equipment_type [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
 Traceback (most recent call last):
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
     response = self.full_dispatch_request()
@@ -57,8 +60,32 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
     return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 352, in job
-    return render_template('group_list.html', title='Group List', group_list=group_list, job=job)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 340, in new_test_equipment_type
+    flash(f'TestEquipmentType {test_equipment.name} has been added to the database.')
+NameError: name 'test_equipment' is not defined
+2021-05-30 20:32:31,355 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 20:40:32,595 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 20:40:56,197 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 21:01:12,616 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 21:07:06,586 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 21:08:06,472 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 21:13:11,914 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+2021-05-30 21:13:15,084 ERROR: Exception on /group/1 [GET] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
+Traceback (most recent call last):
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 378, in group_channels
+    return render_template('channel_list.html', title='Channel List', channel_list_form=channel_list_form,
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 137, in render_template
     return _render(
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/templating.py", line 120, in _render
@@ -69,42 +96,18 @@ Traceback (most recent call last):
     reraise(*rewrite_traceback_stack(source=source))
   File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/jinja2/_compat.py", line 28, in reraise
     raise value.with_traceback(tb)
-  File "/home/michael/Projects/InstroCommTool/app/templates/group_list.html", line 1, in top-level template code
-    {% extends "base.html" %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 2, in top-level template code
+    {% import 'bootstrap/form.html' as wtf %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 55, in top-level template code
     {% block content %}
   File "/home/michael/Projects/InstroCommTool/app/templates/base.html", line 65, in block "content"
     {% block app_content %}{% endblock %}
-  File "/home/michael/Projects/InstroCommTool/app/templates/group_list.html", line 8, in block "app_content"
-    <a style="color:#FFFFFF;" href="{{ url_for('main.new_group', job_id=job_id) }}">New Group</a>
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/helpers.py", line 370, in url_for
-    return appctx.app.handle_url_build_error(error, endpoint, values)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2216, in handle_url_build_error
-    reraise(exc_type, exc_value, tb)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
-    raise value
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/helpers.py", line 357, in url_for
-    rv = url_adapter.build(
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/werkzeug/routing.py", line 2179, in build
-    raise BuildError(endpoint, values, method, self)
-werkzeug.routing.BuildError: Could not build url for endpoint 'main.new_group' with values ['job_id']. Did you forget to specify values ['id']?
-2021-05-30 00:13:11,367 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-30 00:15:38,674 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
-2021-05-30 00:16:36,762 ERROR: Exception on /job/1/new_group [POST] [in /home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py:1891
-Traceback (most recent call last):
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 2447, in wsgi_app
-    response = self.full_dispatch_request()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1952, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1821, in handle_user_exception
-    reraise(exc_type, exc_value, tb)
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/_compat.py", line 39, in reraise
-    raise value
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1950, in full_dispatch_request
-    rv = self.dispatch_request()
-  File "/home/michael/Projects/InstroCommTool/venv/lib/python3.8/site-packages/flask/app.py", line 1936, in dispatch_request
-    return self.view_functions[rule.endpoint](**req.view_args)
-  File "/home/michael/Projects/InstroCommTool/app/main/routes.py", line 109, in new_group
-    group = ChannelGroup(name=form.name.data, job_id=form.job_id.data)
-AttributeError: 'str' object has no attribute 'data'
-2021-05-30 00:18:43,051 INFO: InstroCommTool [in /home/michael/Projects/InstroCommTool/app/__init__.py:83
+  File "/home/michael/Projects/InstroCommTool/app/templates/channel_list.html", line 25, in block "app_content"
+    {% include '_channel.html' %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_channel.html", line 9, in top-level template code
+    {% block app_content %}
+  File "/home/michael/Projects/InstroCommTool/app/templates/_channel.html", line 12, in block "app_content"
+    {% set progress = channel.progress() %}
+  File "/home/michael/Projects/InstroCommTool/app/models.py", line 146, in progress
+    passed = (status['passed'] / total) * 100
+ZeroDivisionError: division by zero
